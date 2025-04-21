@@ -102,6 +102,27 @@ const forms: {
     />
     // TODO OTHER LIST ITEMS
   ),
+  parent: (setOpen, type, data, relatedData) => (
+    <div>Parent form not implemented yet</div>
+  ),
+  lesson: (setOpen, type, data, relatedData) => (
+    <div>Lesson form not implemented yet</div>
+  ),
+  assignment: (setOpen, type, data, relatedData) => (
+    <div>Assignment form not implemented yet</div>
+  ),
+  result: (setOpen, type, data, relatedData) => (
+    <div>Result form not implemented yet</div>
+  ),
+  attendance: (setOpen, type, data, relatedData) => (
+    <div>Attendance form not implemented yet</div>
+  ),
+  event: (setOpen, type, data, relatedData) => (
+    <div>Event form not implemented yet</div>
+  ),
+  announcement: (setOpen, type, data, relatedData) => (
+    <div>Announcement form not implemented yet</div>
+  ),
 };
 
 const FormModal = ({
@@ -139,7 +160,7 @@ const FormModal = ({
 
     return type === "delete" && id ? (
       <form action={formAction} className="p-4 flex flex-col gap-4">
-        <input type="text | number" name="id" value={id} hidden />
+        <input type="hidden" name="id" value={id} />
         <span className="text-center font-medium">
           All data will be lost. Are you sure you want to delete this {table}?
         </span>

@@ -1,33 +1,37 @@
-import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { verify } from 'jsonwebtoken';
-import { cookies } from 'next/headers';
+import { prisma } from '@/lib/prisma'
+import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
-    const token = cookies().get('token')?.value;
+    console.log('Fetching subjects...');
     
-    if (!token) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    try {
-      verify(token, process.env.JWT_SECRET!);
-    } catch (error) {
-      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+    if (!prisma) {
+      throw new Error('Prisma client is not initialized');
     }
 
     const subjects = await prisma.subject.findMany({
-      select: {
-        id: true,
-        name: true,
-      },
+      select: { id: true, name: true },
     });
 
-    return NextResponse.json(subjects);
+    console.log('Subjects fetched:', subjects);
+    
+    return new NextResponse(JSON.stringify(subjects), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   } catch (error) {
-    console.error('Error fetching subjects:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error('Error in subjects API:', error);
+    return new NextResponse(
+      JSON.stringify({ error: 'Failed to fetch subjects' }), 
+      { 
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
   }
 } 
 

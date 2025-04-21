@@ -11,7 +11,7 @@ import FilterWrapper from "@/components/FilterWrapper";
 import AdminOnly from '@/components/AdminOnly';
 import { getAuthUser } from '@/lib/auth';
 
-type TeacherList = Teacher & { subjects: Subject[] } & { classes: Class[] };
+type TeacherList = Teacher & { subjects: Subject[] } & { supervisedClass: Class[] };
 
 const TeacherListPage = async ({
   searchParams,
@@ -83,7 +83,7 @@ const TeacherListPage = async ({
         {item.subjects.map((subject) => subject.name).join(",")}
       </td>
       <td className="hidden md:table-cell">
-        {item.classes.map((classItem) => classItem.name).join(",")}
+        {item.supervisedClass.map((classItem) => classItem.name).join(",")}
       </td>
       <td className="hidden md:table-cell">{item.phone}</td>
       <td className="hidden md:table-cell">{item.address}</td>
@@ -148,7 +148,7 @@ const TeacherListPage = async ({
       where: query,
       include: {
         subjects: true,
-        classes: true,
+        supervisedClass: true,
       },
       take: ITEM_PER_PAGE,
       skip: ITEM_PER_PAGE * (p - 1),
@@ -165,9 +165,15 @@ const TeacherListPage = async ({
           <TableSearch />
           <div className="flex items-center gap-4 self-end">
             <FilterWrapper />
-            <AdminOnly>
+            {/*<AdminOnly>
               <FormContainer table="teacher" type="create" />
-            </AdminOnly>
+            </AdminOnly>*/}
+            {role === "admin" && (
+              // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
+              //   <Image src="/plus.png" alt="" width={14} height={14} />
+              // </button>
+              <FormContainer table="teacher" type="create" />
+            )}
           </div>
         </div>
       </div>

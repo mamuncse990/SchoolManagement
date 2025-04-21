@@ -142,12 +142,16 @@ export const createTeacher = async (
   data: TeacherSchema
 ) => {
   try {
-    const user = await clerkClient.users.createUser({
+    const clerk = await clerkClient();
+    const user = await clerk.users.createUser({
       username: data.username,
       password: data.password,
       firstName: data.name,
       lastName: data.surname,
-      publicMetadata:{role:"teacher"}
+      publicMetadata: { role: "teacher" }
+    }).catch((error) => {
+      console.error('Error creating Clerk user:', error);
+      throw new Error('Failed to create user in authentication system');
     });
 
     await prisma.teacher.create({
@@ -171,10 +175,19 @@ export const createTeacher = async (
       },
     });
 
-    // revalidatePath("/list/teachers");
     return { success: true, error: false };
   } catch (err) {
-    console.log(err);
+    console.error('Error in createTeacher:', err);
+    if (err instanceof Error && err.message !== 'Failed to create user in authentication system') {
+      try {
+        const clerk = await clerkClient();
+        if (data.id) {
+          await clerk.users.deleteUser(data.id);
+        }
+      } catch (deleteError) {
+        console.error('Error deleting Clerk user after failed teacher creation:', deleteError);
+      }
+    }
     return { success: false, error: true };
   }
 };
@@ -187,7 +200,8 @@ export const updateTeacher = async (
     return { success: false, error: true };
   }
   try {
-    const user = await clerkClient.users.updateUser(data.id, {
+    const clerk = await clerkClient();
+    const user = await clerk.users.updateUser(data.id, {
       username: data.username,
       ...(data.password !== "" && { password: data.password }),
       firstName: data.name,
@@ -217,7 +231,6 @@ export const updateTeacher = async (
         },
       },
     });
-    // revalidatePath("/list/teachers");
     return { success: true, error: false };
   } catch (err) {
     console.log(err);
@@ -231,18 +244,22 @@ export const deleteTeacher = async (
 ) => {
   const id = data.get("id") as string;
   try {
-    await clerkClient.users.deleteUser(id);
-
     await prisma.teacher.delete({
       where: {
         id: id,
       },
     });
 
-    // revalidatePath("/list/teachers");
+    try {
+      const clerk = await clerkClient();
+      await clerk.users.deleteUser(id);
+    } catch (clerkError) {
+      console.error('Error deleting Clerk user:', clerkError);
+    }
+
     return { success: true, error: false };
   } catch (err) {
-    console.log(err);
+    console.error('Error deleting teacher:', err);
     return { success: false, error: true };
   }
 };
@@ -251,7 +268,6 @@ export const createStudent = async (
   currentState: CurrentState,
   data: StudentSchema
 ) => {
-  console.log(data);
   try {
     const classItem = await prisma.class.findUnique({
       where: { id: data.classId },
@@ -262,12 +278,13 @@ export const createStudent = async (
       return { success: false, error: true };
     }
 
-    const user = await clerkClient.users.createUser({
+    const clerk = await clerkClient();
+    const user = await clerk.users.createUser({
       username: data.username,
       password: data.password,
       firstName: data.name,
       lastName: data.surname,
-      publicMetadata:{role:"student"}
+      publicMetadata: { role: "student" }
     });
 
     await prisma.student.create({
@@ -289,7 +306,6 @@ export const createStudent = async (
       },
     });
 
-    // revalidatePath("/list/students");
     return { success: true, error: false };
   } catch (err) {
     console.log(err);
@@ -305,7 +321,8 @@ export const updateStudent = async (
     return { success: false, error: true };
   }
   try {
-    const user = await clerkClient.users.updateUser(data.id, {
+    const clerk = await clerkClient();
+    const user = await clerk.users.updateUser(data.id, {
       username: data.username,
       ...(data.password !== "" && { password: data.password }),
       firstName: data.name,
@@ -333,7 +350,6 @@ export const updateStudent = async (
         parentId: data.parentId,
       },
     });
-    // revalidatePath("/list/students");
     return { success: true, error: false };
   } catch (err) {
     console.log(err);
@@ -347,7 +363,8 @@ export const deleteStudent = async (
 ) => {
   const id = data.get("id") as string;
   try {
-    await clerkClient.users.deleteUser(id);
+    const clerk = await clerkClient();
+    await clerk.users.deleteUser(id);
 
     await prisma.student.delete({
       where: {
@@ -355,7 +372,6 @@ export const deleteStudent = async (
       },
     });
 
-    // revalidatePath("/list/students");
     return { success: true, error: false };
   } catch (err) {
     console.log(err);
@@ -386,9 +402,10 @@ export const createExam = async (
 
     await prisma.exam.create({
       data: {
-        name: data.name,
-        date: data.date,
-        lessonId: data.lessonId,
+        title: data.name,
+        startTime: data.date,
+        endTime: data.date,
+        lessonId: parseInt(data.lessonId),
       },
     });
 
@@ -423,12 +440,13 @@ export const updateExam = async (
 
     await prisma.exam.update({
       where: {
-        id: data.id!,
+        id: parseInt(data.id!),
       },
       data: {
-        name: data.name,
-        date: data.date,
-        lessonId: data.lessonId,
+        title: data.name,
+        startTime: data.date,
+        endTime: data.date,
+        lessonId: parseInt(data.lessonId),
       },
     });
 
@@ -452,7 +470,7 @@ export const deleteExam = async (
   try {
     await prisma.exam.delete({
       where: {
-        id,
+        id: parseInt(id),
       },
     });
 

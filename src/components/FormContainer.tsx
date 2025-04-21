@@ -56,16 +56,38 @@ const FormContainer = ({ table, type, data, id }: FormContainerProps) => {
             setRelatedData({ teachers: classTeachersData, grades: classGradesData });
             break;
           case "teacher":
-            const response = await fetch('/api/subjects', { credentials: 'include' });
-            if (!response.ok) throw new Error('Failed to fetch subjects');
-            const teacherSubjects = await response.json();
-            setRelatedData({ subjects: teacherSubjects });
+            try {
+              const response = await fetch('/api/subjects', {
+                credentials: 'include',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              });
+              
+              if (!response.ok) {
+                const errorText = await response.text();
+                console.error('API Error:', errorText);
+                throw new Error(`Failed to fetch subjects: ${response.status}`);
+              }
+              
+              const teacherSubjects = await response.json();
+              setRelatedData({ subjects: teacherSubjects });
+            } catch (error) {
+              console.error('Error in teacher case:', error);
+              setError(error instanceof Error ? error.message : 'Failed to fetch subjects');
+            }
             break;
           case "student":
             const studentDataResponse = await fetch('/api/student-data', { credentials: 'include' });
             if (!studentDataResponse.ok) throw new Error('Failed to fetch student data');
             const { grades: studentGrades, classes: studentClasses } = await studentDataResponse.json();
-            setRelatedData({ classes: studentClasses, grades: studentGrades });
+            setRelatedData({ 
+              classes: studentClasses.map((classItem: any) => ({
+                ...classItem,
+                _count: { students: 0 } // Default value if not provided
+              })), 
+              grades: studentGrades 
+            });
             break;
           case "exam":
             const examResponse = await fetch('/api/lessons', { credentials: 'include' });

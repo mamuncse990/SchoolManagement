@@ -28,6 +28,12 @@ export async function GET() {
         select: {
           id: true,
           name: true,
+          capacity: true,
+          _count: {
+            select: {
+              students: true
+            }
+          }
         },
       }),
     ]);
