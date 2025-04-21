@@ -3,23 +3,33 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import InputField from "../InputField";
-import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { teacherSchema, TeacherSchema } from "@/lib/formValidationSchemas";
 import { useFormState } from "react-dom";
-import { createTeacher, updateTeacher } from "@/lib/actions";
+import { createParent, updateParent } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { CldUploadWidget } from "next-cloudinary";
+import Image from "next/image";
 
-const TeacherForm = ({
+interface ParentFormData {
+  id?: string;
+  username: string;
+  name: string;
+  surname: string;
+  email?: string;
+  phone: string;
+  address: string;
+  img?: string;
+}
+
+const ParentForm = ({
   type,
   data,
   setOpen,
   relatedData,
 }: {
   type: "create" | "update";
-  data?: any;
+  data?: ParentFormData;
   setOpen: Dispatch<SetStateAction<boolean>>;
   relatedData?: any;
 }) => {
@@ -27,60 +37,43 @@ const TeacherForm = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<TeacherSchema>({
-    resolver: zodResolver(teacherSchema),
-  });
+  } = useForm<ParentFormData>();
 
   const [img, setImg] = useState<any>();
-  const [subjects, setSubjects] = useState<Array<{ id: number; name: string }>>([]);
 
   const [state, formAction] = useFormState(
-    type === "create" ? createTeacher : updateTeacher,
+    type === "create" ? createParent : updateParent,
     {
       success: false,
       error: false,
     }
   );
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
-    formAction({ ...data, img: img?.secure_url });
+  const onSubmit = handleSubmit((formData) => {
+    const formDataObj = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      formDataObj.append(key, value as string);
+    });
+    if (img?.secure_url) {
+      formDataObj.append('img', img.secure_url);
+    }
+    formAction(formDataObj);
   });
 
   const router = useRouter();
 
   useEffect(() => {
     if (state.success) {
-      toast(`Teacher has been ${type === "create" ? "created" : "updated"}!`);
+      toast(`Parent has been ${type === "create" ? "created" : "updated"}!`);
       setOpen(false);
       router.refresh();
     }
   }, [state, router, type, setOpen]);
 
-  useEffect(() => {
-    const fetchSubjects = async () => {
-      try {
-        const response = await fetch('/api/subjects');
-        if (!response.ok) {
-          throw new Error('Failed to fetch subjects');
-        }
-        const data = await response.json();
-        console.log('Fetched subjects:', data); // Debug log
-        setSubjects(data || []);
-      } catch (error) {
-        console.error('Error fetching subjects:', error);
-        setSubjects([]);
-      }
-    };
-    fetchSubjects();
-  }, []);
-
-  const { subjects: relatedDataSubjects = [] } = relatedData || {};
-
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
       <h1 className="text-xl font-semibold">
-        {type === "create" ? "Create a new teacher" : "Update the teacher"}
+        {type === "create" ? "Create a new parent" : "Update the parent"}
       </h1>
       <span className="text-xs text-gray-400 font-medium">
         Authentication Information
@@ -100,14 +93,6 @@ const TeacherForm = ({
           register={register}
           error={errors?.email}
         />
-        <InputField
-          label="Password"
-          name="password"
-          type="password"
-          defaultValue={data?.password}
-          register={register}
-          error={errors?.password}
-        />
       </div>
       <span className="text-xs text-gray-400 font-medium">
         Personal Information
@@ -118,43 +103,28 @@ const TeacherForm = ({
           name="name"
           defaultValue={data?.name}
           register={register}
-          error={errors.name}
+          error={errors?.name}
         />
         <InputField
           label="Last Name"
           name="surname"
           defaultValue={data?.surname}
           register={register}
-          error={errors.surname}
+          error={errors?.surname}
         />
         <InputField
           label="Phone"
           name="phone"
           defaultValue={data?.phone}
           register={register}
-          error={errors.phone}
+          error={errors?.phone}
         />
         <InputField
           label="Address"
           name="address"
           defaultValue={data?.address}
           register={register}
-          error={errors.address}
-        />
-        <InputField
-          label="Blood Type"
-          name="bloodType"
-          defaultValue={data?.bloodType}
-          register={register}
-          error={errors.bloodType}
-        />
-        <InputField
-          label="Birthday"
-          name="birthday"
-          defaultValue={data?.birthday?.toISOString().split("T")[0]}
-          register={register}
-          error={errors.birthday}
-          type="date"
+          error={errors?.address}
         />
         {data && (
           <InputField
@@ -166,42 +136,6 @@ const TeacherForm = ({
             hidden
           />
         )}
-        <div className="flex flex-col gap-2 w-full md:w-1/4">
-          <label className="text-xs text-gray-500">Sex</label>
-          <select
-            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
-            {...register("sex")}
-            defaultValue={data?.sex}
-          >
-            <option value="MALE">Male</option>
-            <option value="FEMALE">Female</option>
-          </select>
-          {errors.sex?.message && (
-            <p className="text-xs text-red-400">
-              {errors.sex.message.toString()}
-            </p>
-          )}
-        </div>
-        <div className="flex flex-col gap-2 w-full md:w-1/4">
-          <label className="text-xs text-gray-500">Subjects</label>
-          <select
-            multiple
-            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
-            {...register("subjects")}
-            defaultValue={data?.subjects?.map((subject: any) => subject.id) || []}
-          >
-            {subjects.map((subject) => (
-              <option key={subject.id} value={subject.id}>
-                {subject.name}
-              </option>
-            ))}
-          </select>
-          {errors.subjects?.message && (
-            <p className="text-xs text-red-400">
-              {errors.subjects.message.toString()}
-            </p>
-          )}
-        </div>
         <CldUploadWidget
           uploadPreset="school"
           onSuccess={(result, { widget }) => {
@@ -232,4 +166,4 @@ const TeacherForm = ({
   );
 };
 
-export default TeacherForm;
+export default ParentForm; 

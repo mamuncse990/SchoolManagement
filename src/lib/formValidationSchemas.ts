@@ -86,3 +86,11 @@ export const examSchema = z.object({
 });
 
 export type ExamSchema = z.infer<typeof examSchema>;
+
+export interface EventSchema {
+  id?: string;
+  title: string;
+  startTime: string;
+  endTime: string;
+  classId?: string;
+}

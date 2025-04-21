@@ -1,26 +1,37 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
-const publicPaths = [
-  "/",
-  "/sign-in",
-  "/sign-up",
-  "/api/auth/verify-user",
-  "/api/webhook",
-];
+// This example protects all routes including api/trpc routes
+// Please edit this to allow other routes to be public as needed.
+// See https://clerk.com/docs/references/nextjs/auth-middleware for more information about configuring your middleware
 
-const isPublic = (path: string) => publicPaths.includes(path);
+const publicPaths = ["/", "/sign-in*", "/sign-up*", "/api/webhook*"];
+
+const isPublic = (path: string) => {
+  return publicPaths.some((x) => 
+    path.match(new RegExp(`^${x.replace("*", ".*")}$`))
+  );
+};
 
 export default clerkMiddleware(async (auth, req) => {
   if (isPublic(req.nextUrl.pathname)) {
-    return;
+    return NextResponse.next();
   }
-  // Protect all other routes
-  const authObj = await auth();
-  if (!authObj.userId) {
-    return new Response("Unauthorized", { status: 401 });
+  
+  const userId = await auth().then(session => session?.userId);
+  
+  if (!userId) {
+    const signInUrl = new URL("/sign-in", req.url);
+    signInUrl.searchParams.set("redirect_url", req.url);
+    return NextResponse.redirect(signInUrl);
   }
+  
+  return NextResponse.next();
 });
 
 export const config = {
-  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+  // Protects all routes, including api/trpc
+  // See https://clerk.com/docs/references/nextjs/auth-middleware
+  // for more information about configuring your middleware
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 }; 

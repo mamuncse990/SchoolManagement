@@ -8,7 +8,10 @@ export async function GET(request: Request) {
   try {
     const [data, count] = await prisma.$transaction([
       prisma.event.findMany({
-        where: query
+        where: query,
+        include: {
+          class: true
+        }
       }),
       prisma.event.count({ where: query })
     ])

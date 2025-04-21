@@ -14,6 +14,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
 import { FormContainerProps } from "./FormContainer";
+import LessonForm from "./forms/LessonForm";
+import EventForm from "./forms/EventForm";
 
 const deleteActionMap = {
   subject: deleteSubject,
@@ -49,6 +51,9 @@ const ClassForm = dynamic(() => import("./forms/ClassForm"), {
   loading: () => <h1>Loading...</h1>,
 });
 const ExamForm = dynamic(() => import("./forms/ExamForm"), {
+  loading: () => <h1>Loading...</h1>,
+});
+const ParentForm = dynamic(() => import("./forms/ParentForm"), {
   loading: () => <h1>Loading...</h1>,
 });
 // TODO: OTHER FORMS
@@ -103,10 +108,20 @@ const forms: {
     // TODO OTHER LIST ITEMS
   ),
   parent: (setOpen, type, data, relatedData) => (
-    <div>Parent form not implemented yet</div>
+    <ParentForm
+      type={type}
+      data={data}
+      setOpen={setOpen}
+      relatedData={relatedData}
+    />
   ),
   lesson: (setOpen, type, data, relatedData) => (
-    <div>Lesson form not implemented yet</div>
+    <LessonForm
+    type={type}
+    data={data}
+    setOpen={setOpen}
+    relatedData={relatedData}
+  />
   ),
   assignment: (setOpen, type, data, relatedData) => (
     <div>Assignment form not implemented yet</div>
@@ -118,7 +133,12 @@ const forms: {
     <div>Attendance form not implemented yet</div>
   ),
   event: (setOpen, type, data, relatedData) => (
-    <div>Event form not implemented yet</div>
+    <EventForm
+    type={type}
+    data={data}
+    setOpen={setOpen}
+    relatedData={relatedData}
+  />
   ),
   announcement: (setOpen, type, data, relatedData) => (
     <div>Announcement form not implemented yet</div>

@@ -95,6 +95,12 @@ const FormContainer = ({ table, type, data, id }: FormContainerProps) => {
             const examLessons = await examResponse.json();
             setRelatedData({ lessons: examLessons });
             break;
+          case "event":
+            const eventClassesRes = await fetch('/api/classes', { credentials: 'include' });
+            if (!eventClassesRes.ok) throw new Error('Failed to fetch classes');
+            const { data: eventClasses } = await eventClassesRes.json();
+            setRelatedData({ classes: eventClasses });
+            break;
           default:
             break;
         }

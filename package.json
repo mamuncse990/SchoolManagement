@@ -9,8 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/clerk-sdk-node": "^4.13.23",
     "@clerk/elements": "^0.14.6",
-    "@clerk/nextjs": "^6.15.0",
+    "@clerk/nextjs": "^6.16.0",
     "@hookform/resolvers": "^3.9.0",
     "@prisma/client": "^6.5.0",
     "@types/bcryptjs": "^2.4.6",

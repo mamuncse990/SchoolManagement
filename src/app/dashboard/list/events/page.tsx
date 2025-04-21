@@ -7,6 +7,7 @@ import { ITEM_PER_PAGE } from "@/lib/settings";
 import { Class, Event, Prisma } from "@prisma/client";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
+import { getAuthUser } from "@/lib/auth";
 
 type EventList = Event & { class: Class };
 
@@ -16,8 +17,10 @@ const EventListPage = async ({
   searchParams: { [key: string]: string | undefined };
 }) => {
 
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  //const { userId, sessionClaims } = auth();
+  //const role = (sessionClaims?.metadata as { role?: string })?.role;
+  
+  const { role, userId } = await getAuthUser();
   const currentUserId = userId;
 
   const columns = [
