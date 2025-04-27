@@ -5,7 +5,19 @@ import { prisma } from '@/lib/prisma';
 
 export async function POST(request: Request) {
   try {
-    const { email, password } = await request.json();
+    // Validate request body
+    let body;
+    try {
+      body = await request.json();
+    } catch (error) {
+      console.error('Error parsing request body:', error);
+      return NextResponse.json({ 
+        success: false, 
+        message: 'Invalid request body' 
+      }, { status: 400 });
+    }
+
+    const { email, password } = body;
     
     console.log('Login attempt for:', email);
     
@@ -14,6 +26,15 @@ export async function POST(request: Request) {
         success: false, 
         message: 'Email and password are required' 
       }, { status: 400 });
+    }
+
+    // Validate Prisma client
+    if (!prisma) {
+      console.error('Prisma client not initialized');
+      return NextResponse.json({ 
+        success: false, 
+        message: 'Server configuration error' 
+      }, { status: 500 });
     }
 
     const user = await prisma.user.findUnique({
@@ -88,6 +109,7 @@ export async function POST(request: Request) {
     return response;
   } catch (error) {
     console.error('Detailed login error:', error);
+    // Ensure we always return a JSON response
     return NextResponse.json({ 
       success: false, 
       message: 'An error occurred during login',

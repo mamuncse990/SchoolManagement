@@ -30,7 +30,14 @@ export default function SignIn() {
         body: JSON.stringify({ email, password })
       });
       
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch (error) {
+        console.error('Error parsing response:', error);
+        throw new Error('Invalid response from server');
+      }
+
       console.log('Login response:', data);
 
       if (!response.ok) {

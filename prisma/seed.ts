@@ -169,7 +169,7 @@ async function main() {
           birthday: new Date(2005, 0, 1),
           parentId: `parentId${Math.ceil(i / 2) % 25 || 25}`,
           gradeId: (i % 6) + 1,
-          classId: (i % 6) + 1,
+          classId: (i % 6) + 1
         },
       });
     }
