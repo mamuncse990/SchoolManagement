@@ -1,38 +1,85 @@
 'use client';
 
-import { createContext, useContext, ReactNode, useState } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+
+interface User {
+  id: string;
+  email: string;
+  name: string;
+  role: string;
+}
 
 interface AuthContextType {
-  login: (role: string, id: string) => void;
+  user: User | null;
+  loading: boolean;
+  login: (role: string, id: string) => Promise<void>;
+  logout: () => void;
   role: string | null;
   id: string | null;
-  // Add other auth-related functions as needed
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [role, setRole] = useState<string | null>(null);
-  const [id, setId] = useState<string | null>(null);
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const login = (newRole: string, newId: string) => {
-    setRole(newRole);
-    setId(newId);
-    localStorage.setItem('role', newRole);
-    sessionStorage.setItem('role', newRole);
+  useEffect(() => {
+    // Check for stored user session
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+    setLoading(false);
+  }, []);
+
+  const login = async (role: string, id: string) => {
+    try {
+      const user = {
+        id,
+        email: '',
+        name: '',
+        role
+      };
+      
+      setUser(user);
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('role', role);
+      localStorage.setItem('id', id);
+    } catch (error) {
+      console.error('Login failed:', error);
+      throw error;
+    }
+  };
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('user');
+    localStorage.removeItem('role');
+    localStorage.removeItem('id');
+  };
+
+  const value = {
+    user,
+    loading,
+    login,
+    logout,
+    isAuthenticated: !!user,
+    role: user?.role || null,
+    id: user?.id || null
   };
 
   return (
-    <AuthContext.Provider value={{ login, role, id }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export function useAuth() {
+export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-} 
+}; 

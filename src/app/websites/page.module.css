@@ -1,0 +1,268 @@
+/* Hero Section */
+.hero {
+  position: relative;
+  height: 400px;
+  background-color: #ddd;
+  overflow: hidden;
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.heroContent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.heroContent h2 {
+  font-size: 36px;
+  margin-bottom: 15px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+.heroContent p {
+  font-size: 18px;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.btn:hover {
+  background-color: #e0a800;
+  transform: translateY(-2px);
+}
+
+/* Features Section */
+.features {
+  padding: 60px 0;
+}
+
+.sectionTitle {
+  text-align: center;
+  margin-bottom: 40px;
+  color: var(--primary-color);
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.sectionTitle::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background-color: var(--accent-color);
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.featureCard {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.featureCard:hover {
+  transform: translateY(-10px);
+}
+
+.featureImage {
+  height: 180px;
+  overflow: hidden;
+}
+
+.featureImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.featureCard:hover .featureImage img {
+  transform: scale(1.1);
+}
+
+.featureContent {
+  padding: 20px;
+}
+
+.featureContent h3 {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+/* News & Events */
+.newsEvents {
+  padding: 60px 0;
+  background-color: white;
+}
+
+.newsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.newsCard {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.newsContent {
+  padding: 20px;
+}
+
+.newsDate {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.newsContent h3 {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+/* About Section */
+.about {
+  padding: 60px 0;
+  background-color: var(--light-bg);
+}
+
+.aboutContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.aboutImage {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.aboutImage img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.aboutText h2 {
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+.aboutText p {
+  margin-bottom: 15px;
+}
+
+/* Footer */
+.footer {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 60px 0 0;
+}
+
+.footerContent {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.footerColumn h3 {
+  margin-bottom: 20px;
+  font-size: 18px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.footerColumn h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background-color: var(--accent-color);
+}
+
+.footerColumn ul {
+  list-style: none;
+}
+
+.footerColumn ul li {
+  margin-bottom: 10px;
+}
+
+.footerColumn ul li a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footerColumn ul li a:hover {
+  color: white;
+}
+
+.contactInfo p {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.copyright {
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 14px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .aboutContent {
+    grid-template-columns: 1fr;
+  }
+  
+  .heroContent h2 {
+    font-size: 28px;
+  }
+  
+  .heroContent p {
+    font-size: 16px;
+  }
+} 

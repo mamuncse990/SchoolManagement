@@ -9,6 +9,13 @@ import { PrismaClient, User } from '@prisma/client';
 
 type UserList = User & { role: { name: string } | null };
 
+type MenuItem = {
+  icon: string;
+  label: string;
+  href: string | ((userRole: string | null, userId: string | null) => string);
+  visible: string[];
+};
+
 const menuItems = [
   {
     title: "MENU",
@@ -16,14 +23,20 @@ const menuItems = [
       {
         icon: "/home.png",
         label: "Home",
-        href: "/",
+        href: "/websites",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {
         icon: "/dashboard.png",
         label: "Dashboard",
-        href: "/dashboard/list/teachers",
-        visible: ["admin", "teacher"],
+        href: (userRole: string | null, userId: string | null) => {
+          if (userRole === 'admin') {
+            return '/dashboard/admin';
+          } else {
+            return `/dashboard/${userRole}/${userId}`;
+          }
+        },
+        visible: ["admin", "teacher", "student", "parent"],
       },
       {
         icon: "/customer.png",
@@ -148,14 +161,13 @@ const Menu = () => {
     if (storedRole && storedId && (!role || !id)) {
       console.log('Found stored credentials:', { role: storedRole, id: storedId });
       auth.login(storedRole, storedId);
-    } else if (!storedRole && role) {
-      localStorage.setItem('role', role);
-      localStorage.setItem('id', id || '');
     }
   }, [role, id, auth]);
 
-  const userRole = role || localStorage.getItem('role') || sessionStorage.getItem('role') || null;
+  const userRole = auth.role || localStorage.getItem('role') || null;
   console.log('Current user role:', userRole);
+  console.log('LocalStorage role:', localStorage.getItem('role'));
+  console.log('Auth context role:', auth.role);
 
   const filteredMenuItems = menuItems.map(section => ({
     ...section,
@@ -180,10 +192,10 @@ const Menu = () => {
           </span>
           {section.items.map((item) => (
             <Link
-              href={item.href}
+              href={typeof item.href === 'function' ? item.href(userRole, id) : item.href}
               key={item.label}
               className={`flex items-center justify-center lg:justify-start gap-4 py-2 md:px-2 rounded-md hover:bg-lamaSkyLight ${
-                pathname === item.href 
+                pathname === (typeof item.href === 'function' ? item.href(userRole, id) : item.href)
                   ? 'bg-lamaSkyLight text-lamaBlue' 
                   : 'text-gray-500'
               }`}

@@ -80,41 +80,41 @@ export default function SignIn() {
 
   return (
     <div className="h-screen flex items-center justify-center bg-lamaSkyLight">
-      <div className="bg-white p-12 rounded-md shadow-2xl flex flex-col gap-2">
-        <form onSubmit={handleSubmit}>
-          <h1 className="text-xl font-bold flex items-center gap-2">
-            <Image src="/logo.png" alt="" width={24} height={24} />
+      <div className="bg-white p-4 rounded-md shadow-xl flex flex-col gap-1 max-w-xs w-full">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-1">
+          <h1 className="text-lg font-bold flex items-center gap-1 mb-1">
+            <Image src="/logo.png" alt="" width={20} height={20} />
             Abc School
           </h1>
-          <h2 className="text-gray-400">Sign in to your account</h2>
+          <h2 className="text-gray-400 text-sm mb-2">Sign in to your account</h2>
           
           {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <div className="bg-red-100 border border-red-400 text-red-700 px-2 py-1 rounded text-xs mb-1" role="alert">
               <span className="block sm:inline">{error}</span>
             </div>
           )}
           
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1 mb-1">
             <label className="text-xs text-gray-500">
               Email
             </label>
             <input
               type="email"
               required
-              className="p-2 rounded-md ring-1 ring-gray-300"
+              className="p-1.5 rounded-md ring-1 ring-gray-300 text-sm"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1 mb-2">
             <label className="text-xs text-gray-500">
               Password
             </label>
             <input
               type="password"
               required
-              className="p-2 rounded-md ring-1 ring-gray-300"
+              className="p-1.5 rounded-md ring-1 ring-gray-300 text-sm"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -123,7 +123,7 @@ export default function SignIn() {
           <button
             type="submit"
             disabled={loading}
-            className={`bg-blue-500 text-white my-1 rounded-md text-sm p-[10px] w-full ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`bg-blue-500 text-white rounded-md text-xs p-2 w-full ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
