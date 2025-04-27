@@ -6,6 +6,7 @@ import {
   deleteStudent,
   deleteSubject,
   deleteTeacher,
+  deleteUser,
 } from "@/lib/actions";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -31,6 +32,7 @@ const deleteActionMap = {
   attendance: deleteSubject,
   event: deleteSubject,
   announcement: deleteSubject,
+  user: deleteUser,
 };
 
 // USE LAZY LOADING
@@ -54,6 +56,9 @@ const ExamForm = dynamic(() => import("./forms/ExamForm"), {
   loading: () => <h1>Loading...</h1>,
 });
 const ParentForm = dynamic(() => import("./forms/ParentForm"), {
+  loading: () => <h1>Loading...</h1>,
+});
+const UserForm = dynamic(() => import("./forms/UserForm"), {
   loading: () => <h1>Loading...</h1>,
 });
 // TODO: OTHER FORMS
@@ -142,6 +147,14 @@ const forms: {
   ),
   announcement: (setOpen, type, data, relatedData) => (
     <div>Announcement form not implemented yet</div>
+  ),
+  user: (setOpen, type, data, relatedData) => (
+    <UserForm
+      type={type}
+      data={data}
+      setOpen={setOpen}
+      relatedData={relatedData}
+    />
   ),
 };
 

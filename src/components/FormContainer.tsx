@@ -7,6 +7,7 @@ import FormModal from "./FormModal";
 export type FormContainerProps = {
   table:
     | "teacher"
+    | "user"
     | "student"
     | "parent"
     | "subject"

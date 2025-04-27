@@ -434,6 +434,29 @@ export async function deleteTeacher(prevState: any, formData: FormData) {
     return { success: false, error: true };
   }
 }
+export async function deleteUser(prevState: any, formData: FormData) {
+  try {
+    const { id } = Object.fromEntries(formData);
+
+    // Delete user from database first
+    await prisma.user.delete({
+      where: { id: parseInt(id as string) },
+    });
+
+    // Try to delete user from Clerk, but continue even if it fails
+    try {
+      await clerk.users.deleteUser(id as string);
+    } catch (clerkError) {
+      console.error("Error deleting user from Clerk:", clerkError);
+      // Continue execution even if Clerk deletion fails
+    }
+
+    return { success: true, error: false };
+  } catch (error: unknown) {
+    console.error("Error deleting user:", error instanceof Error ? error.message : error);
+    return { success: false, error: true };
+  }
+}
 
 export async function createParent(prevState: any, formData: FormData) {
   try {
@@ -557,14 +580,15 @@ export async function createEvent(formData: FormData) {
     const endTime = formData.get("endTime") as string;
     const classId = formData.get("classId") as string;
 
-    await prisma.event.create({
-      data: {
-        title,
-        startTime: new Date(startTime),
-        endTime: new Date(endTime),
-        ...(classId ? { classId: parseInt(classId) } : {}),
-      },
-    });
+    const eventData: any = {
+      title,
+      startTime: new Date(startTime),
+      endTime: new Date(endTime),
+    };
+    if (classId) {
+      eventData.classId = parseInt(classId);
+    }
+    await prisma.event.create({ data: eventData });
 
     return { success: true, error: false };
   } catch (error) {
