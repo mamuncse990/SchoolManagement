@@ -1,0 +1,202 @@
+.footer {
+  background: #fff;
+  border-top: 2px solid #e0e0e0;
+  padding: 40px 0 0 0;
+  font-family: 'Inter', Arial, sans-serif;
+  color: #222;
+}
+
+.footerContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.footerGrid {
+  display: flex;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.schoolInfo {
+  flex: 1 1 260px;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.schoolLogo {
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.schoolName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #001489;
+  margin: 0 0 10px 0;
+}
+
+.contact, .email, .address {
+  font-size: 1rem;
+  margin: 0;
+}
+.contact span, .email span, .address span {
+  font-weight: 600;
+  color: #001489;
+}
+
+.quickLinks {
+  flex: 2 1 400px;
+  min-width: 320px;
+}
+.quickLinks h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #222;
+}
+.linksGrid {
+  display: flex;
+  gap: 32px;
+}
+.linksGrid ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.linksGrid li {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.maintainedBy {
+  flex: 1 1 260px;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.maintainedBy h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 8px;
+}
+.maintainerLogo {
+  width: 140px;
+  height: 50px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  margin-bottom: 8px;
+}
+.visitorBox {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  padding: 18px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.visitorCount {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #001489;
+  letter-spacing: 2px;
+}
+.visitorLabel {
+  font-size: 1rem;
+  color: #222;
+  margin-top: 2px;
+  letter-spacing: 1px;
+}
+
+.footerBottom {
+  border-top: 1px solid #e0e0e0;
+  margin-top: 32px;
+  padding: 18px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+.developedBy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #3d3d3d;
+}
+.devLogo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #fff;
+  border: 1.5px solid #e0e0e0;
+  margin: 0 4px;
+}
+.devName {
+  font-weight: 700;
+  color: #1766b5;
+  font-size: 1rem;
+  margin-left: 4px;
+}
+.helpline {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #3d3d3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.helplineIcon {
+  color: #001489;
+  font-size: 1rem;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+.helplineNumber {
+  color: #1766b5;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-left: 4px;
+}
+
+@media (max-width: 900px) {
+  .footerGrid {
+    flex-direction: column;
+    gap: 32px;
+  }
+  .footerBottom {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  .developedBy, .helpline {
+    font-size: 1.3rem;
+  }
+  .devLogo {
+    width: 32px;
+    height: 32px;
+  }
+  .devName, .helplineNumber {
+    font-size: 1.3rem;
+  }
+} 

@@ -1,9 +1,19 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Roboto, Poppins } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/context/AuthContext';
 
 const inter = Inter({ subsets: ['latin'] });
+const roboto = Roboto({ 
+  weight: ['400', '500', '700'],
+  subsets: ['latin'],
+  variable: '--font-roboto'
+});
+const poppins = Poppins({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-poppins'
+});
 
 export const metadata: Metadata = {
   title: 'Abc School',
@@ -22,7 +32,7 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className} ${roboto.variable} ${poppins.variable}`}>
         <AuthProvider>
           {children}
         </AuthProvider>
