@@ -8,8 +8,8 @@
   align-items: center;
   background: #222;
   color: #fff;
-  padding: 0.1rem 1.5rem;
-  font-size: 1rem;
+  padding: 0.05rem 1.5rem;
+  /*font-size: 0.75rem;}*/
 }
 
 .header-top-left,
@@ -25,7 +25,7 @@
   background-color: #000a99;
   color: #fff;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.1rem 0.5rem;
   border-radius: 5px;
   cursor: pointer;
 }
@@ -34,12 +34,13 @@
   display: flex;
   align-items: center;
   background: #fff;
-  padding: .1rem 2rem;
+  padding: .1rem 1.5rem;
   border-bottom: 1px solid #eee;
+  position: relative;
 }
 
 .header-logo {
-  margin-right: 1.5rem;
+  margin-right: 1rem;
 }
 
 .header-info {
@@ -74,10 +75,11 @@
   list-style: none;
   margin: 0;
   padding: 0 2rem;
+  justify-content: center;
 }
 
 .main-nav li {
-  margin: 0 1.5rem 0 0;
+  margin: 0 1.5rem;
 }
 
 .main-nav a {
@@ -154,8 +156,8 @@
     position: relative;
   }
   .header-logo {
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
   }
   .header-info {
     margin-left: 0.7rem;

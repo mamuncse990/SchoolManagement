@@ -7,6 +7,7 @@ import TeachersSection from "././components/TeachersSection";
 import EventsSection from "././components/EventsSection";
 import ContactSection from "././components/ContactSection";
 import HomeDashboardSection from "././components/HomeDashboardSection";
+import StudentStatisticsSection from "././components/StudentStatisticsSection";
 
 export default function WebsitePage() {
   return (
@@ -19,6 +20,7 @@ export default function WebsitePage() {
         <StatisticsSection />
         <TeachersSection />
         <EventsSection />
+        <StudentStatisticsSection />
         <ContactSection />
       </main>
       <Footer />

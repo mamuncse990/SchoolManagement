@@ -54,6 +54,9 @@
 .quickLinks {
   flex: 2 1 400px;
   min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .quickLinks h3 {
   font-size: 1.2rem;
@@ -64,11 +67,16 @@
 .linksGrid {
   display: flex;
   gap: 32px;
+  justify-content: center;
+  align-items: flex-start;
 }
 .linksGrid ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .linksGrid li {
   font-size: 1rem;
@@ -76,6 +84,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  text-align: center;
 }
 
 .maintainedBy {
@@ -190,13 +199,84 @@
     align-items: center;
   }
   .developedBy, .helpline {
-    font-size: 1.3rem;
+    font-size: 1rem;
   }
   .devLogo {
     width: 32px;
     height: 32px;
   }
   .devName, .helplineNumber {
-    font-size: 1.3rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .footerContainer {
+    padding: 0 8px;
+  }
+  .footerGrid {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .schoolInfo, .quickLinks, .maintainedBy {
+    min-width: 0;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+  .schoolLogo {
+    width: 70px;
+    height: 70px;
+  }
+  .schoolName {
+    font-size: 1.1rem;
+  }
+  .contact, .email, .address {
+    font-size: 0.95rem;
+  }
+  .quickLinks {
+    padding: 0;
+  }
+  .linksGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    align-items: start;
+    justify-items: center;
+  }
+  .linksGrid ul {
+    margin-bottom: 8px;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+  }
+  .linksGrid li {
+    text-align: center;
+  }
+  .maintainerLogo {
+    width: 90px;
+    height: 32px;
+  }
+  .visitorBox {
+    padding: 10px 12px;
+  }
+  .visitorCount, .visitorLabel {
+    font-size: 0.95rem;
+  }
+  .footerBottom {
+    padding: 10px 0 0 0;
+    gap: 8px;
+  }
+  .developedBy, .helpline {
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.95rem;
+  }
+  .devLogo {
+    width: 28px;
+    height: 28px;
+  }
+  .devName, .helplineNumber {
+    font-size: 0.95rem;
   }
 } 

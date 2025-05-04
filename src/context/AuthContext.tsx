@@ -57,6 +57,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem('user');
     localStorage.removeItem('role');
     localStorage.removeItem('id');
+    localStorage.removeItem('userid');
+    localStorage.setItem('id', '');
   };
 
   const value = {
@@ -66,7 +68,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     logout,
     isAuthenticated: !!user,
     role: user?.role || null,
-    id: user?.id || null
+    id: user?.id || null,
+    userid: user?.id || null
   };
 
   return (

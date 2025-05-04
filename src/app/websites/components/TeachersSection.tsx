@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import styles from "./TeachersSection.module.css";
 
 export default function TeachersSection() {
   const teachers = [
@@ -24,13 +25,13 @@ export default function TeachersSection() {
   ];
 
   return (
-    <section className="section teachers-section">
-      <div className="container">
-        <h2 className="section-title">Our Teachers</h2>
-        <div className="teachers-grid">
+    <section className={styles.section}>
+      <div className={styles.container}>
+        <h2 className={styles.sectionTitle}>Our Teachers</h2>
+        <div className={styles.teachersGrid}>
           {teachers.map((teacher) => (
-            <div key={teacher.id} className="teacher-card">
-              <div className="teacher-image">
+            <div key={teacher.id} className={styles.teacherCard}>
+              <div className={styles.teacherImage}>
                 <Image
                   src={teacher.image}
                   alt={teacher.name}
@@ -38,14 +39,14 @@ export default function TeachersSection() {
                   height={200}
                 />
               </div>
-              <div className="teacher-info">
+              <div className={styles.teacherInfo}>
                 <h3>{teacher.name}</h3>
                 <p>{teacher.position}</p>
               </div>
             </div>
           ))}
         </div>
-        <div className="teachers-actions">
+        <div className={styles.teachersActions}>
           <Link href="/teachers" className="btn btn-primary">
             View All Teachers
           </Link>

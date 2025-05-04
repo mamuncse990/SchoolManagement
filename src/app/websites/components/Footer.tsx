@@ -21,14 +21,12 @@ export default function Footer() {
                 <li>BANBEIS</li>
                 <li>BD National Portal</li>
                 <li>Ministry of Education</li>
+                <li>Sylhet Board</li>
               </ul>
               <ul>
-                <li>Sylhet Board</li>
                 <li>Primary & Mass Education</li>
                 <li>Form of BD. Govt</li>
                 <li>Pathshala EIMS</li>
-              </ul>
-              <ul>
                 <li>UGC</li>
                 <li>Dhaka University</li>
                 <li>SUST</li>

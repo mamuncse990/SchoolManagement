@@ -1,3 +1,5 @@
+import styles from './StatisticsSection.module.css';
+
 export default function StatisticsSection() {
   const stats = [
     {
@@ -23,14 +25,23 @@ export default function StatisticsSection() {
   ];
 
   return (
-    <section className="section statistics-section">
-      <div className="container">
-        <h2 className="section-title">Our Organization At a Glance</h2>
-        <div className="statistics-grid">
-          {stats.map((stat) => (
-            <div key={stat.id} className="stat-item">
-              <div className="stat-number">{stat.number}</div>
-              <div className="stat-label">{stat.label}</div>
+    <section className={styles.statisticsSection}>
+      <div className={styles.container}>
+        <h2 className={styles.statisticsTitle}>Statistics</h2>
+        <div className={styles.statisticsUnderline}></div>
+        <div className={styles.statisticsSubtitle}>Our Organization At a Glance</div>
+        <div className={styles.statisticsGrid}>
+          {stats.map((stat, idx) => (
+            <div key={stat.id} className={styles.statItem}>
+              <div className={styles.statIcon}>
+                {/* Example icons, replace with actual SVGs or images as needed */}
+                {idx === 0 && <img src="/images/icons/classroom.png" alt="Classes" />}
+                {idx === 1 && <img src="/images/icons/student-male.png" alt="Students" />}
+                {idx === 2 && <img src="/images/icons/teacher.png" alt="Teachers" />}
+                {idx === 3 && <img src="/images/icons/staff.png" alt="Staffs" />}
+              </div>
+              <div className={styles.statNumber}>{stat.number}</div>
+              <div className={styles.statLabel}>{stat.label}</div>
             </div>
           ))}
         </div>

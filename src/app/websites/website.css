@@ -16,6 +16,7 @@
 
 main {
   flex: 1;
+  /*padding-top: 180px; /* Prevents content from hiding under fixed header */
 }
 
 /* Header Styles */
@@ -137,4 +138,8 @@ main {
     min-width: 0;
     text-align: center;
   }
+}
+
+#about {
+  scroll-margin-top: 70px; /* Adjust if your header height changes */
 } 
