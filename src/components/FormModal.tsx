@@ -64,6 +64,9 @@ const ParentForm = dynamic(() => import("./forms/ParentForm"), {
 const UserForm = dynamic(() => import("./forms/UserForm"), {
   loading: () => <h1>Loading...</h1>,
 });
+const AnnouncementForm = dynamic(() => import("./forms/AnnouncementForm"), {
+  loading: () => <h1>Loading...</h1>,
+});
 // TODO: OTHER FORMS
 
 const forms: {
@@ -149,7 +152,12 @@ const forms: {
   />
   ),
   announcement: (setOpen, type, data, relatedData) => (
-    <div>Announcement form not implemented yet</div>
+    <AnnouncementForm
+      type={type}
+      data={data}
+      setOpen={setOpen}
+      relatedData={relatedData}
+    />
   ),
   user: (setOpen, type, data, relatedData) => (
     <UserForm

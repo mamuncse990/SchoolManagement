@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { Announcement, Class, Prisma } from "@prisma/client";
 import Image from "next/image";
-import { auth } from "@clerk/nextjs/server";
+import { getAuthUser } from '@/lib/auth';
 
 
 type AnnouncementList = Announcement & { class: Class };
@@ -16,8 +16,7 @@ const AnnouncementListPage = async ({
   searchParams: { [key: string]: string | undefined };
 }) => {
   
-  const { userId, sessionClaims } = await auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  const { role, userId } = await getAuthUser();
   const currentUserId = userId;
   
   const columns = [
@@ -95,13 +94,6 @@ const AnnouncementListPage = async ({
     student: { students: { some: { id: currentUserId! } } },
     parent: { students: { some: { parentId: currentUserId! } } },
   };
-
-  query.OR = [
-    { classId: null },
-    {
-      class: roleConditions[role as keyof typeof roleConditions] || {},
-    },
-  ];
 
   const [data, count] = await prisma.$transaction([
     prisma.announcement.findMany({
