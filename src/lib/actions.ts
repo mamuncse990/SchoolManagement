@@ -621,3 +621,14 @@ export async function updateEvent(formData: FormData) {
     return { success: false, error: true };
   }
 }
+
+export async function deleteMessage(prevState: any, formData: FormData) {
+  const id = formData.get("id") as string;
+  try {
+    await prisma.message.delete({ where: { id } });
+    return { success: true, error: false };
+  } catch (error) {
+    console.error("Error deleting message:", error instanceof Error ? error.message : error);
+    return { success: false, error: true };
+  }
+}

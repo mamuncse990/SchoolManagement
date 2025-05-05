@@ -44,7 +44,7 @@ const TeacherForm = ({
 
   const onSubmit = handleSubmit((data) => {
     console.log(data);
-    formAction({ ...data, img: img?.secure_url });
+    formAction({ ...(data as any), img: img?.secure_url });
   });
 
   const router = useRouter();

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 interface UserFormProps {
   setOpen: (open: boolean) => void;
@@ -13,6 +14,7 @@ interface Role {
 }
 
 const UserForm: React.FC<UserFormProps> = ({ setOpen, type, data }) => {
+  const router = useRouter();
   const [roles, setRoles] = useState<Role[]>([]);
   const [form, setForm] = useState({
     name: data?.name || "",
@@ -20,6 +22,7 @@ const UserForm: React.FC<UserFormProps> = ({ setOpen, type, data }) => {
     password: "",
     roleId: data?.roleId || "",
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -43,8 +46,43 @@ const UserForm: React.FC<UserFormProps> = ({ setOpen, type, data }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement API call for create/update user
-    setOpen(false);
+    setLoading(true);
+    try {
+      const payload = {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        roleId: form.roleId,
+      };
+      let response;
+      if (type === 'create') {
+        response = await fetch('/api/users', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+      } else {
+        // For update, don't send password if not changed
+        if (!payload.password) delete (payload as any).password;
+        response = await fetch(`/api/users/${data.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+      }
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert(errorData.error || 'Failed to save user');
+        setLoading(false);
+        return;
+      }
+      router.refresh();
+      setOpen(false);
+    } catch (error) {
+      alert('An error occurred while saving the user.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -95,13 +133,15 @@ const UserForm: React.FC<UserFormProps> = ({ setOpen, type, data }) => {
         <button
           type="submit"
           className="bg-blue-500 text-white px-4 py-2 rounded"
+          disabled={loading}
         >
-          {type === "create" ? "Add User" : "Update User"}
+          {loading ? 'Loading...' : (type === "create" ? "Add User" : "Update User")}
         </button>
         <button
           type="button"
           className="bg-gray-300 px-4 py-2 rounded"
           onClick={() => setOpen(false)}
+          disabled={loading}
         >
           Cancel
         </button>

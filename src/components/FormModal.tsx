@@ -7,6 +7,7 @@ import {
   deleteSubject,
   deleteTeacher,
   deleteUser,
+  deleteMessage,
 } from "@/lib/actions";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -17,6 +18,7 @@ import { toast } from "react-toastify";
 import { FormContainerProps } from "./FormContainer";
 import LessonForm from "./forms/LessonForm";
 import EventForm from "./forms/EventForm";
+import MessageForm from "./forms/MessageForm";
 
 const deleteActionMap = {
   subject: deleteSubject,
@@ -33,6 +35,7 @@ const deleteActionMap = {
   event: deleteSubject,
   announcement: deleteSubject,
   user: deleteUser,
+  message: deleteMessage,
 };
 
 // USE LAZY LOADING
@@ -155,6 +158,9 @@ const forms: {
       setOpen={setOpen}
       relatedData={relatedData}
     />
+  ),
+  message: (setOpen, type, data, relatedData) => (
+    <MessageForm type={type} data={data} setOpen={setOpen} relatedData={relatedData} />
   ),
 };
 

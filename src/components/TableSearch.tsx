@@ -7,12 +7,12 @@ import { useState, useEffect } from "react";
 const TableSearch = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [searchValue, setSearchValue] = useState(searchParams.get("search") || "");
+  const [searchValue, setSearchValue] = useState(searchParams?.get("search") || "");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const updateSearch = (value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams?.toString() || "");
     if (value) {
       params.set("search", value);
     } else {
