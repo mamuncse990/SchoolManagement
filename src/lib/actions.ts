@@ -632,3 +632,51 @@ export async function deleteMessage(prevState: any, formData: FormData) {
     return { success: false, error: true };
   }
 }
+
+export async function createAttendance(formData: FormData) {
+  try {
+    const date = formData.get("date") as string;
+    const present = formData.get("present") === "true";
+    const studentId = formData.get("studentId") as string;
+    const lessonId = formData.get("lessonId") as string;
+
+    await prisma.attendance.create({
+      data: {
+        date: new Date(date),
+        present,
+        studentId,
+        lessonId: parseInt(lessonId),
+      },
+    });
+
+    return { success: true, error: false };
+  } catch (error) {
+    console.error("Error creating attendance:", error);
+    return { success: false, error: true };
+  }
+}
+
+export async function updateAttendance(formData: FormData) {
+  try {
+    const id = formData.get("id") as string;
+    const date = formData.get("date") as string;
+    const present = formData.get("present") === "true";
+    const studentId = formData.get("studentId") as string;
+    const lessonId = formData.get("lessonId") as string;
+
+    await prisma.attendance.update({
+      where: { id: parseInt(id) },
+      data: {
+        date: new Date(date),
+        present,
+        studentId,
+        lessonId: parseInt(lessonId),
+      },
+    });
+
+    return { success: true, error: false };
+  } catch (error) {
+    console.error("Error updating attendance:", error);
+    return { success: false, error: true };
+  }
+}

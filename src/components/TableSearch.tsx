@@ -28,7 +28,7 @@ const TableSearch = () => {
     }
 
     try {
-      const response = await fetch(`/api/search/suggestions?q=${encodeURIComponent(value)}`);
+      const response = await fetch(`/api/search/suggestions?q=${encodeURIComponent(value)}&columns=all`);
       if (!response.ok) {
         throw new Error('Failed to fetch suggestions');
       }

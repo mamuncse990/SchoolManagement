@@ -101,7 +101,7 @@ const menuItems = [
       {
         icon: "/attendance.png",
         label: "Attendance",
-        href: "/list/attendance",
+        href: "/dashboard/list/attendance",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {

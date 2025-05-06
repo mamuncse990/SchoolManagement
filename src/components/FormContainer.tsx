@@ -109,6 +109,26 @@ const FormContainer = ({ table, type, data, id }: FormContainerProps) => {
             const { data: classesData } = await classesRes.json();
             setRelatedData({ classes: classesData });
             break;
+          case "attendance":
+            const [studentsRes, lessonsRes] = await Promise.all([
+              fetch('/api/students', { credentials: 'include' }),
+              fetch('/api/lessons', { credentials: 'include' })
+            ]);
+
+            if (!studentsRes.ok || !lessonsRes.ok) {
+              throw new Error('Failed to fetch attendance data');
+            }
+
+            const [studentsData, lessonsData] = await Promise.all([
+              studentsRes.json(),
+              lessonsRes.json()
+            ]);
+
+            console.log('Fetched studentsData:', studentsData);
+            console.log('Fetched lessonsData:', lessonsData);
+
+            setRelatedData({ students: studentsData.data, lessons: lessonsData.data });
+            break;
           default:
             break;
         }

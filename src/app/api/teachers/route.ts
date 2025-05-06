@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { verify } from 'jsonwebtoken';
 import { cookies } from 'next/headers';
-import formidable from 'formidable';
+//import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
 
@@ -13,15 +13,15 @@ export const config = {
   },
 };
 
-async function parseFormData(req: Request) {
-  return new Promise<{ fields: any; files: any }>((resolve, reject) => {
-    const form = formidable({ multiples: false, uploadDir: path.join(process.cwd(), 'public', 'uploads'), keepExtensions: true });
-    form.parse(req as any, (err, fields, files) => {
-      if (err) reject(err);
-      else resolve({ fields, files });
-    });
-  });
-}
+//async function parseFormData(req: Request) {
+//  return new Promise<{ fields: any; files: any }>((resolve, reject) => {
+//    const form = formidable({ multiples: false, uploadDir: path.join(process.cwd(), 'public', 'uploads'), keepExtensions: true });
+//    form.parse(req as any, (err, fields, files) => {
+//      if (err) reject(err);
+//      else resolve({ fields, files });
+//    });
+//  });
+//}
 
 export async function GET() {
   try {
@@ -55,13 +55,13 @@ export async function GET() {
 // Dedicated upload endpoint for local image storage
 export async function POST(request: Request) {
   try {
-    const { files } = await parseFormData(request);
+    //const { files } = await parseFormData(request);
 
     let imgPath = '';
-    if (files.img) {
-      const file = files.img as formidable.File;
-      imgPath = `/uploads/${path.basename(file.filepath)}`;
-    }
+    //if (files.img) {
+    //  const file = files.img as formidable.File;
+    //  imgPath = `/uploads/${path.basename(file.filepath)}`;
+    //}
 
     return NextResponse.json({ imgPath }, { status: 201 });
   } catch (error) {

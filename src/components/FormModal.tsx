@@ -19,6 +19,7 @@ import { FormContainerProps } from "./FormContainer";
 import LessonForm from "./forms/LessonForm";
 import EventForm from "./forms/EventForm";
 import MessageForm from "./forms/MessageForm";
+import AttendanceForm from "./forms/AttendanceForm";
 
 const deleteActionMap = {
   subject: deleteSubject,
@@ -67,6 +68,7 @@ const UserForm = dynamic(() => import("./forms/UserForm"), {
 const AnnouncementForm = dynamic(() => import("./forms/AnnouncementForm"), {
   loading: () => <h1>Loading...</h1>,
 });
+
 // TODO: OTHER FORMS
 
 const forms: {
@@ -141,7 +143,12 @@ const forms: {
     <div>Result form not implemented yet</div>
   ),
   attendance: (setOpen, type, data, relatedData) => (
-    <div>Attendance form not implemented yet</div>
+    <AttendanceForm
+    type={type}
+    data={data}
+    setOpen={setOpen}
+    relatedData={relatedData}
+  />
   ),
   event: (setOpen, type, data, relatedData) => (
     <EventForm
