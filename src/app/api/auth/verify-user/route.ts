@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { sign } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 import { prisma } from '@/lib/prisma';
 
 export async function POST(request: Request) {
@@ -116,4 +116,38 @@ export async function POST(request: Request) {
       error: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
-} 
+}
+
+export async function GET(request: Request) {
+  try {
+    const userId = request.headers.get('x-user-id');
+
+    if (!userId) {
+      return NextResponse.json({ success: false, message: 'User ID not provided' }, { status: 400 });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: parseInt(userId, 10) },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        createdAt: true,
+        role: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, user });
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    return NextResponse.json({ success: false, message: 'An error occurred' }, { status: 500 });
+  }
+}

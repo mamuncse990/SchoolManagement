@@ -130,7 +130,7 @@ const menuItems = [
       {
         icon: "/profile.png",
         label: "Profile",
-        href: "/profile",
+        href: "/dashboard/profile",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {
