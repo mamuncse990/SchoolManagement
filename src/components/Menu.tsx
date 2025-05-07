@@ -136,7 +136,7 @@ const menuItems = [
       {
         icon: "/setting.png",
         label: "Settings",
-        href: "/settings",
+        href: "/dashboard/settings",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {
