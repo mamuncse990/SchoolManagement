@@ -1,4 +1,5 @@
 import Header from "./components/Header";
+import MenuSection from "./components/MenuSection";
 import Footer from "././components/Footer";
 import HeroSection from "././components/HeroSection";
 import AboutSection from "././components/AboutSection";
@@ -13,6 +14,7 @@ export default function WebsitePage() {
   return (
     <div className="website-container">
       <Header />
+      <MenuSection />
       <main>
         <HeroSection />
         <AboutSection />

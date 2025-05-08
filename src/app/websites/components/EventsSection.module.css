@@ -1,9 +1,19 @@
+.wrapper {
+  display: flex;
+  gap: 40px;
+  padding: 40px 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .section {
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 64, 0.15);
   padding: 0;
-  margin: 0 auto 40px auto;
+  margin: 0;
+  flex: 1;
+  min-width: 280px;
   max-width: 600px;
   overflow: hidden;
 }
@@ -26,14 +36,14 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  padding: 0 32px;
+  padding: 0 16px;
 }
 
 .eventCard {
   display: flex;
   align-items: center;
   border-bottom: 1px solid #eee;
-  padding: 24px 0 24px 0;
+  padding: 24px 0;
   transition: background 0.2s;
 }
 .eventCard:last-child {
@@ -51,37 +61,45 @@
   background: #06009a;
   color: #fff;
   border-radius: 4px;
-  width: 90px;
-  height: 80px;
-  margin-right: 24px;
+  width: 70px;
+  height: 70px;
+  margin-right: 16px;
   font-family: 'Montserrat', Arial, sans-serif;
 }
 .eventDay {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: bold;
   line-height: 1;
 }
 .eventMonth {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 500;
   text-transform: uppercase;
   margin-top: 4px;
 }
 
+.eventInfo {
+  flex: 1;
+  min-width: 0;
+}
+
 .eventInfo h3 {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: bold;
   margin: 0 0 8px 0;
   color: #222;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .eventFullDate {
   color: #06009a;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 500;
 }
 
 .eventsActions {
-  padding: 32px;
+  padding: 24px 16px;
   display: flex;
   justify-content: center;
 }
@@ -89,12 +107,11 @@
 .btn {
   background: #232323;
   color: #fff;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 600;
   border: none;
   border-radius: 6px;
-  padding: 24px 0;
-  width: 100%;
+  padding: 16px 32px;
   cursor: pointer;
   transition: background 0.2s;
   text-align: center;
@@ -103,4 +120,42 @@
 .btn:hover {
   background: #06009a;
   color: #fff;
-} 
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    padding: 20px 10px;
+  }
+  
+  .sectionTitle {
+    font-size: 2rem;
+    padding: 24px 16px 12px 16px;
+  }
+
+  .eventDate {
+    width: 60px;
+    height: 60px;
+    margin-right: 12px;
+  }
+
+  .eventDay {
+    font-size: 1.8rem;
+  }
+
+  .eventMonth {
+    font-size: 1rem;
+  }
+
+  .eventInfo h3 {
+    font-size: 1.1rem;
+  }
+
+  .eventFullDate {
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    font-size: 1.1rem;
+    padding: 12px 24px;
+  }
+}

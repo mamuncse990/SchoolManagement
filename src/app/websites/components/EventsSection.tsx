@@ -45,9 +45,9 @@ export default function EventsSection() {
   ];
 
   return (
-    <div style={{ display: 'flex', gap: '32px', justifyContent: 'center', flexWrap: 'wrap' }}>
+    <div className={styles.wrapper}>
       {/* Events Section */}
-      <section className={styles.section} style={{ minWidth: 400, flex: 1, maxWidth: 600 }}>
+      <section className={styles.section}>
         <div className={styles.container}>
           <h2 className={styles.sectionTitle}>Events</h2>
           <div className={styles.eventsGrid}>
@@ -76,7 +76,7 @@ export default function EventsSection() {
         </div>
       </section>
       {/* News Section */}
-      <section className={styles.section} style={{ minWidth: 400, flex: 1, maxWidth: 600 }}>
+      <section className={styles.section}>
         <div className={styles.container}>
           <h2 className={styles.sectionTitle}>NEWS</h2>
           <div className={styles.eventsGrid}>
@@ -102,4 +102,4 @@ export default function EventsSection() {
       </section>
     </div>
   );
-} 
+}

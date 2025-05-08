@@ -7,7 +7,7 @@ export default function Footer() {
       <div className={styles.footerContainer}>
         <div className={styles.footerGrid}>
           <div className={styles.schoolInfo}>
-            <img src="/school-logo.png" alt="School Logo" className={styles.schoolLogo} />
+            <img src="/images/school.jpg" alt="School Logo" className={styles.schoolLogo} />
             <h2 className={styles.schoolName}>Abc School</h2>
             <p className={styles.contact}><span>Contact :</span> 01916006330</p>
             <p className={styles.email}><span>Email :</span> abcschool@gmail.com</p>
@@ -45,8 +45,8 @@ export default function Footer() {
         <div className={styles.footerBottom}>
           <div className={styles.developedBy}>
             <span>Developed By </span>
-            <img src="/itlab-logo.png" alt="Abc Developer Company Ltd." className={styles.devLogo} />
-            <span className={styles.devName}>Abc Developer Company Ltd.</span>
+            <img src="/itlab-logo.png" alt="XYZ Developer Company Ltd." className={styles.devLogo} />
+            <span className={styles.devName}>XYZ Developer Company Ltd.</span>
           </div>
           <div className={styles.helpline}>
             <span>Helpline - </span>

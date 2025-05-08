@@ -96,8 +96,9 @@ export default function Header() {
           <div className={styles["header-title"]}>Abc High School</div>
           <div className={styles["header-address"]}>Dhaka, Bangladesh</div>
         </div>
+        </div>
         {/* Hamburger Button for Mobile */}
-        <button
+        {/* <button
           className={styles.hamburger}
           aria-label="Toggle navigation menu"
           onClick={() => setMenuOpen((prev) => !prev)}
@@ -106,9 +107,9 @@ export default function Header() {
           <span className={styles.hamburgerBar}></span>
           <span className={styles.hamburgerBar}></span>
         </button>
-      </div>
+      </div> */}
       {/* Navigation Bar */}
-      <nav
+      {/* <nav
         className={
           menuOpen
             ? `${styles["main-nav"]} ${styles["main-nav--open"]}`
@@ -140,7 +141,7 @@ export default function Header() {
             </li>
           ))}
         </ul>
-      </nav>
+      </nav> */}
       {/* ---------------- Notice Marquee -------------------- */}
       <div style={{background: '#fff', borderBottom: '3px solid #000a99', padding: '0.3rem 0 0.3rem 2rem', fontSize: '1.15rem', minHeight: '38px', display: 'flex', alignItems: 'center'}}>
         <span style={{color: '#002080', fontWeight: 'bold', fontSize: '0.8rem', marginRight: '1.2rem', letterSpacing: '1px'}}>
