@@ -92,6 +92,11 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+.menuItem.active {
+  background-color: #0000ff;  /* Blue background for main menu */
+  color: white;
+}
+
 .arrow {
   font-size: 0.6rem;
   margin-left: 2px;
@@ -139,6 +144,16 @@
 
 .submenuItem:hover {
   background-color: #bdcef0;
+}
+
+.submenuItem.active {
+  background-color: #ff0000;  /* Red background for submenu */
+  color: white;
+}
+
+.parentActive {
+  background-color: #0000ff;  /* Blue background for parent when child is active */
+  color: white;
 }
 
 @media (max-width: 1200px) {

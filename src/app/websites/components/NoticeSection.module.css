@@ -115,6 +115,16 @@
 .noticeList {
   background: #fff;
   color: #000a8b;
+  height: 240px;
+  overflow: hidden;
+  position: relative;
+}
+
+.noticeWrapper {
+  position: absolute;
+  width: 100%;
+  animation: scrollUp 20s linear infinite;
+  animation-play-state: running;
 }
 
 .noticeRow {
@@ -122,6 +132,16 @@
   align-items: flex-start;
   border-bottom: 1px solid #e0e0e0;
   padding: 0.7rem 1rem 0.7rem 0.5rem;
+  height: 80px;
+}
+
+@keyframes scrollUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
 }
 
 .noticeRow:last-child {
@@ -147,8 +167,10 @@
 }
 
 .noticeText {
+  padding: 10px;
   display: flex;
   flex-direction: column;
+  gap: 5px;
 }
 
 .noticeTitleText {
@@ -166,9 +188,13 @@
 .noticeFooter {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   background: #000a8b;
   padding: 0.7rem 1rem;
+}
+
+.scrollButtons {
+  display: flex;
   gap: 0.5rem;
 }
 
@@ -204,8 +230,7 @@
   border-radius: 4px;
   width: 2.2rem;
   height: 2.2rem;
-  margin-left: 0.3rem;
-  font-size: 1.2rem;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -215,4 +240,4 @@
 
 .arrowBtn:hover {
   background: #b8001b;
-} 
+}

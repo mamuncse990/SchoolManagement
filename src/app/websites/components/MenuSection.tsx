@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import styles from "./MenuSection.module.css";
-import Image from "next/image";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 const menuItems = [
   { 
@@ -144,6 +144,14 @@ const menuItems = [
 export default function MenuSection() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openSubmenus, setOpenSubmenus] = useState<{ [key: string]: boolean }>({});
+  const pathname = usePathname();
+
+  const isActive = (href: string) => pathname === href;
+  
+  const isParentActive = (item: typeof menuItems[0]) => {
+    if (!item.subItems) return false;
+    return item.subItems.some(subItem => pathname === subItem.href);
+  };
 
   const toggleSubmenu = (label: string, e: React.MouseEvent) => {
     if (window.innerWidth <= 768) {
@@ -184,7 +192,7 @@ export default function MenuSection() {
           >
             <Link 
               href={item.href} 
-              className={styles.menuItem} 
+              className={`${styles.menuItem} ${isActive(item.href) ? styles.active : ''} ${isParentActive(item) ? styles.parentActive : ''}`}
               onClick={(e) => item.hasSubmenu ? toggleSubmenu(item.label, e) : handleLinkClick()}
             >
               {item.label}
@@ -200,7 +208,7 @@ export default function MenuSection() {
                   <Link 
                     key={subItem.href} 
                     href={subItem.href} 
-                    className={styles.submenuItem}
+                    className={`${styles.submenuItem} ${isActive(subItem.href) ? styles.active : ''}`}
                     onClick={handleLinkClick}
                     style={{ transitionDelay: `${subIndex * 0.03}s` }}
                   >

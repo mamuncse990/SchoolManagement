@@ -117,7 +117,7 @@
 }
 
 .gridContainerSmall .gridCard {
-  aspect-ratio: 1;
+  aspect-ratio: 2;
 }
 
 .gridCard:hover {
