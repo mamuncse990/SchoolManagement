@@ -1,0 +1,903 @@
+.applyContainer {
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+}
+
+.applyTitle {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+}
+
+.formWrapper {
+  padding: 15px;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+.required {
+  color: #ff0000;
+  margin-left: 4px;
+}
+
+.formGroup select {
+  width: 30%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+}
+
+.formGroup select:focus {
+  outline: none;
+  border-color: #2196f3;
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
+}
+
+.formGroup select option[value=""] {
+  color: #999;
+}
+
+.printButton {
+  padding: 6px 12px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #333;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.dialogOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.dialog {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+}
+
+.dialogTitle {
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.formGroup input:focus {
+  outline: none;
+  border-color: #2196f3;
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
+}
+
+.note {
+  color: #ff4444;
+  font-size: 0.9rem;
+  margin: 10px 0;
+}
+
+.dialogButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.closeButton {
+  padding: 8px 20px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submitButton {
+  padding: 8px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tabs {
+  display: none; /* Hide tabs as they're not in the original design */
+}
+
+.tab {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: #1f2937;
+}
+
+.tab.active {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #2563eb;
+}
+
+.formSection {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.formRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.formGroup {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 15px;
+}
+
+.formGroup label {
+  font-size: 0.875rem;
+  color: #4b5563;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+
+.required {
+  color: #dc2626;
+  color: #dc3545;
+  margin-left: 4px;
+}
+
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  background-color: #fff;
+}
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+  border-color: #2563eb;
+}
+
+.formGroup textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.inputError {
+  border-color: #dc2626 !important;
+  border-color: #dc3545 !important;
+}
+
+.errorText {
+  color: #dc2626;
+  font-size: 0.75rem;
+  color: #dc3545;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+.errorSummary {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-right: 16px;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a365d;
+  margin-bottom: 24px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e2e8f0;
+  color: #000066;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 25px 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.submitSection {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.submitButton {
+  padding: 10px 24px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  padding: 10px 24px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  float: right;
+  margin-top: 20px;
+}
+
+.submitButton:hover {
+  background: #1d4ed8;
+  background-color: #218838;
+}
+
+.fileUpload {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fileUpload input[type="file"] {
+  display: none;
+}
+
+.fileUploadBtn {
+  padding: 6px 12px;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.fileUploadBtn:hover {
+  background: #e5e7eb;
+}
+
+.fileUploadText {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+@media (max-width: 768px) {
+  .formRow {
+    flex-direction: column;
+    gap: 10px;
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs {
+    gap: 2px;
+  }
+  
+  .tab {
+    padding: 8px 16px;
+    font-size: 0.875rem;
+  }
+  
+  .container {
+    padding: 10px;
+  }
+}
+
+.headerSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.content {
+  padding: 20px 15px;
+}
+
+.errorMessage {
+  color: #ff0000;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.photoUpload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.photoPreview {
+  width: 150px;
+  height: 150px;
+  border: 1px dashed #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.photoPreview img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.uploadButton {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.uploadButton:hover {
+  background-color: #e9ecef;
+}
+
+/* Override for readonly date inputs to match the design */
+.formGroup input[type="date"] {
+  color: #495057;
+}
+
+.formGroup input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.7;
+}
+
+/* Red border for validation errors */
+.inputError {
+  border-color: #dc3545 !important;
+}
+
+.tabNavigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  background-color: #f5f5f5;
+  border-radius: 8px 8px 0 0;
+}
+
+.tabButton {
+  padding: 10px 20px;
+  border: none;
+  background: #f0f0f0;
+  cursor: pointer;
+  border-radius: 5px;
+  flex: 1;
+  min-width: 150px;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.tabButton:hover {
+  background: #d0d0d0;
+}
+
+.activeTab {
+  background: #007bff;
+  color: white;
+  font-weight: 600;
+  border-bottom: 2px solid #2563eb;
+}
+
+.tabContent {
+  background: white;
+  padding: 20px;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.formTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #4a5568;
+}
+
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.formGroup textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.required {
+  color: #e53e3e;
+  margin-left: 4px;
+}
+
+.inputError {
+  border-color: #e53e3e !important;
+}
+
+.errorText {
+  color: #e53e3e;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.navigationButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+  gap: 10px;
+}
+
+.prevButton,
+.nextButton,
+.submitButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  min-width: 120px;
+}
+
+.prevButton {
+  background-color: #e2e8f0;
+  color: #4a5568;
+  background: #6c757d;
+  color: white;
+}
+
+.prevButton:hover {
+  background-color: #cbd5e0;
+}
+
+.prevButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #cccccc;
+}
+
+.nextButton,
+.submitButton {
+  background-color: #2563eb;
+  color: white;
+  background: #007bff;
+}
+
+.nextButton:hover,
+.submitButton:hover {
+  background-color: #1d4ed8;
+  background: #1d4ed8;
+}
+
+.photoUpload {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  align-items: flex-start;
+}
+
+.photoPreview {
+  width: 150px;
+  height: 150px;
+  border: 2px dashed #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 2px dashed #ddd;
+}
+
+.photoPreview img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.uploadButton {
+  padding: 8px 16px;
+  background-color: #2563eb;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+  background: #007bff;
+  border-radius: 4px;
+}
+
+.uploadButton:hover {
+  background-color: #1d4ed8;
+  background-color: #1d4ed8;
+}
+
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.formSection {
+  margin-bottom: 30px;
+}
+
+.formGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formGroup label {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.required {
+  color: red;
+  margin-left: 4px;
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.imageContainer img {
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Navigation styles */
+.navigationButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.prevButton {
+  background-color: #6c757d;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 1;
+}
+
+.prevButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.disabledButton {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #ccc;
+}
+
+.parentContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+
+.parentSection {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  flex: 1;
+  min-width: 300px;
+}
+
+.parentTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000066;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.25rem;
+}
+
+.parentForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+@media (max-width: 768px) {
+  .parentContainer {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .parentSection {
+    width: 100%;
+  }
+
+  .container {
+    padding: 10px;
+  }
+
+  .tabNavigation {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .tabButton {
+    width: 100%;
+    min-width: unset;
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+
+  .formRow {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .formGroup {
+    min-width: 100%;
+  }
+
+  .photoUpload {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .photoPreview {
+    width: 120px;
+    height: 120px;
+  }
+
+  .navigationButtons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .prevButton,
+  .nextButton {
+    width: 100%;
+  }
+
+  .formTitle,
+  .sectionTitle {
+    font-size: 1.25rem;
+    text-align: center;
+  }
+
+  .formGroup input,
+  .formGroup select,
+  .formGroup textarea {
+    font-size: 16px; /* Prevents zoom on mobile */
+    padding: 12px;
+  }
+}
+
+/* Rest of your existing styles... */
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.formGroup {
+  flex: 1;
+  min-width: 100%;
+}
+
+/* Mobile styles */
+@media screen and (max-width: 768px) {
+  .formRow {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .formGroup {
+    width: 100%;
+  }
+
+  .formGroup select,
+  .formGroup input {
+    width: 100%;
+    min-height: 45px; /* Larger touch target */
+    font-size: 16px; /* Prevent zoom on mobile */
+    padding: 10px;
+  }
+  
+  .formSection {
+    padding: 15px 10px;
+  }
+}
+
+.formSection {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.formGroup {
+  flex: 1;
+  min-width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .formRow {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .formGroup {
+    width: 100%;
+  }
+
+  .formGroup select,
+  .formGroup input {
+    width: 100%;
+    min-height: 45px;
+    font-size: 16px;
+    padding: 12px;
+  }
+  
+  .formSection {
+    padding: 15px 10px;
+  }
+
+  /* Force each form group to take full width */
+  .formGroup {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+}

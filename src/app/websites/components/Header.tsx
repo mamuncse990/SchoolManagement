@@ -73,7 +73,7 @@ export default function Header() {
             <span style={{fontSize: '1.2em', marginRight: 4}}>↻</span> 
             {isBangla ? 'ENGLISH' : 'বাংলা'}
           </button>
-          <Link href="/apply" className={styles["btn-apply"]}>
+          <Link href="/websites/admission/registration" className={styles["btn-apply"]}>
             {isBangla ? 'অনলাইন আবেদন' : 'Online Apply'}
           </Link>
           <span className={styles["portal-btn"]}>
@@ -160,4 +160,4 @@ export default function Header() {
       </div>
     </header>
   );
-} 
+}

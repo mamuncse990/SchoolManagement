@@ -65,7 +65,7 @@ const menuItems = [
       { label: "How To Apply ?", href: "/websites/admission/how-to-apply" },
       { label: "Admission Test", href: "/websites/admission/test" },
       { label: "Admission Policy", href: "/websites/admission/policy" },
-      { label: "Registration System", href: "/websites/admission/registration" }
+      { label: "Online Registration", href: "/websites/admission/registration" }
     ]
   },
   { 
