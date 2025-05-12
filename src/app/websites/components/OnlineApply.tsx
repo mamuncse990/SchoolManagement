@@ -257,7 +257,7 @@ const OnlineApply = () => {
   const renderPreliminaryInfo = () => (
     <div className={styles.formSection}>
       <div className={styles.formRow}>
-        <div className={styles.formGroup}>
+        <div className={styles.formGroup} style={{ flex: '1 1 25%' }}>
           <label>School Branch<span className={styles.required}>*</span></label>
           <select 
             name="schoolBranch" 
@@ -273,7 +273,7 @@ const OnlineApply = () => {
           {errors.schoolBranch && <span className={styles.errorText}>{errors.schoolBranch}</span>}
         </div>
 
-        <div className={styles.formGroup}>
+        <div className={styles.formGroup} style={{ flex: '1 1 25%' }}>
           <label>Session<span className={styles.required}>*</span></label>
           <select 
             name="session" 
@@ -288,7 +288,7 @@ const OnlineApply = () => {
           {errors.session && <span className={styles.errorText}>{errors.session}</span>}
         </div>
       
-        <div className={styles.formGroup}>
+        <div className={styles.formGroup} style={{ flex: '1 1 25%' }}>
           <label>Version<span className={styles.required}>*</span></label>
           <select 
             name="version" 
@@ -303,7 +303,7 @@ const OnlineApply = () => {
           {errors.version && <span className={styles.errorText}>{errors.version}</span>}
         </div>
 
-        <div className={styles.formGroup}>
+        <div className={styles.formGroup} style={{ flex: '1 1 25%' }}>
           <label>Class<span className={styles.required}>*</span></label>
           <select 
             name="class" 
@@ -816,10 +816,10 @@ const OnlineApply = () => {
       </div>
 
       {/* Tab Content */}
-      <div className={styles.tabContent}>
+      <div>
         {/* School & Session Information */}
         {currentTab === 0 && (
-          <div className={styles.formSection}>
+          <div>
             <div className={styles.formRow}>
               {renderPreliminaryInfo()}
             </div>
@@ -828,7 +828,7 @@ const OnlineApply = () => {
 
         {/* Student Information */}
         {currentTab === 1 && (
-          <div className={styles.formSection}>
+          <div>
             <h3 className={styles.formTitle}>Student's Information</h3>
             {renderStudentInfo()}
           </div>
@@ -836,7 +836,7 @@ const OnlineApply = () => {
 
         {/* Parent Information */}
         {currentTab === 2 && (
-          <div className={styles.formSection}>
+          <div>
             <div className={styles.sectionTitle}>Parent Information</div>
             {renderParentInfo()}
           </div>
@@ -844,7 +844,7 @@ const OnlineApply = () => {
 
         {/* Siblings Information */}
         {currentTab === 3 && (
-          <div className={styles.formSection}>
+          <div>
             <h3 className={styles.formTitle}>Siblings Information</h3>
             {renderSiblingInfo()}
           </div>
@@ -852,7 +852,7 @@ const OnlineApply = () => {
 
         {/* Medical Information */}
         {currentTab === 4 && (
-          <div className={styles.formSection}>
+          <div>
             <h3 className={styles.formTitle}>Medical Description</h3>
             {renderMedicalInfo()}
           </div>
