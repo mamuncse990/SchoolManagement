@@ -4,21 +4,175 @@ import { useAuth } from '@/context/AuthContext';
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { PrismaClient, User } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 
 type UserList = User & { role: { name: string } | null };
 
+// First, update the MenuItem type to include nested submenus
 type MenuItem = {
-  icon: string;
+  icon?: string;
   label: string;
   href: string | ((userRole: string | null, userId: string | null) => string);
   visible: string[];
+  hasSubmenu?: boolean;
+  subItems?: {
+    label: string;
+    href: string;
+    hasSubmenu?: boolean;
+    subItems?: {
+      label: string;
+      href: string;
+    }[];
+  }[];
 };
 
-const menuItems = [
+// Add this type for menu state management
+type MenuState = {
+  [key: string]: boolean;
+};
+
+// Update the menuItems structure
+const menuItems: { items: MenuItem[] }[] = [
   {
-    title: "MENU",
+    items: [
+      {
+        label: "WEBSITES",
+        href: "/websites",
+        icon: "/home.png",
+        hasSubmenu: true,
+        visible: ["admin", "teacher", "student", "parent"],
+        subItems: [
+          {
+            label: "ABOUT",
+            href: "/about",
+            hasSubmenu: true,
+            subItems: [
+              { label: "About Us", href: "/websites/about/about-us" },
+              { label: "Founder & Doner List", href: "/websites/about/founder-doner" },
+              { label: "History", href: "/websites/about/history" },
+              { label: "Our Vision", href: "/websites/about/vision" },
+              { label: "Campus Tour", href: "/websites/about/campus-tour" },
+              { label: "Achievements", href: "/websites/about/achievements" },
+              { label: "Honorable Chairman", href: "/websites/about/chairman" },
+              { label: "Governing Body", href: "/websites/about/governing-body" },
+              { label: "Ex Governing Body", href: "/websites/about/ex-governing-body" },
+              { label: "Our Principal", href: "/websites/about/principal" },
+              { label: "Our Ex Principals", href: "/websites/about/ex-principals" },
+              { label: "Administrator", href: "/websites/about/administrator" }
+            ]
+          },
+          { 
+            label: "INFORMATION", 
+            href: "/information",
+            hasSubmenu: true,
+            subItems: [
+              { label: "Teaching Permission & Recognition Letter", href: "/websites/information/teaching-permission" },
+              { label: "Nationalization", href: "/websites/information/nationalization" },
+              { label: "Statistics Report", href: "/websites/information/statistics" },
+              { label: "Govt. Approval Letter", href: "/websites/information/approval-letter" }
+            ]
+          },
+          { 
+            label: "ACADEMIC", 
+            href: "/academic",
+            hasSubmenu: true,
+            subItems: [
+              { label: "Class Schedule", href: "/websites/academic/class-schedule" },
+              { label: "Our Teachers", href: "/websites/academic/teachers" },
+              { label: "Prior Teachers", href: "/websites/academic/prior-teachers" },
+              { label: "Our Staffs", href: "/websites/academic/staffs" },
+              { label: "Prior Staffs", href: "/websites/academic/prior-staffs" },
+              { label: "Academic Rules", href: "/websites/academic/rules" },
+              { label: "Academic Calendar", href: "/websites/academic/calendar" },
+              { label: "Attendance Sheet", href: "/websites/academic/attendance" },
+              { label: "Leave Information", href: "/websites/academic/leave" }
+            ]
+          },
+          { 
+            label: "ADMISSION", 
+            href: "/admission",
+            hasSubmenu: true,
+            subItems: [
+              { label: "Why Study ?", href: "/websites/admission/why-study" },
+              { label: "How To Apply ?", href: "/websites/admission/how-to-apply" },
+              { label: "Admission Test", href: "/websites/admission/test" },
+              { label: "Admission Policy", href: "/websites/admission/policy" },
+              { label: "Online Registration", href: "/websites/admission/registration" }
+            ]
+          },
+          { 
+            label: "STUDENT", 
+            href: "/student",
+            hasSubmenu: true,
+            subItems: [
+              { label: "Student List", href: "/websites/student/list" },
+              { label: "Tuition Fees", href: "/websites/student/fees" },
+              { label: "Mobile Banking", href: "/websites/student/banking" },
+              { label: "Daily Activities", href: "/websites/student/activities" },
+              { label: "Exam Schedule", href: "/websites/student/exam-schedule" },
+              { label: "Student Uniform", href: "/websites/student/uniform" },
+              { label: "Exam System", href: "/websites/student/exam-system" },
+              { label: "Rules & Regulation", href: "/websites/student/rules" },
+              { label: "Verify Certificate", href: "/websites/student/verify-certificate" }
+            ]
+          },
+          { 
+            label: "FACILITIES", 
+            href: "/facilities",
+            hasSubmenu: true,
+            subItems: [
+              { label: "Library", href: "/websites/facilities/library" },
+              { label: "Play Ground", href: "/websites/facilities/playground" },
+              { label: "Physics Lab", href: "/websites/facilities/physics-lab" },
+              { label: "Biology Lab", href: "/websites/facilities/biology-lab" },
+              { label: "ICT Lab", href: "/websites/facilities/ict-lab" },
+              { label: "Chemistry Lab", href: "/websites/facilities/chemistry-lab" },
+              { label: "Co Curricular Activity", href: "/websites/facilities/co-curricular" }
+            ]
+          },
+          { 
+            label: "RESULT", 
+            href: "/result",
+            hasSubmenu: true,
+            subItems: [
+              { label: "Result", href: "/websites/result/view" },
+              { label: "Academic Result", href: "/websites/result/academic" },
+              { label: "Evaluation", href: "/websites/result/evaluation" },
+              { label: "Board Exam", href: "/websites/result/board-exam" }
+            ]
+          },
+          { 
+            label: "OTHERS", 
+            href: "/others",
+            hasSubmenu: true,
+            subItems: [
+              { label: "Notice", href: "/websites/others/notice" },
+              { label: "News", href: "/websites/others/news" },
+              { label: "Gallery", href: "/websites/others/gallery" },
+              { label: "Events", href: "/websites/others/events" },
+              { label: "Routine Download", href: "/websites/others/routine" }
+            ]
+          },
+          { 
+            label: "CONTACT", 
+            href: "/contact"
+          },
+          { 
+            label: "ALUMNI", 
+            href: "/alumni",
+            hasSubmenu: true,
+            subItems: [
+              { label: "Alumni Registration", href: "/websites/alumni/register" },
+              { label: "Alumni List", href: "/websites/alumni/list" }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
     items: [
       {
         icon: "/home.png",
@@ -125,7 +279,6 @@ const menuItems = [
     ],
   },
   {
-    title: "OTHER",
     items: [
       {
         icon: "/profile.png",
@@ -146,10 +299,17 @@ const menuItems = [
         visible: ["admin", "teacher", "student", "parent"],
       },
     ],
-  },
+  }
 ];
 
+// Update the Menu component
 const Menu = () => {
+  // Add router
+  const router = useRouter();
+  
+  // Add state for collapsed/expanded menus
+  const [expandedMenus, setExpandedMenus] = useState<MenuState>({});
+  
   const auth = useAuth();
   const pathname = usePathname();
   const { role, id } = auth;
@@ -181,28 +341,108 @@ const Menu = () => {
     )
   }));
 
-  //console.log('Filtered menu items:', filteredMenuItems);
+  // Add toggle function
+  const toggleSubmenu = (label: string) => {
+    setExpandedMenus(prev => ({
+      ...prev,
+      [label]: !prev[label]
+    }));
+  };
 
+  // Update the click handler function
+  const handleMenuClick = (item: MenuItem, event: React.MouseEvent) => {
+    event.preventDefault();
+    
+    if (item.hasSubmenu) {
+      toggleSubmenu(item.label);
+    } else {
+      const href = typeof item.href === 'function' ? item.href(userRole, id) : item.href;
+      router.push(href);
+    }
+  };
+
+  // Update the Menu component's return statement
   return (
     <div className="mt-4 text-sm h-auto max-h-[calc(100vh-20px)] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] hover:[&::-webkit-scrollbar]:block hover:[-ms-overflow-style:auto] hover:[scrollbar-width:thin] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full">
-      {filteredMenuItems.map((section) => (
-        <div className="flex flex-col gap-2" key={section.title}>
-          <span className="hidden lg:block text-gray-400 font-light my-4">
-            {section.title}
-          </span>
+      {filteredMenuItems.map((section, index) => (
+        <div className="flex flex-col gap-2" key={index}>
           {section.items.map((item) => (
-            <Link
-              href={typeof item.href === 'function' ? item.href(userRole, id) : item.href}
-              key={item.label}
-              className={`flex items-center justify-center lg:justify-start gap-4 py-2 md:px-2 rounded-md hover:bg-lamaSkyLight ${
-                pathname === (typeof item.href === 'function' ? item.href(userRole, id) : item.href)
-                  ? 'bg-lamaSkyLight text-lamaBlue' 
-                  : 'text-gray-500'
-              }`}
-            >
-              <Image src={item.icon} alt="" width={20} height={20} />
-              <span className="hidden lg:block">{item.label}</span>
-            </Link>
+            <div key={item.label}>
+              <div
+                className={`flex items-center justify-center lg:justify-start gap-4 py-2 md:px-2 rounded-md hover:bg-lamaSkyLight cursor-pointer ${
+                  pathname === (typeof item.href === 'function' ? item.href(userRole, id) : item.href)
+                    ? 'bg-lamaSkyLight text-lamaBlue' 
+                    : 'text-gray-500'
+                }`}
+                onClick={(e) => handleMenuClick(item, e)}
+              >
+                <div className="flex items-center justify-center lg:justify-start gap-4 flex-1">
+                  {item.icon && <Image src={item.icon} alt="" width={20} height={20} />}
+                  <span className="hidden lg:block">{item.label}</span>
+                </div>
+                {item.hasSubmenu && (
+                  <svg
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      expandedMenus[item.label] ? 'transform rotate-180' : ''
+                    }`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                )}
+              </div>
+              {item.hasSubmenu && item.subItems && expandedMenus[item.label] && (
+                <div className="ml-8 mt-2">
+                  {item.subItems.map((subItem) => (
+                    <div key={subItem.label}>
+                      <div
+                        className={`flex items-center py-2 px-4 text-sm hover:bg-lamaSkyLight rounded-md cursor-pointer ${
+                          pathname === subItem.href ? 'bg-lamaSkyLight text-lamaBlue' : 'text-gray-500'
+                        }`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (subItem.hasSubmenu) {
+                            toggleSubmenu(`${item.label}-${subItem.label}`);
+                          } else {
+                            router.push(subItem.href);
+                          }
+                        }}
+                      >
+                        <span className="flex-1">{subItem.label}</span>
+                        {subItem.hasSubmenu && (
+                          <svg className={`w-4 h-4 transition-transform duration-200 ${
+                            expandedMenus[`${item.label}-${subItem.label}`] ? 'transform rotate-180' : ''
+                          }`}
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        )}
+                      </div>
+                      {subItem.hasSubmenu && subItem.subItems && expandedMenus[`${item.label}-${subItem.label}`] && (
+                        <div className="ml-8 mt-2">
+                          {subItem.subItems.map((nestedItem) => (
+                            <Link
+                              key={nestedItem.label}
+                              href={nestedItem.href}
+                              className={`flex items-center py-2 px-4 text-sm hover:bg-lamaSkyLight rounded-md ${
+                                pathname === nestedItem.href ? 'bg-lamaSkyLight text-lamaBlue' : 'text-gray-500'
+                              }`}
+                            >
+                              {nestedItem.label}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
         </div>
       ))}
