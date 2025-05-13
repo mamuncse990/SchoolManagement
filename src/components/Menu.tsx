@@ -21,9 +21,11 @@ type MenuItem = {
     label: string;
     href: string;
     hasSubmenu?: boolean;
+    icon?: string;
     subItems?: {
       label: string;
       href: string;
+      icon?: string;
     }[];
   }[];
 };
@@ -40,13 +42,14 @@ const menuItems: { items: MenuItem[] }[] = [
       {
         label: "WEBSITES",
         href: "/websites",
-        icon: "/home.png",
+        icon: "/websites.png",
         hasSubmenu: true,
         visible: ["admin", "teacher", "student", "parent"],
         subItems: [
           {
             label: "ABOUT",
             href: "/about",
+            icon: "/about.png",
             hasSubmenu: true,
             subItems: [
               { label: "About Us", href: "/websites/about/about-us" },
@@ -66,6 +69,7 @@ const menuItems: { items: MenuItem[] }[] = [
           { 
             label: "INFORMATION", 
             href: "/information",
+            icon: "/information.png",
             hasSubmenu: true,
             subItems: [
               { label: "Teaching Permission & Recognition Letter", href: "/websites/information/teaching-permission" },
@@ -77,6 +81,7 @@ const menuItems: { items: MenuItem[] }[] = [
           { 
             label: "ACADEMIC", 
             href: "/academic",
+            icon: "/academic.png",
             hasSubmenu: true,
             subItems: [
               { label: "Class Schedule", href: "/websites/academic/class-schedule" },
@@ -93,6 +98,7 @@ const menuItems: { items: MenuItem[] }[] = [
           { 
             label: "ADMISSION", 
             href: "/admission",
+            icon: "/admission.png",
             hasSubmenu: true,
             subItems: [
               { label: "Why Study ?", href: "/websites/admission/why-study" },
@@ -105,6 +111,7 @@ const menuItems: { items: MenuItem[] }[] = [
           { 
             label: "STUDENT", 
             href: "/student",
+            icon: "/student.png",
             hasSubmenu: true,
             subItems: [
               { label: "Student List", href: "/websites/student/list" },
@@ -121,6 +128,7 @@ const menuItems: { items: MenuItem[] }[] = [
           { 
             label: "FACILITIES", 
             href: "/facilities",
+            icon: "/facilities.png",
             hasSubmenu: true,
             subItems: [
               { label: "Library", href: "/websites/facilities/library" },
@@ -135,6 +143,7 @@ const menuItems: { items: MenuItem[] }[] = [
           { 
             label: "RESULT", 
             href: "/result",
+            icon: "/result.png",
             hasSubmenu: true,
             subItems: [
               { label: "Result", href: "/websites/result/view" },
@@ -146,6 +155,7 @@ const menuItems: { items: MenuItem[] }[] = [
           { 
             label: "OTHERS", 
             href: "/others",
+            icon: "/others.png",
             hasSubmenu: true,
             subItems: [
               { label: "Notice", href: "/websites/others/notice" },
@@ -157,11 +167,13 @@ const menuItems: { items: MenuItem[] }[] = [
           },
           { 
             label: "CONTACT", 
-            href: "/contact"
+            href: "/contact",
+            icon: "/contact.png",
           },
           { 
             label: "ALUMNI", 
             href: "/alumni",
+            icon: "/alumni.png",
             hasSubmenu: true,
             subItems: [
               { label: "Alumni Registration", href: "/websites/alumni/register" },
@@ -363,11 +375,11 @@ const Menu = () => {
 
   // Update the Menu component's return statement
   return (
-    <div className="mt-4 text-sm h-auto max-h-[calc(100vh-20px)] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] hover:[&::-webkit-scrollbar]:block hover:[-ms-overflow-style:auto] hover:[scrollbar-width:thin] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full">
+    <div className="mt-4 text-sm h-auto max-h-[calc(100vh-20px)] overflow-y-auto overflow-x-hidden relative w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] hover:[&::-webkit-scrollbar]:block hover:[-ms-overflow-style:auto] hover:[scrollbar-width:thin] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full">
       {filteredMenuItems.map((section, index) => (
-        <div className="flex flex-col gap-2" key={index}>
+        <div className="flex flex-col gap-2 w-full" key={index}>
           {section.items.map((item) => (
-            <div key={item.label}>
+            <div key={item.label} className="w-full">
               <div
                 className={`flex items-center justify-center lg:justify-start gap-4 py-2 md:px-2 rounded-md hover:bg-lamaSkyLight cursor-pointer ${
                   pathname === (typeof item.href === 'function' ? item.href(userRole, id) : item.href)
@@ -394,9 +406,9 @@ const Menu = () => {
                 )}
               </div>
               {item.hasSubmenu && item.subItems && expandedMenus[item.label] && (
-                <div className="ml-8 mt-2">
+                <div className="pl-4 mt-2 w-full">
                   {item.subItems.map((subItem) => (
-                    <div key={subItem.label}>
+                    <div key={subItem.label} className="w-full">
                       <div
                         className={`flex items-center py-2 px-4 text-sm hover:bg-lamaSkyLight rounded-md cursor-pointer ${
                           pathname === subItem.href ? 'bg-lamaSkyLight text-lamaBlue' : 'text-gray-500'
@@ -410,11 +422,23 @@ const Menu = () => {
                           }
                         }}
                       >
-                        <span className="flex-1">{subItem.label}</span>
+                        <div className="flex items-center flex-1 min-w-0">
+                          {subItem.icon && (
+                            <Image 
+                              src={subItem.icon} 
+                              alt="" 
+                              width={16} 
+                              height={16} 
+                              className="mr-2 flex-shrink-0"
+                            />
+                          )}
+                          <span className="truncate">{subItem.label}</span>
+                        </div>
                         {subItem.hasSubmenu && (
-                          <svg className={`w-4 h-4 transition-transform duration-200 ${
-                            expandedMenus[`${item.label}-${subItem.label}`] ? 'transform rotate-180' : ''
-                          }`}
+                          <svg
+                            className={`w-4 h-4 flex-shrink-0 transition-transform duration-200 ${
+                              expandedMenus[`${item.label}-${subItem.label}`] ? 'transform rotate-180' : ''
+                            }`}
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -424,7 +448,7 @@ const Menu = () => {
                         )}
                       </div>
                       {subItem.hasSubmenu && subItem.subItems && expandedMenus[`${item.label}-${subItem.label}`] && (
-                        <div className="ml-8 mt-2">
+                        <div className="pl-4 mt-2 w-full">
                           {subItem.subItems.map((nestedItem) => (
                             <Link
                               key={nestedItem.label}
@@ -433,7 +457,7 @@ const Menu = () => {
                                 pathname === nestedItem.href ? 'bg-lamaSkyLight text-lamaBlue' : 'text-gray-500'
                               }`}
                             >
-                              {nestedItem.label}
+                              <span className="truncate">{nestedItem.label}</span>
                             </Link>
                           ))}
                         </div>
