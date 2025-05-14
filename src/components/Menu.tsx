@@ -319,8 +319,9 @@ const Menu = () => {
   // Add router
   const router = useRouter();
   
-  // Add state for collapsed/expanded menus
+  // Add state for collapsed/expanded menus and overall menu collapse
   const [expandedMenus, setExpandedMenus] = useState<MenuState>({});
+  const [isCollapsed, setIsCollapsed] = useState(false);
   
   const auth = useAuth();
   const pathname = usePathname();
@@ -333,16 +334,11 @@ const Menu = () => {
 
     if (storedRole && storedId && (!role || !id)) {
       console.log('Found stored credentials:', { role: storedRole, id: storedId , name: storedName });
-      // If role and id are not set in auth context, set them from localStorage
-      
       auth.login(storedRole, storedId, storedName || '');
     }
   }, [role, id, auth]);
 
   const userRole = auth.role || localStorage.getItem('role') || null;
-  console.log('Current user role:', userRole);
-  console.log('LocalStorage role:', localStorage.getItem('role'));
-  console.log('Auth context role:', auth.role);
 
   const filteredMenuItems = menuItems.map(section => ({
     ...section,
@@ -356,7 +352,6 @@ const Menu = () => {
     )
   }));
 
-  // Add toggle function
   const toggleSubmenu = (label: string) => {
     setExpandedMenus(prev => ({
       ...prev,
@@ -364,7 +359,6 @@ const Menu = () => {
     }));
   };
 
-  // Update the click handler function
   const handleMenuClick = (item: MenuItem, event: React.MouseEvent) => {
     event.preventDefault();
     
@@ -376,103 +370,144 @@ const Menu = () => {
     }
   };
 
-  // Update the Menu component's return statement
   return (
-    <div className="mt-4 text-sm h-auto max-h-[calc(100vh-20px)] overflow-y-auto overflow-x-hidden relative w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] hover:[&::-webkit-scrollbar]:block hover:[-ms-overflow-style:auto] hover:[scrollbar-width:thin] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full">
-      {filteredMenuItems.map((section, index) => (
-        <div className="flex flex-col gap-2 w-full" key={index}>
-          {section.items.map((item) => (
-            <div key={item.label} className="w-full">
-              <div
-                className={`flex items-center justify-center lg:justify-start gap-4 py-2 md:px-2 rounded-md hover:bg-lamaSkyLight cursor-pointer ${
-                  pathname === (typeof item.href === 'function' ? item.href(userRole, id) : item.href)
-                    ? 'bg-lamaSkyLight text-lamaBlue' 
-                    : 'text-gray-500'
-                }`}
-                onClick={(e) => handleMenuClick(item, e)}
-              >
-                <div className="flex items-center justify-center lg:justify-start gap-4 flex-1">
-                  {item.icon && <Image src={item.icon} alt="" width={20} height={20} />}
-                  <span className="hidden lg:block">{item.label}</span>
+    <div 
+      className={`relative flex flex-col ${isCollapsed ? 'w-[60px]' : 'w-[200px]'} transition-all duration-300 group bg-white min-h-screen`}
+      onMouseEnter={() => isCollapsed && setIsCollapsed(false)}
+      onMouseLeave={() => isCollapsed && setIsCollapsed(true)}
+    >
+      {/* Logo Header Section */}
+      <div className={`px-2 py-2.5 border-b border-gray-100 flex items-center justify-between`} style={{ backgroundColor: isCollapsed ? 'white' : 'transparent'}}>
+        <div className="flex items-center gap-3">
+          <Image
+            src="/logo.png"
+            alt="School Logo"
+            width={30}
+            height={30}
+            className="rounded-full"
+          />
+          <div className={`flex flex-col transition-opacity duration-300 ${isCollapsed ? 'opacity-0 hidden group-hover:block group-hover:opacity-100' : 'opacity-100'}`}>
+            <span className="font-bold text-sm text-gray-700">Abc School</span>
+          </div>
+        </div>
+        <button
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="w-6 h-6 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-gray-100"
+        >
+          <Image
+            src="/expand-menu.png"
+            alt="Expand Menu"
+            width={16}
+            height={16}
+            className={`transform transition-transform ${isCollapsed ? 'rotate-180' : ''}`}
+          />
+        </button>
+      </div>
+      
+      <div className={`mt-4 text-sm h-auto max-h-[calc(100vh-100px)] overflow-y-auto overflow-x-hidden relative w-full 
+        [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] 
+        hover:[&::-webkit-scrollbar]:block hover:[-ms-overflow-style:auto] hover:[scrollbar-width:thin] 
+        [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 
+        [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full
+        ${isCollapsed ? 'group-hover:w-[200px] group-hover:absolute group-hover:bg-white group-hover:shadow-lg group-hover:rounded-r-lg group-hover:z-50' : ''}`}
+      >
+        {filteredMenuItems.map((section, index) => (
+          <div className="flex flex-col gap-2 w-full" key={index}>
+            {section.items.map((item) => (
+              <div key={item.label} className="w-full">
+                <div
+                  className={`flex items-center justify-center lg:justify-start gap-4 py-2 px-2 rounded-md hover:bg-lamaSkyLight cursor-pointer ${
+                    pathname === (typeof item.href === 'function' ? item.href(userRole, id) : item.href)
+                      ? 'bg-lamaSkyLight text-lamaBlue' 
+                      : 'text-gray-500'
+                  }`}
+                  onClick={(e) => handleMenuClick(item, e)}
+                >
+                  <div className="flex items-center justify-center lg:justify-start gap-4 flex-1 min-w-0">
+                    {item.icon && <Image src={item.icon} alt="" width={20} height={20} />}
+                    <span className={`whitespace-nowrap overflow-hidden ${isCollapsed ? 'hidden group-hover:block' : 'block'}`}>
+                      {item.label}
+                    </span>
+                  </div>
+                  {item.hasSubmenu && !isCollapsed && (
+                    <svg
+                      className={`w-4 h-4 transition-transform duration-200 flex-shrink-0 ${
+                        expandedMenus[item.label] ? 'transform rotate-180' : ''
+                      }`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  )}
                 </div>
-                {item.hasSubmenu && (
-                  <svg
-                    className={`w-4 h-4 transition-transform duration-200 ${
-                      expandedMenus[item.label] ? 'transform rotate-180' : ''
-                    }`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                )}
-              </div>
-              {item.hasSubmenu && item.subItems && expandedMenus[item.label] && (
-                <div className="pl-4 mt-2 w-full">
-                  {item.subItems.map((subItem) => (
-                    <div key={subItem.label} className="w-full">
-                      <div
-                        className={`flex items-center py-2 px-4 text-sm hover:bg-lamaSkyLight rounded-md cursor-pointer ${
-                          pathname === subItem.href ? 'bg-lamaSkyLight text-lamaBlue' : 'text-gray-500'
-                        }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          if (subItem.hasSubmenu) {
-                            toggleSubmenu(`${item.label}-${subItem.label}`);
-                          } else {
-                            router.push(subItem.href);
-                          }
-                        }}
-                      >
-                        <div className="flex items-center flex-1 min-w-0">
-                          {subItem.icon && (
-                            <Image 
-                              src={subItem.icon} 
-                              alt="" 
-                              width={16} 
-                              height={16} 
-                              className="mr-2 flex-shrink-0"
-                            />
+                {item.hasSubmenu && item.subItems && expandedMenus[item.label] && !isCollapsed && (
+                  <div className="pl-4 mt-2 w-full">
+                    {item.subItems.map((subItem) => (
+                      <div key={subItem.label} className="w-full">
+                        <div
+                          className={`flex items-center py-2 px-4 text-sm hover:bg-lamaSkyLight rounded-md cursor-pointer ${
+                            pathname === subItem.href ? 'bg-lamaSkyLight text-lamaBlue' : 'text-gray-500'
+                          }`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (subItem.hasSubmenu) {
+                              toggleSubmenu(`${item.label}-${subItem.label}`);
+                            } else {
+                              router.push(subItem.href);
+                            }
+                          }}
+                        >
+                          <div className="flex items-center flex-1 min-w-0">
+                            {subItem.icon && (
+                              <Image 
+                                src={subItem.icon} 
+                                alt="" 
+                                width={16} 
+                                height={16} 
+                                className="mr-2 flex-shrink-0"
+                              />
+                            )}
+                            <span className="truncate">{subItem.label}</span>
+                          </div>
+                          {subItem.hasSubmenu && (
+                            <svg
+                              className={`w-4 h-4 flex-shrink-0 transition-transform duration-200 ${
+                                expandedMenus[`${item.label}-${subItem.label}`] ? 'transform rotate-180' : ''
+                              }`}
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
                           )}
-                          <span className="truncate">{subItem.label}</span>
                         </div>
-                        {subItem.hasSubmenu && (
-                          <svg
-                            className={`w-4 h-4 flex-shrink-0 transition-transform duration-200 ${
-                              expandedMenus[`${item.label}-${subItem.label}`] ? 'transform rotate-180' : ''
-                            }`}
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
+                        {subItem.hasSubmenu && subItem.subItems && expandedMenus[`${item.label}-${subItem.label}`] && (
+                          <div className="pl-4 mt-2 w-full">
+                            {subItem.subItems.map((nestedItem) => (
+                              <Link
+                                key={nestedItem.label}
+                                href={nestedItem.href}
+                                className={`flex items-center py-2 px-4 text-sm hover:bg-lamaSkyLight rounded-md ${
+                                  pathname === nestedItem.href ? 'bg-lamaSkyLight text-lamaBlue' : 'text-gray-500'
+                                }`}
+                              >
+                                <span className="truncate">{nestedItem.label}</span>
+                              </Link>
+                            ))}
+                          </div>
                         )}
                       </div>
-                      {subItem.hasSubmenu && subItem.subItems && expandedMenus[`${item.label}-${subItem.label}`] && (
-                        <div className="pl-4 mt-2 w-full">
-                          {subItem.subItems.map((nestedItem) => (
-                            <Link
-                              key={nestedItem.label}
-                              href={nestedItem.href}
-                              className={`flex items-center py-2 px-4 text-sm hover:bg-lamaSkyLight rounded-md ${
-                                pathname === nestedItem.href ? 'bg-lamaSkyLight text-lamaBlue' : 'text-gray-500'
-                              }`}
-                            >
-                              <span className="truncate">{nestedItem.label}</span>
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      ))}
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

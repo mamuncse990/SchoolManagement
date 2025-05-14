@@ -8,13 +8,10 @@ export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
-}) {
-  return (
+}) {  return (
     <div className="flex">
-      <aside className="w-[200px]">
-        <Menu />
-      </aside>
-      <main className="flex-1">
+      <Menu />
+      <main className="flex-1 transition-all duration-300">
         <Header />
         {children}
       </main>
