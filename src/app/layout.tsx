@@ -16,8 +16,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'Abc School',
-  description: 'Welcome to Abc School (Digital Dynamic School in Bangladesh). It\'s regarded as one of the best educational institution due to its discipline, teaching technique and other educational activities.',
+  title: 'Online Academy',
+  description: 'Welcome to Online Academy (Digital Dynamic School in Bangladesh). It\'s regarded as one of the best educational institution due to its discipline, teaching technique and other educational activities.',
 };
 
 export default function RootLayout({

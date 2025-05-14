@@ -166,7 +166,7 @@ export default function SignIn() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-1">
             <h1 className="text-lg font-bold flex items-center gap-1 mb-1">
               <Image src="/logo.png" alt="" width={20} height={20} />
-              Abc School
+              Online Academy
             </h1>
             <h2 className="text-gray-400 text-sm mb-2">Sign in to your account</h2>
             

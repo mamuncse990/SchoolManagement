@@ -77,7 +77,7 @@ export default function Header() {
             {isBangla ? 'অনলাইন আবেদন' : 'Online Apply'}
           </Link>
           <span className={styles["portal-btn"]}>
-            <Image src="/portal-logo.png" alt="পোর্টাল" width={80} height={32} />
+            <Image src="/images/developed1.png" alt="পোর্টাল" width={80} height={20} />
           </span>
         </div>
       </div>
@@ -93,7 +93,7 @@ export default function Header() {
         </div>
         <div className={styles["header-info"]}>
           <div className={styles["header-estd"]}>ESTD : 2025</div>
-          <div className={styles["header-title"]}>Abc High School</div>
+          <div className={styles["header-title"]}>Online Academy</div>
           <div className={styles["header-address"]}>Dhaka, Bangladesh</div>
         </div>
         </div>

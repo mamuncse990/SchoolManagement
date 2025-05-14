@@ -8,7 +8,7 @@ export default function Footer() {
         <div className={styles.footerGrid}>
           <div className={styles.schoolInfo}>
             <img src="/images/school.jpg" alt="School Logo" className={styles.schoolLogo} />
-            <h2 className={styles.schoolName}>Abc School</h2>
+            <h2 className={styles.schoolName}>Online Academy</h2>
             <p className={styles.contact}><span>Contact :</span> 01916006330</p>
             <p className={styles.email}><span>Email :</span> abcschool@gmail.com</p>
             <p className={styles.address}><span>Address :</span> Dhaka, Bangladesh</p>
@@ -35,7 +35,7 @@ export default function Footer() {
           </div>
           <div className={styles.maintainedBy}>
             <h3>Maintained By</h3>
-            <img src="/pathshala-logo.png" alt="Pathshala Logo" className={styles.maintainerLogo} />
+            <img src="/images/developed1.png" alt="Developer Logo" className={styles.maintainerLogo} />
             <div className={styles.visitorBox}>
               <span className={styles.visitorCount}>007296</span>
               <span className={styles.visitorLabel}>ONLINE VISITOR</span>
@@ -44,9 +44,9 @@ export default function Footer() {
         </div>
         <div className={styles.footerBottom}>
           <div className={styles.developedBy}>
-            <span>Developed By </span>
-            <img src="/itlab-logo.png" alt="XYZ Developer Company Ltd." className={styles.devLogo} />
-            <span className={styles.devName}>XYZ Developer Company Ltd.</span>
+            <span>@Developed By </span>
+            <img src="/images/developed.png" alt="@Developer Ltd." className={styles.devLogo} />
+            <span className={styles.devName}>Deleloper Ltd.</span>
           </div>
           <div className={styles.helpline}>
             <span>Helpline - </span>

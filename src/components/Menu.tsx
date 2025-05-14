@@ -380,14 +380,15 @@ const Menu = () => {
       <div className={`px-2 py-2.5 border-b border-gray-100 flex items-center justify-between`} style={{ backgroundColor: isCollapsed ? 'white' : 'transparent'}}>
         <div className="flex items-center gap-3">
           <Image
-            src="/logo.png"
+            //src="/logo.png"
+            src="/images/school.jpg"
             alt="School Logo"
             width={30}
             height={30}
             className="rounded-full"
           />
           <div className={`flex flex-col transition-opacity duration-300 ${isCollapsed ? 'opacity-0 hidden group-hover:block group-hover:opacity-100' : 'opacity-100'}`}>
-            <span className="font-bold text-sm text-gray-700">Abc School</span>
+            <span className="font-bold text-sm text-gray-700">Online Academy</span>
           </div>
         </div>
         <button
