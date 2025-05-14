@@ -12,10 +12,11 @@ interface User {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (role: string, id: string) => Promise<void>;
+  login: (role: string, id: string, name?: string) => Promise<void>;
   logout: () => void;
   role: string | null;
   id: string | null;
+  name: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -33,12 +34,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setLoading(false);
   }, []);
 
-  const login = async (role: string, id: string) => {
+  const login = async (role: string, id: string, name?: string) => {
     try {
       const user = {
         id,
         email: '',
-        name: '',
+        name: name || '',
         role
       };
       
@@ -46,6 +47,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('role', role);
       localStorage.setItem('id', id);
+      localStorage.setItem('userid', id);
+      localStorage.setItem('name', name || '');
     } catch (error) {
       console.error('Login failed:', error);
       throw error;
@@ -58,6 +61,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem('role');
     localStorage.removeItem('id');
     localStorage.removeItem('userid');
+    localStorage.removeItem('name');
     localStorage.setItem('id', '');
   };
 
@@ -69,7 +73,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     isAuthenticated: !!user,
     role: user?.role || null,
     id: user?.id || null,
-    userid: user?.id || null
+    userid: user?.id || null,
+    name: user?.name || null,
   };
 
   return (
@@ -85,4 +90,4 @@ export const useAuth = () => {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-}; 
+};

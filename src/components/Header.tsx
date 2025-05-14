@@ -1,42 +1,13 @@
-"use client";
+'use client'
 
-import { useAuth } from '@/context/AuthContext';
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { PrismaClient, User } from '@prisma/client';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
-type UserList = User & { role: { name: string } | null };
-
-// First, update the MenuItem type to include nested submenus
-type MenuItem = {
-  icon?: string;
-  label: string;
-  href: string | ((userRole: string | null, userId: string | null) => string);
-  visible: string[];
-  hasSubmenu?: boolean;
-  subItems?: {
-    label: string;
-    href: string;
-    hasSubmenu?: boolean;
-    icon?: string;
-    subItems?: {
-      label: string;
-      href: string;
-      icon?: string;
-    }[];
-  }[];
-};
-
-// Add this type for menu state management
-type MenuState = {
-  [key: string]: boolean;
-};
-
-// Update the menuItems structure
-const menuItems: { items: MenuItem[] }[] = [
+// Get relevant menu items from the websites section of Menu.tsx
+const menuItems = [
   {
     items: [
       {
@@ -290,191 +261,235 @@ const menuItems: { items: MenuItem[] }[] = [
       },
     ],
   },
-  // {
-  //   items: [
-  //     {
-  //       icon: "/profile.png",
-  //       label: "Profile",
-  //       href: "/dashboard/profile",
-  //       visible: ["admin", "teacher", "student", "parent"],
-  //     },
-  //     {
-  //       icon: "/setting.png",
-  //       label: "Settings",
-  //       href: "/dashboard/settings",
-  //       visible: ["admin", "teacher", "student", "parent"],
-  //     },
-  //     {
-  //       icon: "/logout.png",
-  //       label: "Logout",
-  //       href: "/logout",
-  //       visible: ["admin", "teacher", "student", "parent"],
-  //     },
-  //   ],
-  // }
+  {
+    items: [
+      {
+        icon: "/profile.png",
+        label: "Profile",
+        href: "/dashboard/profile",
+        visible: ["admin", "teacher", "student", "parent"],
+      },
+      {
+        icon: "/setting.png",
+        label: "Settings",
+        href: "/dashboard/settings",
+        visible: ["admin", "teacher", "student", "parent"],
+      },
+      {
+        icon: "/logout.png",
+        label: "Logout",
+        href: "/logout",
+        visible: ["admin", "teacher", "student", "parent"],
+      },
+    ],
+  }
 ];
 
-// Update the Menu component
-const Menu = () => {
-  // Add router
+const Header = () => {
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isFontSizeOpen, setIsFontSizeOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [fontSize, setFontSize] = useState(100);
+  const searchRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  
-  // Add state for collapsed/expanded menus
-  const [expandedMenus, setExpandedMenus] = useState<MenuState>({});
-  
-  const auth = useAuth();
-  const pathname = usePathname();
-  const { role, id } = auth;
+  const { user } = useAuth(); // Add this line to get the user from AuthContext
+
+  // Add console log to debug user data
+  useEffect(() => {
+    console.log('Current user:', user);
+  }, [user]);
+
+  const filteredMenuItems = menuItems.flatMap(menu => menu.items).filter(item =>
+      item.label.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   useEffect(() => {
-    const storedRole = localStorage.getItem('role');
-    const storedId = localStorage.getItem('id');
-    const storedName = localStorage.getItem('name');
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setIsSearchOpen(false);
+      }
+    };
 
-    if (storedRole && storedId && (!role || !id)) {
-      console.log('Found stored credentials:', { role: storedRole, id: storedId , name: storedName });
-      // If role and id are not set in auth context, set them from localStorage
-      
-      auth.login(storedRole, storedId, storedName || '');
-    }
-  }, [role, id, auth]);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
-  const userRole = auth.role || localStorage.getItem('role') || null;
-  console.log('Current user role:', userRole);
-  console.log('LocalStorage role:', localStorage.getItem('role'));
-  console.log('Auth context role:', auth.role);
-
-  const filteredMenuItems = menuItems.map(section => ({
-    ...section,
-    items: section.items.filter(item => 
-      userRole === null 
-        ? item.visible.includes("student") && 
-          item.visible.includes("teacher") && 
-          item.visible.includes("parent") && 
-          item.visible.includes("admin")
-        : item.visible.includes(userRole)
-    )
-  }));
-
-  // Add toggle function
-  const toggleSubmenu = (label: string) => {
-    setExpandedMenus(prev => ({
-      ...prev,
-      [label]: !prev[label]
-    }));
+  const handleSearchClick = () => {
+    setIsSearchOpen(true);
+    setSearchQuery('');
   };
 
-  // Update the click handler function
-  const handleMenuClick = (item: MenuItem, event: React.MouseEvent) => {
-    event.preventDefault();
-    
-    if (item.hasSubmenu) {
-      toggleSubmenu(item.label);
-    } else {
-      const href = typeof item.href === 'function' ? item.href(userRole, id) : item.href;
-      router.push(href);
-    }
+  const handleMenuItemClick = (path: string) => {
+    setIsSearchOpen(false);
+    setSearchQuery('');
+    router.push(path);
   };
 
-  // Update the Menu component's return statement
+  const handleFontSizeChange = (size: number) => {
+    setFontSize(size);
+    document.documentElement.style.fontSize = `${size}%`;
+  };
+
   return (
-    <div className="mt-4 text-sm h-auto max-h-[calc(100vh-20px)] overflow-y-auto overflow-x-hidden relative w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] hover:[&::-webkit-scrollbar]:block hover:[-ms-overflow-style:auto] hover:[scrollbar-width:thin] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full">
-      {filteredMenuItems.map((section, index) => (
-        <div className="flex flex-col gap-2 w-full" key={index}>
-          {section.items.map((item) => (
-            <div key={item.label} className="w-full">
-              <div
-                className={`flex items-center justify-center lg:justify-start gap-4 py-2 md:px-2 rounded-md hover:bg-lamaSkyLight cursor-pointer ${
-                  pathname === (typeof item.href === 'function' ? item.href(userRole, id) : item.href)
-                    ? 'bg-lamaSkyLight text-lamaBlue' 
-                    : 'text-gray-500'
-                }`}
-                onClick={(e) => handleMenuClick(item, e)}
-              >
-                <div className="flex items-center justify-center lg:justify-start gap-4 flex-1">
-                  {item.icon && <Image src={item.icon} alt="" width={20} height={20} />}
-                  <span className="hidden lg:block">{item.label}</span>
+    <>
+      <div className="w-full h-[50px] bg-white border-b border-gray-200 flex items-center justify-between px-4 sticky top-0 z-40">
+        {/* Left Side Icons */}
+        <div className="flex items-center gap-6">
+          <button className="text-gray-500 hover:text-gray-700">
+            <Image src="/calendar.png" alt="Calendar" width={20} height={20} className="opacity-60" />
+          </button>
+        </div>
+
+        {/* Right Side Icons */}
+        <div className="flex items-center gap-6">
+          {/* Text Size */}
+          <div className="relative">
+            <button 
+              className="text-gray-500 hover:text-gray-700"
+              onClick={() => setIsFontSizeOpen(!isFontSizeOpen)}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <text x="50%" y="65%" fontSize="16" textAnchor="middle" fill="currentColor" className="font-bold">T</text>
+                <text x="50%" y="85%" fontSize="12" textAnchor="middle" fill="currentColor">T</text>
+              </svg>
+            </button>
+
+            {/* Font Size Dropdown */}
+            {isFontSizeOpen && (
+              <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 p-4">
+                <div className="flex flex-col">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-gray-700 font-medium">Font Size</span>
+                    <span className="text-gray-500">{fontSize}%</span>
+                  </div>
+                  <div className="w-full flex items-center gap-2">
+                    <span className="text-gray-500 text-sm">70%</span>
+                    <input
+                      type="range"
+                      min="70"
+                      max="130"
+                      value={fontSize}
+                      step="10"
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                      onChange={(e) => handleFontSizeChange(Number(e.target.value))}
+                    />
+                    <span className="text-gray-500 text-sm">130%</span>
+                  </div>
+                  <div className="flex justify-between mt-2">
+                    {[70, 80, 90, 100, 110, 120, 130].map((size) => (
+                      <div key={size} className="text-[10px] text-gray-400">{size}%</div>
+                    ))}
+                  </div>
                 </div>
-                {item.hasSubmenu && (
-                  <svg
-                    className={`w-4 h-4 transition-transform duration-200 ${
-                      expandedMenus[item.label] ? 'transform rotate-180' : ''
-                    }`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                )}
               </div>
-              {item.hasSubmenu && item.subItems && expandedMenus[item.label] && (
-                <div className="pl-4 mt-2 w-full">
-                  {item.subItems.map((subItem) => (
-                    <div key={subItem.label} className="w-full">
-                      <div
-                        className={`flex items-center py-2 px-4 text-sm hover:bg-lamaSkyLight rounded-md cursor-pointer ${
-                          pathname === subItem.href ? 'bg-lamaSkyLight text-lamaBlue' : 'text-gray-500'
-                        }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          if (subItem.hasSubmenu) {
-                            toggleSubmenu(`${item.label}-${subItem.label}`);
-                          } else {
-                            router.push(subItem.href);
-                          }
-                        }}
+            )}
+          </div>
+
+          {/* Search */}
+          <div className="relative" ref={searchRef}>
+            <button 
+              className="text-gray-500 hover:text-gray-700"
+              onClick={handleSearchClick}
+            >
+              <Image src="/search.png" alt="Search" width={20} height={20} className="opacity-60" />
+            </button>
+
+            {/* Search Overlay */}
+            {isSearchOpen && (
+              <>
+                <div className="fixed inset-0 bg-black bg-opacity-5 z-50" onClick={() => setIsSearchOpen(false)} />
+                <div className="fixed inset-x-0 top-0 bg-white border-b shadow-sm z-50">
+                  <div className="container mx-auto">
+                    <div className="flex items-center h-[50px] px-4 gap-3">
+                      <Image src="/search.png" alt="Search" width={20} height={20} className="opacity-60" />
+                      <input
+                        type="text"
+                        placeholder="Search menus..."
+                        className="flex-1 text-base text-gray-600 placeholder-gray-400 outline-none"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        autoFocus
+                      />
+                      <button 
+                        onClick={() => setIsSearchOpen(false)}
+                        className="p-1 hover:bg-gray-100 rounded-full"
                       >
-                        <div className="flex items-center flex-1 min-w-0">
-                          {subItem.icon && (
-                            <Image 
-                              src={subItem.icon} 
-                              alt="" 
-                              width={16} 
-                              height={16} 
-                              className="mr-2 flex-shrink-0"
-                            />
-                          )}
-                          <span className="truncate">{subItem.label}</span>
-                        </div>
-                        {subItem.hasSubmenu && (
-                          <svg
-                            className={`w-4 h-4 flex-shrink-0 transition-transform duration-200 ${
-                              expandedMenus[`${item.label}-${subItem.label}`] ? 'transform rotate-180' : ''
-                            }`}
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        )}
-                      </div>
-                      {subItem.hasSubmenu && subItem.subItems && expandedMenus[`${item.label}-${subItem.label}`] && (
-                        <div className="pl-4 mt-2 w-full">
-                          {subItem.subItems.map((nestedItem) => (
-                            <Link
-                              key={nestedItem.label}
-                              href={nestedItem.href}
-                              className={`flex items-center py-2 px-4 text-sm hover:bg-lamaSkyLight rounded-md ${
-                                pathname === nestedItem.href ? 'bg-lamaSkyLight text-lamaBlue' : 'text-gray-500'
-                              }`}
+                        <Image src="/close.png" alt="Close" width={16} height={16} className="opacity-60" />
+                      </button>
+                    </div>
+                    {/* Menu Items - only show when there's an active search query */}
+                    {searchQuery.trim() !== '' && filteredMenuItems.length > 0 && (
+                      <div className="px-4 py-3 border-t">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-8">
+                          {filteredMenuItems.map((item) => (
+                            <button
+                              key={typeof item.href === 'string' ? item.href : 'dynamic-key'}
+                              onClick={() => {
+                                const path = typeof item.href === 'function' ? item.href(null, null) : item.href;
+                                handleMenuItemClick(path);
+                              }}
+                              className="flex items-center gap-3 text-gray-700 hover:text-gray-900"
                             >
-                              <span className="truncate">{nestedItem.label}</span>
-                            </Link>
+                              <div className="w-5 h-5 opacity-60">
+                                <Image src={item.icon} alt={item.label} width={20} height={20} />
+                              </div>
+                              <span className="text-[15px]">{item.label}</span>
+                            </button>
                           ))}
                         </div>
-                      )}
-                    </div>
-                  ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              )}
-            </div>
-          ))}
+              </>
+            )}
+          </div>
+          {/* Profile */}
+          <div className="relative">
+            
+            <button 
+              onClick={() => setIsProfileOpen(!isProfileOpen)}
+              className="flex items-center gap-2 hover:bg-gray-50 py-1 px-2 rounded-md"
+            >
+              
+              <span className="text-gray-700 text-sm font-medium">
+                {user && user.name ? user.name : 'Guest'}
+              </span>
+              <Image
+                // src={user?.image || '/avatar.png'}
+                src={'/avatar.png'}
+                alt="Profile"
+                width={32}
+                height={32}
+                className="rounded-full"
+              />
+            </button>
+
+            {/* Profile Dropdown */}
+            {isProfileOpen && (
+              <div className="absolute right-0 mt-1 w-48 bg-white rounded-md shadow-lg border border-gray-200">
+                <div className="py-1">
+                  <Link href="/dashboard/profile" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                    <Image src="/profile.png" alt="My Profile" width={16} height={16} className="mr-2 opacity-60" />
+                    My Profile
+                  </Link>
+                  <Link href="/dashboard/settings" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                    <Image src="/setting.png" alt="Edit Profile" width={16} height={16} className="mr-2 opacity-60" />
+                    Edit Profile
+                  </Link>
+                  <Link href="/logout" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                    <Image src="/logout.png" alt="Logout" width={16} height={16} className="mr-2 opacity-60" />
+                    Logout
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      ))}
-    </div>
+      </div>
+    </>
   );
 };
 
-export default Menu;
+export default Header;

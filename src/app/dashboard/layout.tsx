@@ -1,4 +1,5 @@
 import Menu from "@/components/Menu";
+import Header from "@/components/Header";
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,6 +15,7 @@ export default function DashboardLayout({
         <Menu />
       </aside>
       <main className="flex-1">
+        <Header />
         {children}
       </main>
     </div>

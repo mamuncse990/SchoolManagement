@@ -52,8 +52,8 @@ export default function SignIn() {
 
       if (data.success) {
         const { user } = data;
-        if (user && user.role && user.id) {
-          login(user.role, user.id.toString());
+        if (user && user.role && user.id ) {
+          login(user.role, user.id.toString(), user.name);
         }
         
         // Verify the data was stored after a small delay

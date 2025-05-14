@@ -46,6 +46,7 @@ export async function POST(request: Request) {
         email: true,
         password: true,
         roleId: true,
+        name: true,
         role: {
           select: {
             name: true
@@ -85,7 +86,8 @@ export async function POST(request: Request) {
       { 
         userId: user.id,
         email: user.email,
-        roleId: user.roleId ?? 'USER'
+        roleId: user.roleId ?? 'USER',
+        name: user.name,
       },
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
@@ -95,7 +97,8 @@ export async function POST(request: Request) {
       success: true,
       user: {
         id: user.id,
-        role: user.role?.name ?? 'USER'
+        role: user.role?.name ?? 'USER',
+        name: user.name,
       }
     });
 
