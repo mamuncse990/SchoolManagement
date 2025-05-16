@@ -12,7 +12,7 @@ interface PaginationProps {
   onPageSizeChange?: (pageSize: number) => void;
 }
 
-const Pagination = ({ page, count, pageSize = 10, onPageChange, onPageSizeChange }: PaginationProps) => {
+const Pagination = ({ page, count, pageSize = 8, onPageChange, onPageSizeChange }: PaginationProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentPageSize = searchParams ? Number(searchParams.get('pageSize')) || pageSize : pageSize;

@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { PrismaClient, User } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { masterDataConfigs } from "@/app/masterSetupConfig/masterDataConfig";
 
 type UserList = User & { role: { name: string } | null };
 
@@ -33,6 +34,14 @@ type MenuItem = {
 // Add this type for menu state management
 type MenuState = {
   [key: string]: boolean;
+};
+
+const getMasterDataSubItems = () => {
+  return Object.entries(masterDataConfigs).map(([key, config]) => ({
+    label: config.label,
+    href: `/dashboard/masterSetup/master-data/${key}`,
+    icon: config.icon,
+  }));
 };
 
 // Update the menuItems structure
@@ -367,88 +376,7 @@ const menuItems: { items: MenuItem[] }[] = [
         icon: "/setting.png",
         hasSubmenu: true,
         visible: ["admin", "teacher"],
-        subItems: [
-          {
-            label: "School Information",
-            href: "/master-data/school-information",
-            icon: "/school.png",
-          },
-          {
-            label: "Branch",
-            href: "/master-data/branch",
-            icon: "/branch.png",
-          },
-          {
-            label: "Session",
-            href: "/master-data/session",
-            icon: "/session.png",
-          },
-          {
-            label: "Group",
-            href: "/master-data/group",
-            icon: "/group.png",
-          },
-          {
-            label: "Shift",
-            href: "/master-data/shift",
-            icon: "/shift.png",
-          },
-           {
-            label: "Version",
-            href: "/master-data/version",
-            icon: "/version.png",
-          },
-          {
-            label: "Gender",
-            href: "/master-data/gender",
-            icon: "/gender.png",
-          },
-          {
-            label: "Religion",
-            href: "/master-data/religion",
-            icon: "/religion.png",
-          },
-          {
-            label: "Nationality",
-            href: "/master-data/nationality",
-            icon: "/nationality.png",
-          },
-          {
-            label: "Occupation",
-            href: "/master-data/occupation",
-            icon: "/occupation.png",
-          },
-          {
-            label: "Designation",
-            href: "/master-data/designation",
-            icon: "/designation.png",
-          },
-          {
-            label: "Blood Group",
-            href: "/master-data/blood-group",
-            icon: "/bloodGroup.png",
-          },
-          {
-            label: "Class",
-            href: "/dashboard/list/classes",
-            icon: "/class.png",
-          },
-          {
-            label: "Subject",
-            href: "/dashboard/list/subjects",
-            icon: "/subject.png",
-          },
-          {
-            label: "Exam Type",
-            href: "/master-data/exam-type",
-            icon: "/examType.png",
-          },
-          {
-            label: "Exam Grade",
-            href: "/master-data/exam-grade",
-            icon: "/exam-grade.png",
-          },
-        ],
+        subItems: getMasterDataSubItems(),
       },
     ],
   },

@@ -8,7 +8,7 @@ import { Class, Lesson, Prisma, Subject, Teacher } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import FilterWrapper from "@/components/FilterWrapper";
-import { getAuthUser } from '@/lib/auth';
+import { getAuthUser } from "@/lib/auth";
 
 type LessonList = Lesson & { subject: Subject } & { class: Class } & {
   teacher: Teacher;
@@ -98,7 +98,8 @@ const LessonListPage = async ({
   }
 
   const [data, count] = await prisma.$transaction([
-    prisma.lesson.findMany({      where: query,
+    prisma.lesson.findMany({
+      where: query,
       include: {
         subject: { select: { name: true } },
         class: { select: { name: true } },
@@ -123,14 +124,9 @@ const LessonListPage = async ({
           </div>
         </div>
       </div>
-      {/* LIST */}      <Table columns={columns} renderRow={renderRow} data={data} />
+      {/* LIST */} <Table columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
-      <Pagination 
-        page={p} 
-        count={count}
-        pageSize={take}
-      />
-      
+      <Pagination page={p} count={count} pageSize={take} />
     </div>
   );
 };
