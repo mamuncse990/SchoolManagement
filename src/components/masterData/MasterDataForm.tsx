@@ -2,30 +2,93 @@ import { FC, useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { masterDataConfigs } from '@/app/masterSetupConfig/masterDataConfig';
 import { MasterDataItem } from '@/app/masterDataTypes/masterData';
+import { toast } from 'react-toastify';
 
 interface MasterDataFormProps {
   id?: string;
+  initialData?: MasterDataItem | null;
+  table?: string;
 }
 
-const MasterDataForm: FC<MasterDataFormProps> = ({ id }) => {
+const MasterDataForm: FC<MasterDataFormProps> = ({ id, initialData, table: tableFromProps }) => {
   const router = useRouter();
   const params = useParams();
-  const table = params?.table as string;
-  const [formData, setFormData] = useState<Record<string, any>>({});
+  const table = tableFromProps || (params?.table as string);
+  const [formData, setFormData] = useState<Record<string, any>>(initialData || {});
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const config = table ? masterDataConfigs[table as string] : null;
+  const [grades, setGrades] = useState<Array<{ id: number; level: number }>>([]);
+  const [supervisors, setSupervisors] = useState<Array<{ id: string; name: string }>>([]);
 
   useEffect(() => {
-    if (id && config) {
+    if (initialData) {
+      setFormData(initialData);
+    } else if (id && config) {
       fetchItem();
     }
-  }, [id, config]);
+  }, [id, config, initialData]);
+
+  useEffect(() => {
+    if (table === 'class') {
+      // Fetch grades
+      fetch('/api/grades')
+        .then((res) => res.json())
+        .then((data) => {
+          setGrades(data);
+          // Update the gradeId field options
+          if (config) {
+            const gradeField = config.fields.find(f => f.name === 'gradeId');
+            if (gradeField) {
+              gradeField.options = data.map((grade: { id: number; level: number }) => ({
+                label: `Grade ${grade.level}`,
+                value: grade.id
+              }));
+            }
+          }
+        })
+        .catch((err) => {
+          console.error('Error fetching grades:', err);
+          toast.error('Failed to load grades');
+        });
+
+      // Fetch supervisors (teachers)
+      fetch('/api/teachers')
+        .then((res) => res.json())
+        .then((data) => {
+          setSupervisors(data);
+          // Update the supervisorId field options
+          if (config) {
+            const supervisorField = config.fields.find(f => f.name === 'supervisorId');
+            if (supervisorField) {
+              supervisorField.options = data.map((teacher: { id: string; name: string }) => ({
+                label: teacher.name,
+                value: teacher.id
+              }));
+            }
+          }
+        })
+        .catch((err) => {
+          console.error('Error fetching supervisors:', err);
+          toast.error('Failed to load supervisors');
+        });
+    }
+  }, [table, config]);
 
   const fetchItem = async () => {
-    try {      const response = await fetch(`/api/master-data/${config?.tableName}/${id}`);
+    try {
+      setError('');
+      const response = await fetch(`/api/master-data/${table}/${id}`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to fetch data');
+      }
       const data = await response.json();
       setFormData(data);
     } catch (error) {
+      const message = error instanceof Error ? error.message : 'Error fetching item';
+      setError(message);
+      toast.error(message);
       console.error('Error fetching item:', error);
     }
   };
@@ -33,11 +96,10 @@ const MasterDataForm: FC<MasterDataFormProps> = ({ id }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
-    try {
+    setError('');    try {
       const url = id
-        ? `/api/master-data/${config?.tableName}/${id}`
-        : `/api/master-data/${config?.tableName}`;
+        ? `/api/master-data/${table}/${id}`
+        : `/api/master-data/${table}`;
       
       const response = await fetch(url, {
         method: id ? 'PUT' : 'POST',
@@ -47,10 +109,17 @@ const MasterDataForm: FC<MasterDataFormProps> = ({ id }) => {
         body: JSON.stringify(formData),
       });
 
-      if (response.ok) {
-        router.push(`/dashboard/masterSetup/master-data/${table}`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to save data');
       }
+
+      toast.success(`${config?.label} ${id ? 'updated' : 'created'} successfully!`);
+      router.push(`/dashboard/masterSetup/master-data/${table}`);
     } catch (error) {
+      const message = error instanceof Error ? error.message : 'Error saving item';
+      setError(message);
+      toast.error(message);
       console.error('Error saving item:', error);
     } finally {
       setLoading(false);
@@ -68,10 +137,16 @@ const MasterDataForm: FC<MasterDataFormProps> = ({ id }) => {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-2xl mx-auto">
+      {error && (
+        <div className="mb-4 p-4 text-red-700 bg-red-100 rounded-md">
+          {error}
+        </div>
+      )}
       {config.fields.map((field) => (
         <div key={field.name} className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             {field.label}
+            {field.required && <span className="text-red-500 ml-1">*</span>}
           </label>
           {field.type === 'textarea' ? (
             <textarea

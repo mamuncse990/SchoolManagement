@@ -35,17 +35,24 @@ export async function GET() {
       verify(token, process.env.JWT_SECRET!);
     } catch (error) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
-    }
-
-    const teachers = await prisma.teacher.findMany({
+    }    const teachers = await prisma.teacher.findMany({
       select: {
         id: true,
         name: true,
         surname: true,
       },
+      orderBy: {
+        name: 'asc',
+      },
     });
 
-    return NextResponse.json(teachers);
+    // Format the teacher name to include both name and surname
+    const formattedTeachers = teachers.map(teacher => ({
+      id: teacher.id,
+      name: `${teacher.name} ${teacher.surname}`.trim(),
+    }));
+
+    return NextResponse.json(formattedTeachers);
   } catch (error) {
     console.error('Error fetching teachers:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
