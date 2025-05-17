@@ -17,10 +17,10 @@ const MasterDataLayout: FC<MasterDataLayoutProps> = ({ children }) => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
+      {/* <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
         <img src={config.icon} alt={config.label} className="w-6 h-6" />
         {config.label}
-      </h1>
+      </h1> */}
       {children}
     </div>
   );

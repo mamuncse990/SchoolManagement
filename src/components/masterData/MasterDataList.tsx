@@ -139,8 +139,9 @@ const MasterDataList: FC = () => {
     <div className="flex flex-col h-screen">
       <div className="p-4 lg:px-6 lg:py-6 flex-shrink-0">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="hidden md:block text-lg font-semibold">
-            {config?.label || "All Items"}
+          <h1 className="hidden md:flex items-center gap-2 text-lg font-semibold">
+            <img src={config.icon} alt={config.label} className="w-6 h-6" />
+            <span>{config?.label || "All Items"} List</span>
           </h1>
           <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
             <TableSearch value={search} onChange={handleSearch} />
