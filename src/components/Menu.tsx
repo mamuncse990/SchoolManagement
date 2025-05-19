@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { PrismaClient, User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { masterDataConfigs } from "@/app/masterSetupConfig/masterDataConfig";
-
+import { websitesMenuConfig } from "@/app/websitesSetupConfig/websitesMenuConfig";
 type UserList = User & { role: { name: string } | null };
 
 // First, update the MenuItem type to include nested submenus
@@ -41,224 +41,252 @@ const getMasterDataSubItems = () => {
     label: config.label,
     href: `/dashboard/masterSetup/master-data/${key}`,
     icon: config.icon,
+    
   }));
 };
 
+const getWebsitesSubItems = () => {
+  return Object.entries(websitesMenuConfig).map(([key, config]) => ({
+    label: config.label,
+    href: `/dashboard/masterSetup/master-data/${key}`,
+    icon: config.icon,
+    hasSubmenu: true,
+    subItems: config.submenu?.map(subItem => ({
+      label: subItem.label,
+      href: `/dashboard/masterSetup/master-data/${subItem.tableName}`,
+      icon: subItem.icon
+    }))
+  }));
+};
+
+
 // Update the menuItems structure
 const menuItems: { items: MenuItem[] }[] = [
-  {
+  // {
+  //   items: [
+  //     {
+  //       label: "WEBSITES",
+  //       href: "/websites",
+  //       icon: "/websites.png",
+  //       hasSubmenu: true,
+  //       visible: ["admin", "teacher", "student", "parent"],
+  //       subItems: [
+  //         {
+  //           label: "ABOUT",
+  //           href: "/about",
+  //           icon: "/about.png",
+  //           hasSubmenu: true,
+  //           subItems: [
+  //             { label: "About Us", href: "/websites/about/about-us" },
+  //             {
+  //               label: "Founder & Doner List",
+  //               href: "/websites/about/founder-doner",
+  //             },
+  //             { label: "History", href: "/websites/about/history" },
+  //             { label: "Our Vision", href: "/websites/about/vision" },
+  //             { label: "Campus Tour", href: "/websites/about/campus-tour" },
+  //             { label: "Achievements", href: "/websites/about/achievements" },
+  //             { label: "Honorable Chairman", href: "/websites/about/chairman" },
+  //             {
+  //               label: "Governing Body",
+  //               href: "/websites/about/governing-body",
+  //             },
+  //             {
+  //               label: "Ex Governing Body",
+  //               href: "/websites/about/ex-governing-body",
+  //             },
+  //             { label: "Our Principal", href: "/websites/about/principal" },
+  //             {
+  //               label: "Our Ex Principals",
+  //               href: "/websites/about/ex-principals",
+  //             },
+  //             { label: "Administrator", href: "/websites/about/administrator" },
+  //           ],
+  //         },
+  //         {
+  //           label: "INFORMATION",
+  //           href: "/information",
+  //           icon: "/information.png",
+  //           hasSubmenu: true,
+  //           subItems: [
+  //             {
+  //               label: "Teaching Permission & Recognition Letter",
+  //               href: "/websites/information/teaching-permission",
+  //             },
+  //             {
+  //               label: "Nationalization",
+  //               href: "/websites/information/nationalization",
+  //             },
+  //             {
+  //               label: "Statistics Report",
+  //               href: "/websites/information/statistics",
+  //             },
+  //             {
+  //               label: "Govt. Approval Letter",
+  //               href: "/websites/information/approval-letter",
+  //             },
+  //           ],
+  //         },
+  //         {
+  //           label: "ACADEMIC",
+  //           href: "/academic",
+  //           icon: "/academic.png",
+  //           hasSubmenu: true,
+  //           subItems: [
+  //             {
+  //               label: "Class Schedule",
+  //               href: "/websites/academic/class-schedule",
+  //             },
+  //             { label: "Our Teachers", href: "/websites/academic/teachers" },
+  //             {
+  //               label: "Prior Teachers",
+  //               href: "/websites/academic/prior-teachers",
+  //             },
+  //             { label: "Our Staffs", href: "/websites/academic/staffs" },
+  //             {
+  //               label: "Prior Staffs",
+  //               href: "/websites/academic/prior-staffs",
+  //             },
+  //             { label: "Academic Rules", href: "/websites/academic/rules" },
+  //             {
+  //               label: "Academic Calendar",
+  //               href: "/websites/academic/calendar",
+  //             },
+  //             {
+  //               label: "Attendance Sheet",
+  //               href: "/websites/academic/attendance",
+  //             },
+  //             { label: "Leave Information", href: "/websites/academic/leave" },
+  //           ],
+  //         },
+  //         {
+  //           label: "ADMISSION",
+  //           href: "/admission",
+  //           icon: "/admission.png",
+  //           hasSubmenu: true,
+  //           subItems: [
+  //             { label: "Why Study ?", href: "/websites/admission/why-study" },
+  //             {
+  //               label: "How To Apply ?",
+  //               href: "/websites/admission/how-to-apply",
+  //             },
+  //             { label: "Admission Test", href: "/websites/admission/test" },
+  //             { label: "Admission Policy", href: "/websites/admission/policy" },
+  //             {
+  //               label: "Online Registration",
+  //               href: "/websites/admission/registration",
+  //             },
+  //           ],
+  //         },
+  //         {
+  //           label: "STUDENT",
+  //           href: "/student",
+  //           icon: "/student.png",
+  //           hasSubmenu: true,
+  //           subItems: [
+  //             { label: "Student List", href: "/websites/student/list" },
+  //             { label: "Tuition Fees", href: "/websites/student/fees" },
+  //             { label: "Mobile Banking", href: "/websites/student/banking" },
+  //             {
+  //               label: "Daily Activities",
+  //               href: "/websites/student/activities",
+  //             },
+  //             {
+  //               label: "Exam Schedule",
+  //               href: "/websites/student/exam-schedule",
+  //             },
+  //             { label: "Student Uniform", href: "/websites/student/uniform" },
+  //             { label: "Exam System", href: "/websites/student/exam-system" },
+  //             { label: "Rules & Regulation", href: "/websites/student/rules" },
+  //             {
+  //               label: "Verify Certificate",
+  //               href: "/websites/student/verify-certificate",
+  //             },
+  //           ],
+  //         },
+  //         {
+  //           label: "FACILITIES",
+  //           href: "/facilities",
+  //           icon: "/facilities.png",
+  //           hasSubmenu: true,
+  //           subItems: [
+  //             { label: "Library", href: "/websites/facilities/library" },
+  //             { label: "Play Ground", href: "/websites/facilities/playground" },
+  //             {
+  //               label: "Physics Lab",
+  //               href: "/websites/facilities/physics-lab",
+  //             },
+  //             {
+  //               label: "Biology Lab",
+  //               href: "/websites/facilities/biology-lab",
+  //             },
+  //             { label: "ICT Lab", href: "/websites/facilities/ict-lab" },
+  //             {
+  //               label: "Chemistry Lab",
+  //               href: "/websites/facilities/chemistry-lab",
+  //             },
+  //             {
+  //               label: "Co Curricular Activity",
+  //               href: "/websites/facilities/co-curricular",
+  //             },
+  //           ],
+  //         },
+  //         {
+  //           label: "RESULT",
+  //           href: "/result",
+  //           icon: "/result.png",
+  //           hasSubmenu: true,
+  //           subItems: [
+  //             { label: "Result", href: "/websites/result/view" },
+  //             { label: "Academic Result", href: "/websites/result/academic" },
+  //             { label: "Evaluation", href: "/websites/result/evaluation" },
+  //             { label: "Board Exam", href: "/websites/result/board-exam" },
+  //           ],
+  //         },
+  //         {
+  //           label: "OTHERS",
+  //           href: "/others",
+  //           icon: "/others.png",
+  //           hasSubmenu: true,
+  //           subItems: [
+  //             { label: "Notice", href: "/websites/others/notice" },
+  //             { label: "News", href: "/websites/others/news" },
+  //             { label: "Gallery", href: "/websites/others/gallery" },
+  //             { label: "Events", href: "/websites/others/events" },
+  //             { label: "Routine Download", href: "/websites/others/routine" },
+  //           ],
+  //         },
+  //         {
+  //           label: "CONTACT",
+  //           href: "/contact",
+  //           icon: "/contact.png",
+  //         },
+  //         {
+  //           label: "ALUMNI",
+  //           href: "/alumni",
+  //           icon: "/alumni.png",
+  //           hasSubmenu: true,
+  //           subItems: [
+  //             {
+  //               label: "Alumni Registration",
+  //               href: "/websites/alumni/register",
+  //             },
+  //             { label: "Alumni List", href: "/websites/alumni/list" },
+  //           ],
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
+   {
     items: [
       {
-        label: "WEBSITES",
+        label: "Websites",
         href: "/websites",
         icon: "/websites.png",
         hasSubmenu: true,
-        visible: ["admin", "teacher", "student", "parent"],
-        subItems: [
-          {
-            label: "ABOUT",
-            href: "/about",
-            icon: "/about.png",
-            hasSubmenu: true,
-            subItems: [
-              { label: "About Us", href: "/websites/about/about-us" },
-              {
-                label: "Founder & Doner List",
-                href: "/websites/about/founder-doner",
-              },
-              { label: "History", href: "/websites/about/history" },
-              { label: "Our Vision", href: "/websites/about/vision" },
-              { label: "Campus Tour", href: "/websites/about/campus-tour" },
-              { label: "Achievements", href: "/websites/about/achievements" },
-              { label: "Honorable Chairman", href: "/websites/about/chairman" },
-              {
-                label: "Governing Body",
-                href: "/websites/about/governing-body",
-              },
-              {
-                label: "Ex Governing Body",
-                href: "/websites/about/ex-governing-body",
-              },
-              { label: "Our Principal", href: "/websites/about/principal" },
-              {
-                label: "Our Ex Principals",
-                href: "/websites/about/ex-principals",
-              },
-              { label: "Administrator", href: "/websites/about/administrator" },
-            ],
-          },
-          {
-            label: "INFORMATION",
-            href: "/information",
-            icon: "/information.png",
-            hasSubmenu: true,
-            subItems: [
-              {
-                label: "Teaching Permission & Recognition Letter",
-                href: "/websites/information/teaching-permission",
-              },
-              {
-                label: "Nationalization",
-                href: "/websites/information/nationalization",
-              },
-              {
-                label: "Statistics Report",
-                href: "/websites/information/statistics",
-              },
-              {
-                label: "Govt. Approval Letter",
-                href: "/websites/information/approval-letter",
-              },
-            ],
-          },
-          {
-            label: "ACADEMIC",
-            href: "/academic",
-            icon: "/academic.png",
-            hasSubmenu: true,
-            subItems: [
-              {
-                label: "Class Schedule",
-                href: "/websites/academic/class-schedule",
-              },
-              { label: "Our Teachers", href: "/websites/academic/teachers" },
-              {
-                label: "Prior Teachers",
-                href: "/websites/academic/prior-teachers",
-              },
-              { label: "Our Staffs", href: "/websites/academic/staffs" },
-              {
-                label: "Prior Staffs",
-                href: "/websites/academic/prior-staffs",
-              },
-              { label: "Academic Rules", href: "/websites/academic/rules" },
-              {
-                label: "Academic Calendar",
-                href: "/websites/academic/calendar",
-              },
-              {
-                label: "Attendance Sheet",
-                href: "/websites/academic/attendance",
-              },
-              { label: "Leave Information", href: "/websites/academic/leave" },
-            ],
-          },
-          {
-            label: "ADMISSION",
-            href: "/admission",
-            icon: "/admission.png",
-            hasSubmenu: true,
-            subItems: [
-              { label: "Why Study ?", href: "/websites/admission/why-study" },
-              {
-                label: "How To Apply ?",
-                href: "/websites/admission/how-to-apply",
-              },
-              { label: "Admission Test", href: "/websites/admission/test" },
-              { label: "Admission Policy", href: "/websites/admission/policy" },
-              {
-                label: "Online Registration",
-                href: "/websites/admission/registration",
-              },
-            ],
-          },
-          {
-            label: "STUDENT",
-            href: "/student",
-            icon: "/student.png",
-            hasSubmenu: true,
-            subItems: [
-              { label: "Student List", href: "/websites/student/list" },
-              { label: "Tuition Fees", href: "/websites/student/fees" },
-              { label: "Mobile Banking", href: "/websites/student/banking" },
-              {
-                label: "Daily Activities",
-                href: "/websites/student/activities",
-              },
-              {
-                label: "Exam Schedule",
-                href: "/websites/student/exam-schedule",
-              },
-              { label: "Student Uniform", href: "/websites/student/uniform" },
-              { label: "Exam System", href: "/websites/student/exam-system" },
-              { label: "Rules & Regulation", href: "/websites/student/rules" },
-              {
-                label: "Verify Certificate",
-                href: "/websites/student/verify-certificate",
-              },
-            ],
-          },
-          {
-            label: "FACILITIES",
-            href: "/facilities",
-            icon: "/facilities.png",
-            hasSubmenu: true,
-            subItems: [
-              { label: "Library", href: "/websites/facilities/library" },
-              { label: "Play Ground", href: "/websites/facilities/playground" },
-              {
-                label: "Physics Lab",
-                href: "/websites/facilities/physics-lab",
-              },
-              {
-                label: "Biology Lab",
-                href: "/websites/facilities/biology-lab",
-              },
-              { label: "ICT Lab", href: "/websites/facilities/ict-lab" },
-              {
-                label: "Chemistry Lab",
-                href: "/websites/facilities/chemistry-lab",
-              },
-              {
-                label: "Co Curricular Activity",
-                href: "/websites/facilities/co-curricular",
-              },
-            ],
-          },
-          {
-            label: "RESULT",
-            href: "/result",
-            icon: "/result.png",
-            hasSubmenu: true,
-            subItems: [
-              { label: "Result", href: "/websites/result/view" },
-              { label: "Academic Result", href: "/websites/result/academic" },
-              { label: "Evaluation", href: "/websites/result/evaluation" },
-              { label: "Board Exam", href: "/websites/result/board-exam" },
-            ],
-          },
-          {
-            label: "OTHERS",
-            href: "/others",
-            icon: "/others.png",
-            hasSubmenu: true,
-            subItems: [
-              { label: "Notice", href: "/websites/others/notice" },
-              { label: "News", href: "/websites/others/news" },
-              { label: "Gallery", href: "/websites/others/gallery" },
-              { label: "Events", href: "/websites/others/events" },
-              { label: "Routine Download", href: "/websites/others/routine" },
-            ],
-          },
-          {
-            label: "CONTACT",
-            href: "/contact",
-            icon: "/contact.png",
-          },
-          {
-            label: "ALUMNI",
-            href: "/alumni",
-            icon: "/alumni.png",
-            hasSubmenu: true,
-            subItems: [
-              {
-                label: "Alumni Registration",
-                href: "/websites/alumni/register",
-              },
-              { label: "Alumni List", href: "/websites/alumni/list" },
-            ],
-          },
-        ],
+        visible: ["admin", "teacher"],
+        subItems: getWebsitesSubItems(),
       },
     ],
   },
@@ -452,9 +480,9 @@ const Menu = () => {
       [label]: !prev[label],
     }));
   };
-
   const handleMenuClick = (item: MenuItem, event: React.MouseEvent) => {
     event.preventDefault();
+    event.stopPropagation();
 
     if (item.hasSubmenu) {
       toggleSubmenu(item.label);
@@ -463,6 +491,32 @@ const Menu = () => {
         typeof item.href === "function" ? item.href(userRole, id) : item.href;
       router.push(href);
     }
+  };
+
+  const renderSubItems = (subItems: MenuItem['subItems']) => {
+    if (!subItems) return null;
+    
+    return subItems.map((subItem, index) => (
+      <div key={`${subItem.label}-${index}`} className="pl-4">
+        <div
+          className="flex items-center gap-2 py-2 px-3 text-sm hover:bg-lamaSkyLight cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            router.push(subItem.href);
+          }}
+        >
+          {subItem.icon && (
+            <Image src={subItem.icon} alt="" width={16} height={16} />
+          )}
+          <span className="text-gray-600">{subItem.label}</span>
+        </div>
+        {subItem.hasSubmenu && expandedMenus[subItem.label] && (
+          <div className="pl-4">
+            {renderSubItems(subItem.subItems)}
+          </div>
+        )}
+      </div>
+    ));
   };
 
   return (

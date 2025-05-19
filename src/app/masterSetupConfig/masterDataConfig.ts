@@ -204,6 +204,46 @@ export const masterDataConfigs: Record<string, MasterDataConfig> = {
       { name: "parentId", label: "Parent Menu", type: "select" },
     ],
   },
+ "Role": {
+    tableName: "Role",
+    label: "Role",
+    icon: "/role.png",
+    fields: [
+      { name: "name", label: "Role Name", type: "text", required: true },
+      { name: "description", label: "Description", type: "textarea" },
+      { 
+        name: "permissions", 
+        label: "Permissions", 
+        type: "multiple",
+        options: [
+          { label: "Create", value: "create" },
+          { label: "Read", value: "read" },
+          { label: "Update", value: "update" },
+          { label: "Delete", value: "delete" },
+          { label: "Manage Users", value: "manage_users" },
+          { label: "Manage Roles", value: "manage_roles" },
+          { label: "View Reports", value: "view_reports" }
+        ]
+      },
+    ],
+  },
+  exam: {
+    tableName: "Exam",
+    label: "Exam",
+    icon: "/exam.png",
+    fields: [
+      { name: "title", label: "Exam Name", type: "text", required: true },
+      // { name: "startTime", label: "Date", type: "date", required: true },
+      // { name: "endTime", label: "Time", type: "time", required: true },
+      // { name: "duration", label: "Duration", type: "number", required: true },
+      // {
+      //   name: "lessonId",
+      //   label: "Lesson",
+      //   type: "select",
+      //   required: true,
+      //   options: [],
+      // }, // Options will be populated dynamically
+    ],}
 //   student: {
 //     tableName: "student",
 //     label: "Student",
