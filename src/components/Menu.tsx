@@ -48,12 +48,12 @@ const getMasterDataSubItems = () => {
 const getWebsitesSubItems = () => {
   return Object.entries(websitesMenuConfig).map(([key, config]) => ({
     label: config.label,
-    href: `/dashboard/masterSetup/master-data/${key}`,
+    href: `/dashboard/websites/${config.tableName}`,
     icon: config.icon,
-    hasSubmenu: true,
+    hasSubmenu: config.hasSubmenu,
     subItems: config.submenu?.map(subItem => ({
       label: subItem.label,
-      href: `/dashboard/masterSetup/master-data/${subItem.tableName}`,
+      href: `/dashboard/websites/${subItem.tableName}`,
       icon: subItem.icon
     }))
   }));

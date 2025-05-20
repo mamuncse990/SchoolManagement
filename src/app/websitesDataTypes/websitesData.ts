@@ -1,13 +1,13 @@
-export interface websitesDataConfig {
-  tableName: string;
+export interface websitesDataConfig {  tableName: string;
   label: string;
   icon: string;
+  path?: string;
   hasSubmenu: boolean;
   fields: any[];
   submenu: {
     tableName: string;
     label: string;
-    //href: string;
+    path?: string;
     icon: string;
     fields: Array<{
       name: string;

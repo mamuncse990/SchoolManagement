@@ -1,23 +1,24 @@
 import { websitesDataConfig } from "../websitesDataTypes/websitesData";
 
-export const websitesMenuConfig: Record<string, websitesDataConfig> = {
- "About": {
+export const websitesMenuConfig: Record<string, websitesDataConfig> = {  "About": {
     tableName: "about",
     label: "ABOUT",
     icon: "/about.png",
+    path: "/dashboard/websites/about",
     hasSubmenu: true,
     fields: [],
     submenu: [
       {
-        tableName: "aboutUs",
+        tableName: "AboutUs",
         label: "About Us",
         icon: "/about.png",
+        path: "/dashboard/websites/AboutUs",
         fields: [
           {
-            name: "aboutUs",
-            label: "About Us",
+            name: "content",
+            label: "About Us Content",
             type: "textarea",
-            placeholder: "Enter founder & doner list content",
+            placeholder: "Enter about us content",
             required: true
           }
         ]
@@ -28,8 +29,8 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         icon: "/about.png",
         fields: [
           {
-            name: "founderAndDonerList",
-            label: "Founder & Doner List",
+            name: "founderAndDonerName",
+            label: "Founder & Doner",
             type: "textarea",
             placeholder: "Enter founder & doner list content",
             required: true
@@ -42,7 +43,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         icon: "/about.png",
         fields: [
           {
-            name: "history",
+            name: "historyNotes",
             label: "History",
             type: "textarea",
             placeholder: "Enter history content",
@@ -56,7 +57,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         icon: "/about.png",
         fields: [
           {
-            name: "vision",
+            name: "visionDetails",
             label: "Our Vision",
             type: "textarea",
             placeholder: "Enter our vision content",
@@ -70,7 +71,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         icon: "/about.png",
         fields: [
           {
-            name: "campusTour",
+            name: "campusTourDetails",
             label: "Campus Tour",
             type: "textarea",
             placeholder: "Enter campus tour content",
@@ -84,7 +85,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         icon: "/about.png",
         fields: [
           {
-            name: "achievements",
+            name: "achievementsDetails",
             label: "Achievements",
             type: "textarea",
             placeholder: "Enter achievements content",
@@ -98,7 +99,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         icon: "/about.png",
         fields: [
           {
-            name: "chairman",
+            name: "chairmanDetails",
             label: "Honorable Chairman",
             type: "textarea",
             placeholder: "Enter honorable chairman content",
@@ -112,7 +113,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         icon: "/about.png",
         fields: [
           {
-            name: "governingBody",
+            name: "governingBodyDetails",
             label: "Governing Body",
             type: "textarea",
             placeholder: "Enter governing body content",
@@ -126,7 +127,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         icon: "/about.png",
         fields: [
           {
-            name: "exGoverningBody",
+            name: "exGoverningBodyDetails",
             label: "Ex Governing Body",
             type: "textarea",
             placeholder: "Enter ex governing body content",
@@ -140,7 +141,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         icon: "/about.png",
         fields: [
           {
-            name: "principal",
+            name: "principalDetails",
             label: "Our Principal",
             type: "textarea",
             placeholder: "Enter our principal content",
@@ -154,7 +155,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         icon: "/about.png",
         fields: [
           {
-            name: "exPrincipals",
+            name: "exPrincipalsDetails",
             label: "Our Ex Principals",
             type: "textarea",
             placeholder: "Enter our ex principals content",
@@ -168,7 +169,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         icon: "/about.png",
         fields: [
           {
-            name: "administrator",
+            name: "administratorDetails",
             label: "Administrator",
             type: "textarea",
             placeholder: "Enter administrator content",
@@ -191,7 +192,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         icon: "/teaching-permission.png",
         fields: [
           {
-            name: "teachingPermission",
+            name: "teachingPermissionDetails",
             label: "Teaching Permission",
             type: "textarea",
             placeholder: "Enter teaching permission content",
@@ -205,7 +206,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         icon: "/nationalization.png",
         fields: [
           {
-            name: "nationalization",
+            name: "nationalizationDetails",
             label: "Nationalization",
             type: "textarea",
             placeholder: "Enter nationalization content",
@@ -219,7 +220,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         icon: "/recognition.png",
         fields: [
           {
-            name: "statisticsReport",
+            name: "statisticsReportDetails",
             label: "Statistics Report",
             type: "textarea",
             placeholder: "Enter statistics report content",
@@ -233,7 +234,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         icon: "/approval-letter.png",
         fields: [
           {
-            name: "approvalLetter",
+            name: "approvalLetterDetails",
             label: "Govt. Approval Letter",
             type: "textarea",
             placeholder: "Enter govt. approval letter content",
@@ -255,7 +256,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Class Schedule",
         icon: "/academic.png",
         fields: [{
-          name: "classSchedule", 
+          name: "classScheduleDetails", 
           label: "Class Schedule",
           type: "textarea",
           placeholder: "Enter class schedule content",
@@ -267,7 +268,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Our Teachers",
         icon: "/teachers.png",
         fields: [{
-          name: "teachers",
+          name: "teachersDetails",
           label: "Teachers",
           type: "textarea",
           placeholder: "Enter teachers content",
@@ -279,7 +280,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Prior Teachers",
         icon: "/teachers.png",
         fields: [{
-          name: "priorTeachers",
+          name: "priorTeachersDetails",
           label: "Prior Teachers",
           type: "textarea",
           placeholder: "Enter prior teachers content",
@@ -291,7 +292,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Our Staffs",
         icon: "/staffs.png",
         fields: [{
-          name: "staffs",
+          name: "staffsDetails",
           label: "Staffs",
           type: "textarea",
           placeholder: "Enter staffs content",
@@ -303,7 +304,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Prior Staffs", 
         icon: "/staffs.png",
         fields: [{
-          name: "priorStaffs",
+          name: "priorStaffsDetails",
           label: "Prior Staffs",
           type: "textarea",
           placeholder: "Enter prior staffs content",
@@ -315,7 +316,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Academic Calendar",
         icon: "/academic-calender.png",
         fields: [{
-          name: "academicCalendar",
+          name: "academicCalendarDetails",
           label: "Academic Calendar",
           type: "textarea",
           placeholder: "Enter academic calendar content",
@@ -327,7 +328,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Attendance Sheet",
         icon: "/attendance-sheet.png",
         fields: [{
-          name: "attendanceSheet",
+          name: "attendanceSheetDetails",
           label: "Attendance Sheet",
           type: "textarea",
           placeholder: "Enter attendance sheet content",
@@ -348,7 +349,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Why Study ?",
         icon: "/admission.png",
         fields: [{
-          name: "whyStudy",
+          name: "whyStudyDetails",
           label: "Why Study ?",
           type: "textarea",
           placeholder: "Enter why study content",
@@ -360,7 +361,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "How To Apply ?",
         icon: "/admission.png",
         fields: [{
-          name: "howToApply",
+          name: "howToApplyDetails",
           label: "How To Apply ?",
           type: "textarea",
           placeholder: "Enter how to apply content",
@@ -372,7 +373,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Admission Test",
         icon: "/admission.png",
         fields: [{
-          name: "admissionTest",
+          name: "admissionTestDetails",
           label: "Admission Test",
           type: "textarea",
           placeholder: "Enter admission test content",
@@ -384,7 +385,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Admission Policy",
         icon: "/admission.png",
         fields: [{
-          name: "admissionPolicy",
+          name: "admissionPolicyDetails",
           label: "Admission Policy",
           type: "textarea",
           placeholder: "Enter admission policy content",
@@ -396,7 +397,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Online Registration",
         icon: "/registration.png",
         fields: [{
-          name: "registration",
+          name: "registrationDetails",
           label: "Online Registration",
           type: "textarea",
           placeholder: "Enter online registration content",
@@ -417,7 +418,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Student List",
         icon: "/student.png",
         fields: [{
-          name: "studentList",
+          name: "studentDetails",
           label: "Student List", 
           type: "textarea",
           placeholder: "Enter student list content",
@@ -428,7 +429,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Tuition Fees",
         icon: "/student.png",
         fields: [{
-          name: "tuitionFees",
+          name: "tuitionFeesDetails",
           label: "Tuition Fees",
           type: "textarea",
           placeholder: "Enter tuition fees content",
@@ -440,7 +441,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Mobile Banking",
         icon: "/bank.png",
         fields: [{
-          name: "mobileBanking",
+          name: "mobileBankingDetails",
           label: "Mobile Banking",
           type: "textarea",
           placeholder: "Enter mobile banking content",
@@ -452,7 +453,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Daily Activities",
         icon: "/activities.png",
         fields: [{
-          name: "activities",
+          name: "activitiesDetails",
           label: "Daily Activities",
           type: "textarea",
           placeholder: "Enter daily activities content",
@@ -464,7 +465,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Exam Schedule",
         icon: "/exam-schedule.png",
         fields: [{
-          name: "examSchedule",
+          name: "examScheduleDetails",
           label: "Exam Schedule",
           type: "textarea",
           placeholder: "Enter exam schedule content",
@@ -476,7 +477,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Exam Routine",
         icon: "/exam-routine.png",
         fields: [{
-          name: "examRoutine",
+          name: "examRoutineDetails",
           label: "Exam Routine",
           type: "textarea",
           placeholder: "Enter exam routine content",
@@ -488,7 +489,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Student Uniform",
         icon: "/uniform.png",
         fields: [{
-          name: "uniform",
+          name: "uniformDetails",
           label: "Student Uniform",
           type: "textarea",
           placeholder: "Enter student uniform content",
@@ -500,7 +501,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Exam System",
         icon: "/exam-system.png",
         fields: [{
-          name: "examSystem",
+          name: "examSystemDetails",
           label: "Exam System",
           type: "textarea",
           placeholder: "Enter exam system content",
@@ -512,7 +513,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Rules & Regulations",
         icon: "/rules.png",
         fields: [{
-          name: "rules",
+          name: "rulesDetails",
           label: "Rules & Regulations",
           type: "textarea",
           placeholder: "Enter rules & regulations content",
@@ -524,7 +525,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Scholarship",
         icon: "/scholarship.png",
         fields: [{
-          name: "scholarship",
+          name: "scholarshipDetails",
           label: "Scholarship",
           type: "textarea",
           placeholder: "Enter scholarship content",
@@ -536,7 +537,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Student Council",
         icon: "/student-council.png",
         fields: [{
-          name: "studentCouncil",
+          name: "studentCouncilDetails",
           label: "Student Council",
           type: "textarea",
           placeholder: "Enter student council content",
@@ -548,7 +549,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Verify Certificate",
         icon: "/verify-certificate.png",
         fields: [{
-          name: "verifyCertificate",
+          name: "verifyCertificateDetails",
           label: "Verify Certificate",
           type: "textarea",
           placeholder: "Enter verify certificate content",
@@ -570,7 +571,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Library",
         icon: "/facilities.png",
         fields: [{
-          name: "library",
+          name: "libraryDetails",
           label: "Library",
           type: "textarea", 
           placeholder: "Enter library content",
@@ -582,7 +583,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Computer Lab",
         icon: "/facilities.png",
         fields: [{
-          name: "computerLab",
+          name: "computerLabDetails",
           label: "Computer Lab",
           type: "textarea",
           placeholder: "Enter computer lab content",
@@ -594,7 +595,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Science Lab",
         icon: "/facilities.png",
         fields: [{
-          name: "scienceLab",
+          name: "scienceLabDetails",
           label: "Science Lab",
           type: "textarea",
           placeholder: "Enter science lab content",
@@ -606,7 +607,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Sports Facility",
         icon: "/facilities.png", 
         fields: [{
-          name: "sportsFacility",
+          name: "sportsFacilityDetails",
           label: "Sports Facility",
           type: "textarea",
           placeholder: "Enter sports facility content",
@@ -618,7 +619,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Transportation",
         icon: "/facilities.png",
         fields: [{
-          name: "transportation",
+          name: "transportationDetails",
           label: "Transportation",
           type: "textarea",
           placeholder: "Enter transportation content",
@@ -630,7 +631,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Hostel",
         icon: "/facilities.png",
         fields: [{
-          name: "hostel",
+          name: "hostelDetails",
           label: "Hostel",
           type: "textarea",
           placeholder: "Enter hostel content",
@@ -642,7 +643,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Canteen",
         icon: "/facilities.png",
         fields: [{
-          name: "canteen",
+          name: "canteenDetails",
           label: "Canteen",
           type: "textarea",
           placeholder: "Enter canteen content",
@@ -654,7 +655,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Medical Facility",
         icon: "/facilities.png",
         fields: [{
-          name: "medicalFacility",
+          name: "medicalFacilityDetails",
           label: "Medical Facility",
           type: "textarea",
           placeholder: "Enter medical facility content",
@@ -666,7 +667,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "WiFi",
         icon: "/facilities.png",
         fields: [{
-          name: "wifi",
+          name: "wifiDetails",
           label: "WiFi",
           type: "textarea",
           placeholder: "Enter WiFi content",
@@ -678,7 +679,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Auditorium",
         icon: "/facilities.png",
         fields: [{
-          name: "auditorium",
+          name: "auditoriumDetails",
           label: "Auditorium",
           type: "textarea",
           placeholder: "Enter auditorium content",
@@ -690,7 +691,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Playground",
         icon: "/facilities.png",
         fields: [{
-          name: "playground",
+          name: "playgroundDetails",
           label: "Playground",
           type: "textarea",
           placeholder: "Enter playground content",
@@ -701,7 +702,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Co-Curricular Activities",
         icon: "/facilities.png",
         fields: [{
-          name: "coCurricular",
+          name: "coCurricularDetails",
           label: "Co-Curricular Activities",
           type: "textarea",
           placeholder: "Enter co-curricular activities content",
@@ -713,7 +714,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Extra-Curricular Activities",
         icon: "/facilities.png",
         fields: [{
-          name: "extraCurricular",
+          name: "extraCurricularDetails",
           label: "Extra-Curricular Activities",
           type: "textarea",
           placeholder: "Enter extra-curricular activities content",
@@ -735,7 +736,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result",
         icon: "/result.png", 
         fields: [{
-          name: "result",
+          name: "resultDetails",
           label: "Result",
           type: "textarea",
           placeholder: "Enter result content",
@@ -747,7 +748,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result Analysis",
         icon: "/result.png",
         fields: [{
-          name: "resultAnalysis",
+          name: "resultAnalysisDetails",
           label: "Result Analysis",
           type: "textarea",
           placeholder: "Enter result analysis content",
@@ -759,7 +760,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result Publication",
         icon: "/result.png",
         fields: [{
-          name: "resultPublication",
+          name: "resultPublicationDetails",
           label: "Result Publication",
           type: "textarea",
           placeholder: "Enter result publication content",
@@ -771,7 +772,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result Distribution",
         icon: "/result.png",
         fields: [{
-          name: "resultDistribution",
+          name: "resultDistributionDetails",
           label: "Result Distribution",
           type: "textarea",
           placeholder: "Enter result distribution content",
@@ -783,7 +784,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result Rechecking",
         icon: "/result.png",
         fields: [{
-          name: "resultRechecking",
+          name: "resultRecheckingDetails",
           label: "Result Rechecking",
           type: "textarea",
           placeholder: "Enter result rechecking content",
@@ -795,7 +796,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result Grievance",
         icon: "/result.png",
         fields: [{
-          name: "resultGrievance",
+          name: "resultGrievanceDetails",
           label: "Result Grievance",
           type: "textarea",
           placeholder: "Enter result grievance content",
@@ -807,7 +808,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result Correction",
         icon: "/result.png",
         fields: [{
-          name: "resultCorrection",
+          name: "resultCorrectionDetails",
           label: "Result Correction",
           type: "textarea",
           placeholder: "Enter result correction content",
@@ -819,7 +820,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result Verification",
         icon: "/result.png",
         fields: [{
-          name: "resultVerification",
+          name: "resultVerificationDetails",
           label: "Result Verification",
           type: "textarea",
           placeholder: "Enter result verification content",
@@ -831,7 +832,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result Reissue",
         icon: "/result.png",
         fields: [{
-          name: "resultReissue",
+          name: "resultReissueDetails",
           label: "Result Reissue",
           type: "textarea",
           placeholder: "Enter result reissue content",
@@ -843,7 +844,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result Correction Policy",
         icon: "/result.png",
         fields: [{
-          name: "resultCorrectionPolicy",
+          name: "resultCorrectionPolicyDetails",
           label: "Result Correction Policy",
           type: "textarea",
           placeholder: "Enter result correction policy content",
@@ -855,7 +856,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result Grievance Policy",
         icon: "/result.png",
         fields: [{
-          name: "resultGrievancePolicy",
+          name: "resultGrievancePolicyDetails",
           label: "Result Grievance Policy",
           type: "textarea",
           placeholder: "Enter result grievance policy content",
@@ -867,7 +868,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result Rechecking Policy",
         icon: "/result.png",
         fields: [{
-          name: "resultRecheckingPolicy",
+          name: "resultRecheckingPolicyDetails",
           label: "Result Rechecking Policy",
           type: "textarea",
           placeholder: "Enter result rechecking policy content",
@@ -879,7 +880,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result Publication Policy",
         icon: "/result.png",
         fields: [{
-          name: "resultPublicationPolicy",
+          name: "resultPublicationPolicyDetails",
           label: "Result Publication Policy",
           type: "textarea",
           placeholder: "Enter result publication policy content",
@@ -891,7 +892,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result Distribution Policy",
         icon: "/result.png",
         fields: [{
-          name: "resultDistributionPolicy",
+          name: "resultDistributionPolicyDetails",
           label: "Result Distribution Policy",
           type: "textarea",
           placeholder: "Enter result distribution policy content",
@@ -903,7 +904,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result Verification Policy",
         icon: "/result.png",
         fields: [{
-          name: "resultVerificationPolicy",
+          name: "resultVerificationPolicyDetails",
           label: "Result Verification Policy",
           type: "textarea",
           placeholder: "Enter result verification policy content",
@@ -915,7 +916,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result Reissue Policy",
         icon: "/result.png",
         fields: [{
-          name: "resultReissuePolicy",
+          name: "resultReissuePolicyDetails",
           label: "Result Reissue Policy",
           type: "textarea",
           placeholder: "Enter result reissue policy content",
@@ -927,7 +928,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result Correction Request",
         icon: "/result.png",
         fields: [{
-          name: "resultCorrectionRequest",
+          name: "resultCorrectionRequestDetails",
           label: "Result Correction Request",
           type: "textarea",
           placeholder: "Enter result correction request content",
@@ -939,7 +940,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result Grievance Request",
         icon: "/result.png",
         fields: [{
-          name: "resultGrievanceRequest",
+          name: "resultGrievanceRequestDetails",
           label: "Result Grievance Request",
           type: "textarea",
           placeholder: "Enter result grievance request content",
@@ -951,7 +952,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result Rechecking Request",
         icon: "/result.png",
         fields: [{
-          name: "resultRecheckingRequest",
+          name: "resultRecheckingRequestDetails",
           label: "Result Rechecking Request",
           type: "textarea",
           placeholder: "Enter result rechecking request content",
@@ -963,7 +964,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Result Evaluation",
         icon: "/result.png",
         fields: [{
-          name: "evaluation",
+          name: "evaluationDetails",
           label: "Result Evaluation",
           type: "textarea",
           placeholder: "Enter result evaluation content",
@@ -975,7 +976,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Board exam",
         icon: "/result.png",
         fields: [{
-          name: "boardExam",
+          name: "boardExamDetails",
           label: "Board exam",
           type: "textarea",
           placeholder: "Enter board exam content",
@@ -997,7 +998,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Notice",
         icon: "/others.png",
         fields: [{
-          name: "notice",
+          name: "noticeDetails",
           label: "Notice",
           type: "textarea",
           placeholder: "Enter notice content",
@@ -1009,7 +1010,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Events",
         icon: "/others.png",
         fields: [{
-          name: "events",
+          name: "eventsDetails",
           label: "Events",
           type: "textarea",
           placeholder: "Enter events content",
@@ -1021,7 +1022,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Gallery",
         icon: "/others.png",
         fields: [{
-          name: "gallery",
+          name: "galleryDetails",
           label: "Gallery",
           type: "textarea",
           placeholder: "Enter gallery content",
@@ -1045,7 +1046,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label:"Career Opportunity", 
         icon:"/others.png", 
         fields:[{
-            name:"careerOpportunity", 
+            name:"careerOpportunityDetails", 
             label:"Career Opportunity", 
             type:"textarea", 
             placeholder:"Enter career opportunity content", 
@@ -1057,7 +1058,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Admission Circular",
         icon: "/others.png",
         fields: [{
-          name: "admissionCircular",
+          name: "admissionCircularDetails",
           label: "Admission Circular",
           type: "textarea",
           placeholder: "Enter admission circular content",
@@ -1069,7 +1070,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Scholarship Circular",
         icon: "/others.png",
         fields: [{
-          name: "scholarshipCircular",
+          name: "scholarshipCircularDetails",
           label: "Scholarship Circular",
           type: "textarea",
           placeholder: "Enter scholarship circular content",
@@ -1081,7 +1082,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Routine",
         icon: "/others.png",
         fields: [{
-          name: "routine",
+          name: "routineDetails",
           label: "Routine",
           type: "textarea",
           placeholder: "Enter routine content",
@@ -1104,7 +1105,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Contact Us",
         icon: "/contact.png",
         fields: [{
-          name: "contactUs",
+          name: "contactUsDetails",
           label: "Contact Us",
           type: "textarea",
           placeholder: "Enter contact us content",
@@ -1116,7 +1117,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Location",
         icon: "/location.png",
         fields: [{
-          name: "location",
+          name: "locationDetails",
           label: "Location",
           type: "textarea",
           placeholder: "Enter location content",
@@ -1137,7 +1138,7 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Alumni Registration",
         icon: "/alumni.png",
         fields: [{
-          name: "alumniRegistration",
+          name: "alumniRegistrationDetails",
           label: "Alumni Registration",
           type: "textarea",
           placeholder: "Enter alumni registration content",
@@ -1149,7 +1150,19 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {
         label: "Alumni List", 
         icon: "/alumni.png",
         fields: [{
-          name: "alumniList",
+          name: "alumniListDetails",
+          label: "Alumni List",
+          type: "textarea",
+          placeholder: "Enter alumni list content",
+          required: true
+        }]
+      },
+      {
+        tableName: "Class",
+        label: "Alumni List", 
+        icon: "/alumni.png",
+        fields: [{
+          name: "name",
           label: "Alumni List",
           type: "textarea",
           placeholder: "Enter alumni list content",
