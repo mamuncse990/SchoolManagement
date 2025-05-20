@@ -1,0 +1,97 @@
+.heroSection {
+  position: relative;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 60%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  z-index: 2;
+}
+
+.heroActions {
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 12px 32px;
+  margin: 0 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btnPrimary {
+  background: #0019a5;
+  color: #fff;
+}
+
+.btnSecondary {
+  background: #e91e24;
+  color: #fff;
+}
+
+.infoBar {
+  display: flex;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  z-index: 3;
+}
+
+.infoItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1px 0 1px 0;
+}
+
+.infoTitle {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.infoValue {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.heroOverlay h1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  text-align: left;
+  margin-left: 50px;
+}
+
+.heroActions {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 16px;
+}
+
+@media (max-width: 900px) {
+  .infoBar {
+    flex-direction: column;
+  }
+  .infoItem {
+    padding: 8px 0;
+  }
+  .heroOverlay h1, .heroActions {
+    margin-left: 0;
+    text-align: center;
+    justify-content: center;
+  }
+} 

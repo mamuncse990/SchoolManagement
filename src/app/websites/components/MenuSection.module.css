@@ -1,0 +1,267 @@
+.menuSection {
+  width: 100%;
+  background: #000080;
+  padding: 0.5rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.mobileHeader {
+  display: none;
+  padding: 1rem;
+  background: #000080;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+  padding: 8px;
+  position: relative;
+}
+
+.hamburgerBar {
+  width: 24px;
+  height: 2px;
+  background: #fff;
+  margin: 2px 0;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  position: absolute;
+}
+
+.hamburgerBar:nth-child(1) {
+  transform: translateY(-6px);
+}
+
+.hamburgerBar:nth-child(3) {
+  transform: translateY(6px);
+}
+
+/* Hamburger Animation */
+.hamburger[aria-expanded="true"] .hamburgerBar:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.hamburger[aria-expanded="true"] .hamburgerBar:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger[aria-expanded="true"] .hamburgerBar:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+.menuGrid {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* gap: 1rem;
+  padding: 0 1rem; */
+  flex-wrap: wrap;
+}
+
+.menuContainer {
+  position: relative;
+}
+
+.menuItem {
+  color: white;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.2rem 0.6rem;
+  transition: all 0.2s;
+  border-radius: 4px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.menuItem:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menuItem.active {
+  background-color: #0000ff;  /* Blue background for main menu */
+  color: white;
+}
+
+.arrow {
+  font-size: 0.6rem;
+  margin-left: 2px;
+  transform: translateY(1px);
+  opacity: 0.8;
+  transition: transform 0.3s ease;
+}
+
+.arrowOpen {
+  transform: translateY(1px) rotate(180deg);
+}
+
+.submenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  min-width: 240px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  border: 1px solid #eee;
+  padding: 4px 0;
+}
+
+.menuContainer:hover .submenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.submenuItem {
+  color: #000080;
+  text-decoration: none;
+  padding: 0.75rem 1.2rem;
+  display: block;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.submenuItem:hover {
+  background-color: #bdcef0;
+}
+
+.submenuItem.active {
+  background-color: #ff0000;  /* Red background for submenu */
+  color: white;
+}
+
+.parentActive {
+  background-color: #0000ff;  /* Blue background for parent when child is active */
+  color: white;
+}
+
+@media (max-width: 1200px) {
+  .menuGrid {
+    gap: 0.5rem;
+  }
+  
+  .menuItem {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .submenuItem {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobileHeader {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .menuGrid {
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem;
+    background: #000080;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    transform: translateY(-100%);
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .menuGrid.menuOpen {
+    display: flex;
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .menuContainer {
+    width: 100%;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.3s ease;
+  }
+
+  .menuOpen .menuContainer {
+    opacity: 1;
+    transform: translateX(0);
+    transition-delay: 0.2s;
+  }
+
+  .menuItem {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    justify-content: space-between;
+  }
+
+  .submenu {
+    position: static;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    height: 0;
+    padding: 0;
+    margin: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .submenuOpen {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    height: auto;
+    padding: 0.5rem 0;
+  }
+
+  .submenuItem {
+    color: white;
+    padding: 0.75rem 1.5rem;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+  }
+
+  .submenuOpen .submenuItem {
+    opacity: 1;
+    transform: translateX(0);
+    transition-delay: 0.2s;
+  }
+
+  .menuContainer:hover .submenu {
+    /* opacity: 0;
+    visibility: hidden; */
+    transform: none;
+  }
+}
