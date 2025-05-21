@@ -7,9 +7,10 @@ export async function GET(
 ) {
   try {
     const { table, id } = params;
-
-    const item = await (prisma as any)[table].findUnique({
-      where: { id },
+    // Convert table name to match Prisma model name (first letter lowercase)
+    const modelName = table.charAt(0).toLowerCase() + table.slice(1);
+    const item = await (prisma as any)[modelName].findUnique({
+      where: { id: isNaN(id as any) ? id : parseInt(id) },
     });
 
     if (!item) {
@@ -27,12 +28,12 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: { table: string; id: string } }
 ) {
-  try {
-    const { table, id } = params;
+  try {    const { table, id } = params;
     const data = await request.json();
-
-    const updatedItem = await (prisma as any)[table].update({
-      where: { id },
+    // Convert table name to match Prisma model name (first letter lowercase)
+    const modelName = table.charAt(0).toLowerCase() + table.slice(1);
+    const updatedItem = await (prisma as any)[modelName].update({
+      where: { id: isNaN(id as any) ? id : parseInt(id) },
       data,
     });
 
@@ -49,9 +50,10 @@ export async function DELETE(
 ) {
   try {
     const { table, id } = params;
-
-    await (prisma as any)[table].delete({
-      where: { id },
+    // Convert table name to match Prisma model name (first letter lowercase)
+    const modelName = table.charAt(0).toLowerCase() + table.slice(1);
+    await (prisma as any)[modelName].delete({
+      where: { id: isNaN(id as any) ? id : parseInt(id) },
     });
 
     return new NextResponse(null, { status: 204 });

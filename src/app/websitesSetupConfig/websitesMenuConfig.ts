@@ -8,6 +8,28 @@ export const websitesMenuConfig: Record<string, websitesDataConfig> = {  "About"
     hasSubmenu: true,
     fields: [],
     submenu: [
+      // {
+      //   tableName: "Role",
+      //   label: "Role",
+      //   icon: "/role.png",
+      //   path: "/dashboard/websites/Role",
+      //   fields: [
+      //     {
+      //       name: "name",
+      //       label: "Role Name",
+      //       type: "text",
+      //       placeholder: "Enter Role Name",
+      //       required: true
+      //     },
+      //     {
+      //       name: "description",
+      //       label: "Description",
+      //       type: "textarea",
+      //       placeholder: "Enter role details content",
+      //       required: true
+      //     }
+      //   ]
+      // },
       {
         tableName: "AboutUs",
         label: "About Us",

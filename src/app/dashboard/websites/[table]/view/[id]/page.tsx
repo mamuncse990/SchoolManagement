@@ -12,7 +12,7 @@ interface Props {
   };
 }
 
-const WebsitesEditPage = async ({ params }: Props) => {
+const WebsitesViewPage = async ({ params }: Props) => {
   const findConfig = (table: string): websitesDataConfig | null => {
     for (const key in websitesMenuConfig) {
       if (websitesMenuConfig[key].tableName === table) {
@@ -39,7 +39,7 @@ const WebsitesEditPage = async ({ params }: Props) => {
   if (!config) {
     return <div>Invalid table configuration</div>;
   }
-  // Fetch the item data for editing
+  // Fetch the item data for viewing
   let itemData = null;
   try {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
@@ -63,18 +63,17 @@ const WebsitesEditPage = async ({ params }: Props) => {
   return (
     <div className="p-4">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold">Edit {config.label}</h1>
+        <h1 className="text-2xl font-bold">View {config.label}</h1>
         <Link 
           href={`/dashboard/websites/${params.table}`}
           className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow"
         >
-          <Image src="/close.png" alt="Back" width={16} height={16} />
-          {/* Back to List */}
+          <Image src="/expand-menu.png" alt="Back" width={16} height={16} />
         </Link>
       </div>
-      <DynamicForm config={config} initialData={itemData} />
+      <DynamicForm config={config} initialData={itemData} isViewMode={true} />
     </div>
   );
 };
 
-export default WebsitesEditPage;
+export default WebsitesViewPage;

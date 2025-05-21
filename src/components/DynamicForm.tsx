@@ -3,16 +3,21 @@
 import { useState, useEffect } from 'react';
 import { websitesDataConfig } from '@/app/websitesDataTypes/websitesData';
 import Table from '@/components/Table';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 interface DynamicFormProps {
   config: websitesDataConfig;
   initialData?: any;
+  isViewMode?: boolean;
 }
 
-const DynamicForm = ({ config, initialData }: DynamicFormProps) => {
+const DynamicForm = ({ config, initialData, isViewMode = false }: DynamicFormProps) => {
+  const router = useRouter();
   const [formData, setFormData] = useState<{ [key: string]: string }>(initialData || {});
   const [tableData, setTableData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     fetchTableData();
@@ -42,6 +47,7 @@ const DynamicForm = ({ config, initialData }: DynamicFormProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSaving(true);
     try {
       const method = initialData ? 'PUT' : 'POST';
       const url = initialData 
@@ -57,15 +63,16 @@ const DynamicForm = ({ config, initialData }: DynamicFormProps) => {
       });
 
       if (response.ok) {
-        alert('Data saved successfully!');
-        setFormData({});
-        fetchTableData(); // Refresh the table data after successful submission
+        toast.success(`Data ${initialData ? 'updated' : 'saved'} successfully!`);
+        router.push(`/dashboard/websites/${config.tableName}`);
       } else {
         throw new Error('Failed to save data');
       }
     } catch (error) {
       console.error('Error saving data:', error);
-      alert('Failed to save data. Please try again.');
+      toast.error('Failed to save data. Please try again.');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -106,7 +113,9 @@ const DynamicForm = ({ config, initialData }: DynamicFormProps) => {
                 required={field.required}
                 value={formData[field.name] || ''}
                 onChange={handleChange}
-                className="p-2 border rounded-md min-h-[100px]"
+                className={`p-2 border rounded-md min-h-[100px] ${isViewMode ? 'bg-gray-50' : ''}`}
+                readOnly={isViewMode}
+                disabled={isViewMode}
               />
             ) : (
               <input
@@ -117,17 +126,22 @@ const DynamicForm = ({ config, initialData }: DynamicFormProps) => {
                 required={field.required}
                 value={formData[field.name] || ''}
                 onChange={handleChange}
-                className="p-2 border rounded-md"
+                className={`p-2 border rounded-md ${isViewMode ? 'bg-gray-50' : ''}`}
+                readOnly={isViewMode}
+                disabled={isViewMode}
               />
             )}
           </div>
         ))}
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-        >
-          Save
-        </button>
+        {!isViewMode && (
+          <button
+            type="submit"
+            disabled={isSaving}
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 disabled:bg-blue-300 disabled:cursor-not-allowed"
+          >
+            {isSaving ? (initialData ? 'Updating...' : 'Saving...') : (initialData ? 'Update' : 'Save')}
+          </button>
+        )}
       </form>
     </div>
   );

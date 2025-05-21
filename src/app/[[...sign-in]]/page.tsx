@@ -64,9 +64,10 @@ export default function SignIn() {
         }, 100);
 
         // Navigate after successful login
-        type UserRole = 'admin' | 'teacher' | 'student' | 'parent';
+        type UserRole = 'Admin' | 'teacher' | 'student' | 'parent' |'super admin';
         const dashboardRoutes: Record<UserRole, string> = {
-          admin: '/dashboard/admin',
+          Admin: '/dashboard/admin',
+          'super admin': '/dashboard/super-admin',
           teacher: '/dashboard/teacher',
           student: '/dashboard/student',
           parent: '/dashboard/parent'

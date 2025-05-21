@@ -62,10 +62,16 @@ const DynamicList = ({ config }: DynamicListProps) => {
       <td className="p-4">
         <div className="flex items-center gap-2">
           <button
-            onClick={() => handleEdit(item)}
+            onClick={() => handleView(item)}
             className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaSky"
           >
             <Image src="/view.png" alt="Edit" width={16} height={16} />
+          </button>
+          <button
+            onClick={() => handleEdit(item)}
+            className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaSky"
+          >
+            <Image src="/update.png" alt="Edit" width={16} height={16} />
           </button>
           <button
             onClick={() => handleDelete(item.id || item._id)}
@@ -79,11 +85,42 @@ const DynamicList = ({ config }: DynamicListProps) => {
   );
   const handleAdd = () => {
     router.push(`/dashboard/websites/${config.tableName}/add`);
+  };  const handleEdit = async (item: any) => {
+    const id = item.id || item._id;
+    try {
+      // First verify that the item exists
+      const response = await fetch(`/api/websites/${config.tableName}/${id}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      router.push(`/dashboard/websites/${config.tableName}/edit/${id}`);
+    } catch (error) {
+      console.error('Error editing item:', error);
+      alert('Item not found or unable to edit. Please try again.');
+    }
   };
-  const handleEdit = (item: any) => {
-    router.push(
-      `/dashboard/websites/${config.tableName}/edit/${item.id || item._id}`
-    );
+
+  const handleView = async (item: any) => {
+    const id = item.id || item._id;
+    try {
+      // First verify that the item exists
+      const response = await fetch(`/api/websites/${config.tableName}/${id}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      router.push(`/dashboard/websites/${config.tableName}/view/${id}`);
+    } catch (error) {
+      console.error('Error viewing item:', error);
+      alert('Item not found or unable to view. Please try again.');
+    }
   };
 
   const handleDelete = async (id: string) => {

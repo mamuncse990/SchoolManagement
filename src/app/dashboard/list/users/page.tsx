@@ -8,10 +8,20 @@ import { ITEM_PER_PAGE } from "@/lib/settings";
 import { getAuthUser } from '@/lib/auth';
 import UserForm from "@/components/forms/UserForm";
 import FilterWrapper from "@/components/FilterWrapper";
+import dynamic from "next/dynamic";
+
+const UserTableRow = dynamic(() => import("@//components/UserTableRow"), {
+  ssr: false,
+});
 
 // Adjust UserList type if your User model has more fields
 // type UserList = User & { ... }
-type UserList = User & { role?: { name: string } | null };
+type UserList = User & { 
+  id: string;
+  name: string;
+  email: string;
+  role?: { name: string } | null;
+};
 
 const UserListPage = async ({
   searchParams,
@@ -19,33 +29,18 @@ const UserListPage = async ({
   searchParams: { [key: string]: string | undefined };
 }) => {
   const { role } = await getAuthUser();
-
   const columns = [
     { header: "Name", accessor: "name" },
     { header: "Email", accessor: "email" },
     { header: "Role", accessor: "role" },
     ...(role === "admin"
-      ? [{ header: "Actions", accessor: "action" }]
+      ? [
+          { header: "", accessor: "login" },
+          { header: "Actions", accessor: "action" },
+        ]
       : []),
   ];
-
-  const renderRow = (item: UserList) => (
-    <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight">
-      <td className="p-4">{item.name}</td>
-      <td>{item.email}</td>
-      <td>{item.role?.name ?? "N/A"}</td>
-      <td>
-        <div className="flex items-center gap-2">
-          {role === "admin" && (
-            <>
-              <FormContainer table="user" type="update" data={item} />
-              <FormContainer table="user" type="delete" id={item.id} />
-            </>
-          )}
-        </div>
-      </td>
-    </tr>
-  );
+const renderRow = (item: UserList) => <UserTableRow item={item} role={role} />;
 
   const { page, sort, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;
