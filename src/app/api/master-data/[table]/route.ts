@@ -15,11 +15,39 @@ export async function POST(request: NextRequest, { params }: { params: { table: 
     if (!model) {
       console.error(`Model ${config.tableName} not found in Prisma schema`);
       return NextResponse.json({ error: "Invalid table configuration" }, { status: 500 });
+    }    const data = await request.json();
+    
+    // Handle special cases for different tables
+    let processedData = { ...data };
+    
+    if (config.tableName === 'Exam') {
+      // Convert string fields to appropriate types for Exam
+      processedData = {
+        ...data,
+        lessonId: data.lessonId ? parseInt(data.lessonId) : undefined,
+        startTime: data.startTime ? new Date(data.startTime) : undefined,
+        endTime: data.endTime ? new Date(data.endTime) : undefined
+      };
+    } else if (config.tableName === 'class') {
+      // Convert numeric fields for class
+      processedData = {
+        ...data,
+        id: data.id ? parseInt(data.id) : undefined,
+        gradeId: data.gradeId ? parseInt(data.gradeId) : undefined,
+        capacity: data.capacity ? parseInt(data.capacity) : undefined,
+        supervisorId: data.supervisorId === '' || data.supervisorId === null || data.supervisorId === undefined ? null : data.supervisorId
+      };
     }
 
-    const data = await request.json();
+    // Remove any undefined values
+    Object.keys(processedData).forEach(key => {
+      if (processedData[key] === undefined) {
+        delete processedData[key];
+      }
+    });
+
     const item = await model.create({
-      data,
+      data: processedData,
     });
 
     return NextResponse.json(item);

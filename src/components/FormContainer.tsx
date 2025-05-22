@@ -29,8 +29,7 @@ const FormContainer = ({ table, type, data, id }: FormContainerProps) => {
   const [relatedData, setRelatedData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  useEffect(() => {    const fetchData = async () => {
       try {
         switch (table) {
           case "subject":
@@ -89,14 +88,14 @@ const FormContainer = ({ table, type, data, id }: FormContainerProps) => {
                 _count: { students: 0 } // Default value if not provided
               })), 
               grades: studentGrades 
-            });
-            break;
+            });            break;
           case "exam":
             const examResponse = await fetch('/api/lessons', { credentials: 'include' });
             if (!examResponse.ok) throw new Error('Failed to fetch lessons');
-            const examLessons = await examResponse.json();
-            setRelatedData({ lessons: examLessons });
+            const examData = await examResponse.json();
+            setRelatedData({ lessons: examData });
             break;
+          
           case "event":
             const eventClassesRes = await fetch('/api/classes', { credentials: 'include' });
             if (!eventClassesRes.ok) throw new Error('Failed to fetch classes');

@@ -31,10 +31,17 @@ const MasterDataForm: FC<MasterDataFormProps> = ({
   const [supervisors, setSupervisors] = useState<
     Array<{ id: string; name: string }>
   >([]);
+  const [lessons, setLessons] = useState<
+    Array<{ id: number; name: string }>>([]);
 
   useEffect(() => {
     if (initialData) {
-      setFormData(initialData);
+      // Calculate initial duration if start and end times exist
+      const newData = { ...initialData };
+      if (newData.startTime && newData.endTime && config?.fields.find(f => f.name === 'duration')) {
+        newData.duration = calculateDuration(newData.startTime, newData.endTime);
+      }
+      setFormData(newData);
     } else if (id && config) {
       fetchItem();
     }
@@ -90,6 +97,30 @@ const MasterDataForm: FC<MasterDataFormProps> = ({
           toast.error("Failed to load supervisors");
         });
     }
+    if (table === "Exam") {
+      // Fetch grades
+      fetch("/api/lessons")
+        .then((res) => res.json())
+        .then((data) => {
+          setLessons(data);
+          // Update the gradeId field options
+          if (config) {
+            const lessonField = config.fields.find((f) => f.name === "lessonId");
+            if (lessonField) {
+              lessonField.options = data.map(
+                (lesson: { id: number; name: number }) => ({
+                  label: `${lesson.name}`,
+                  value: lesson.id,
+                })
+              );
+            }
+          }
+        })
+        .catch((err) => {
+          console.error("Error fetching grades:", err);
+          toast.error("Failed to load grades");
+        });
+    }
   }, [table, config]);
 
   const fetchItem = async () => {
@@ -99,8 +130,11 @@ const MasterDataForm: FC<MasterDataFormProps> = ({
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to fetch data");
+      }      const data = await response.json();
+      // Calculate duration if start and end times exist
+      if (data.startTime && data.endTime && config?.fields.find(f => f.name === 'duration')) {
+        data.duration = calculateDuration(data.startTime, data.endTime);
       }
-      const data = await response.json();
       setFormData(data);
     } catch (error) {
       const message =
@@ -114,20 +148,33 @@ const MasterDataForm: FC<MasterDataFormProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
-    try {
+    setError("");    try {
       const url = id
         ? `/api/master-data/${table}/${id}`
         : `/api/master-data/${table}`;
 
-      console.log("Submitting data:", { table, id, formData });
+      // Pre-process form data
+      let processedData = { ...formData };
+      if (table === 'Exam') {
+        // Make sure dates are in ISO format
+        if (processedData.startTime) {
+          processedData.startTime = new Date(processedData.startTime).toISOString();
+        }
+        if (processedData.endTime) {
+          processedData.endTime = new Date(processedData.endTime).toISOString();
+        }
+        // Remove duration as it's a calculated field
+        delete processedData.duration;
+      }
+
+      console.log("Submitting data:", { table, id, processedData });
 
       const response = await fetch(url, {
         method: id ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(processedData),
       });
 
       if (!response.ok) {
@@ -149,16 +196,33 @@ const MasterDataForm: FC<MasterDataFormProps> = ({
       setLoading(false);
     }
   };
+  const calculateDuration = (start: string, end: string): string => {
+    if (!start || !end) return '';
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const diffInMinutes = Math.round((endDate.getTime() - startDate.getTime()) / (1000 * 60));
+    const hours = Math.floor(diffInMinutes / 60);
+    const minutes = diffInMinutes % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  };
 
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      const newData = { ...prev, [name]: value };
+      
+      // Calculate duration if start or end time changes
+      if ((name === 'startTime' || name === 'endTime') && config?.fields.find(f => f.name === 'duration')) {
+        const duration = calculateDuration(newData.startTime, newData.endTime);
+        return { ...newData, duration };
+      }
+      
+      return newData;
+    });
   };
 
   if (!config) return null;
@@ -183,8 +247,7 @@ const MasterDataForm: FC<MasterDataFormProps> = ({
               onChange={handleChange}
               required={field.required}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          ) : field.type === "select" ? (
+            />          ) : field.type === "select" ? (
             <select
               name={field.name}
               value={formData[field.name] || ""}
@@ -199,14 +262,26 @@ const MasterDataForm: FC<MasterDataFormProps> = ({
                 </option>
               ))}
             </select>
-          ) : (
+          ) : field.type === "datetime" ? (
             <input
+              type="datetime-local"
+              name={field.name}
+              value={formData[field.name] ? new Date(formData[field.name]).toISOString().slice(0, 16) : ""}
+              onChange={handleChange}
+              required={field.required}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          ) : (            <input
               type={field.type}
               name={field.name}
               value={formData[field.name] || ""}
               onChange={handleChange}
               required={field.required}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              readOnly={field.readOnly}
+              disabled={field.readOnly}
+              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+                field.readOnly ? 'bg-gray-100' : ''
+              }`}
             />
           )}
         </div>

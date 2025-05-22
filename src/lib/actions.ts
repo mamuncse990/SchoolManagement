@@ -249,33 +249,17 @@ export const createExam = async (
   currentState: CurrentState,
   data: ExamSchema
 ) => {
-  // const { userId, sessionClaims } = auth();
-  // const role = (sessionClaims?.metadata as { role?: string })?.role;
-
   try {
-    // if (role === "teacher") {
-    //   const teacherLesson = await prisma.lesson.findFirst({
-    //     where: {
-    //       teacherId: userId!,
-    //       id: data.lessonId,
-    //     },
-    //   });
-
-    //   if (!teacherLesson) {
-    //     return { success: false, error: true };
-    //   }
-    // }
-
     await prisma.exam.create({
       data: {
-        title: data.name,
-        startTime: data.date,
-        endTime: data.date,
+        title: data.title,
+        startTime: data.startTime,
+        endTime: data.endTime,
         lessonId: parseInt(data.lessonId),
       },
     });
 
-    // revalidatePath("/list/subjects");
+    revalidatePath("/dashboard/list/exams");
     return { success: true, error: false };
   } catch (err) {
     console.log(err);
@@ -287,36 +271,20 @@ export const updateExam = async (
   currentState: CurrentState,
   data: ExamSchema
 ) => {
-  // const { userId, sessionClaims } = auth();
-  // const role = (sessionClaims?.metadata as { role?: string })?.role;
-
   try {
-    // if (role === "teacher") {
-    //   const teacherLesson = await prisma.lesson.findFirst({
-    //     where: {
-    //       teacherId: userId!,
-    //       id: data.lessonId,
-    //     },
-    //   });
-
-    //   if (!teacherLesson) {
-    //     return { success: false, error: true };
-    //   }
-    // }
-
     await prisma.exam.update({
       where: {
         id: parseInt(data.id!),
       },
       data: {
-        title: data.name,
-        startTime: data.date,
-        endTime: data.date,
+        title: data.title,
+        startTime: data.startTime,
+        endTime: data.endTime,
         lessonId: parseInt(data.lessonId),
       },
     });
 
-    // revalidatePath("/list/subjects");
+    revalidatePath("/dashboard/list/exams");
     return { success: true, error: false };
   } catch (err) {
     console.log(err);
@@ -333,14 +301,13 @@ export const deleteExam = async (
   // const { userId, sessionClaims } = auth();
   // const role = (sessionClaims?.metadata as { role?: string })?.role;
 
-  try {
-    await prisma.exam.delete({
+  try {    await prisma.exam.delete({
       where: {
         id: parseInt(id),
       },
     });
 
-    // revalidatePath("/list/subjects");
+    revalidatePath("/dashboard/list/exams");
     return { success: true, error: false };
   } catch (err) {
     console.log(err);

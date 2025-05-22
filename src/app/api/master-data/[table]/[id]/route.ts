@@ -93,10 +93,32 @@ export async function PUT(request: NextRequest, { params }: { params: { table: s
 
     if (!existingItem) {
       return NextResponse.json({ error: "Item not found" }, { status: 404 });
-    }
-
-    // Special handling for class table
-    if (table === 'class') {
+    }    // Handle numeric fields and special cases for different tables
+    if (config.tableName === 'Exam') {
+      // Remove computed fields
+      delete updateData.duration;
+      
+      // Convert ID fields to numbers
+      updateData.id = updateData.id ? parseInt(updateData.id) : undefined;
+      updateData.lessonId = updateData.lessonId ? parseInt(updateData.lessonId) : undefined;
+      
+      // Ensure dates are valid
+      if (updateData.startTime) {
+        const startDate = new Date(updateData.startTime);
+        if (isNaN(startDate.getTime())) {
+          return NextResponse.json({ error: "Invalid start time format" }, { status: 400 });
+        }
+        updateData.startTime = startDate;
+      }
+      
+      if (updateData.endTime) {
+        const endDate = new Date(updateData.endTime);
+        if (isNaN(endDate.getTime())) {
+          return NextResponse.json({ error: "Invalid end time format" }, { status: 400 });
+        }
+        updateData.endTime = endDate;
+      }
+    } else if (config.tableName === 'class') {
       // Convert numeric fields
       updateData.id = parseInt(updateData.id);
       updateData.gradeId = parseInt(updateData.gradeId);
@@ -106,16 +128,16 @@ export async function PUT(request: NextRequest, { params }: { params: { table: s
       if (updateData.supervisorId === '' || updateData.supervisorId === null || updateData.supervisorId === undefined) {
         updateData.supervisorId = null;
       }
-
-      // Remove any undefined or invalid values that might cause Prisma errors
-      Object.keys(updateData).forEach(key => {
-        if (updateData[key] === undefined) {
-          delete updateData[key];
-        }
-      });
     }
 
-    console.log('Processed update data:', updateData);
+    // Remove any undefined values
+    Object.keys(updateData).forEach(key => {
+      if (updateData[key] === undefined) {
+        delete updateData[key];
+      }
+    });
+
+    console.log('Processed update data:', { table: config.tableName, itemId, updateData });
 
     const updatedItem = await model.update({
       where: { id: itemId },

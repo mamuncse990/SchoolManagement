@@ -5,6 +5,32 @@ import { MasterDataItem } from "@/app/masterDataTypes/masterData";
 import Image from "next/image";
 import Pagination from "@/components/Pagination";
 
+// Format date function
+const formatDateTime = (dateStr: string) => {
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  return date.toLocaleString('en-US', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true
+  }).replace(',', '');
+};
+
+// Calculate duration between two dates in HH:MM format
+const calculateDuration = (startDate: string, endDate: string): string => {
+  if (!startDate || !endDate) return '00:00';
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const diffInMinutes = Math.round((end.getTime() - start.getTime()) / (1000 * 60));
+  const hours = Math.floor(diffInMinutes / 60);
+  const minutes = diffInMinutes % 60;
+  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+};
+
 interface TableSearchProps {
   value: string;
   onChange: (query: string) => void;
@@ -30,7 +56,7 @@ const MasterDataList: FC = () => {
   const [items, setItems] = useState<MasterDataItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [take, setTake] = useState(8);
+  const [take, setTake] = useState(5); // Change default to 5
   const [count, setCount] = useState(0);
   const [search, setSearch] = useState("");
   const config = table ? masterDataConfigs[table as string] : null;
@@ -40,7 +66,7 @@ const MasterDataList: FC = () => {
     if (config) {
       const currentPage = Number(searchParams?.get("page")) || 1;
       const searchQuery = searchParams?.get("q") || "";
-      const pageSize = Number(searchParams?.get("pageSize")) || 8;
+      const pageSize = Number(searchParams?.get("pageSize")) || 5; // Change default to 5
       setPage(currentPage);
       setSearch(searchQuery);
       setTake(pageSize);
@@ -196,8 +222,12 @@ const MasterDataList: FC = () => {
                           <td
                             key={field.name}
                             className="px-6 py-4 whitespace-nowrap border-b border-gray-200"
-                          >
-                            {item[field.name]}
+                          >                            {field.type === 'datetime' ? 
+                              formatDateTime(item[field.name]) :
+                              field.name === 'duration' && item['startTime'] && item['endTime'] ?
+                              calculateDuration(item['startTime'], item['endTime']) :
+                              item[field.name]
+                            }
                           </td>
                         ))}
                         <td className="px-6 py-4 whitespace-nowrap">

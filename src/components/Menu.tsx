@@ -296,7 +296,7 @@ const menuItems: { items: MenuItem[] }[] = [
         icon: "/home.png",
         label: "Home",
         href: "/websites",
-        visible: ["admin", "teacher", "student", "parent"],
+        visible: ["super admin","admin", "teacher", "student", "parent"],
       },
       {
         icon: "/dashboard.png",
@@ -308,13 +308,13 @@ const menuItems: { items: MenuItem[] }[] = [
             return `/dashboard/${userRole}/${userId}`;
           }
         },
-        visible: ["admin", "teacher", "student", "parent"],
+        visible: ["super admin","admin", "teacher", "student", "parent"],
       },
       {
         icon: "/customer.png",
         label: "Users",
         href: "/dashboard/list/users",
-        visible: ["admin"],
+        visible: ["super admin","admin"],
       },
       {
         icon: "/teacher.png",
@@ -352,12 +352,12 @@ const menuItems: { items: MenuItem[] }[] = [
         href: "/dashboard/list/lessons",
         visible: ["admin", "teacher"],
       },
-      {
-        icon: "/exam.png",
-        label: "Exams",
-        href: "/dashboard/list/exams",
-        visible: ["admin", "teacher", "student", "parent"],
-      },
+      // {
+      //   icon: "/exam.png",
+      //   label: "Exams",
+      //   href: "/dashboard/list/exams",
+      //   visible: ["admin", "teacher", "student", "parent"],
+      // },
       {
         icon: "/assignment.png",
         label: "Assignments",

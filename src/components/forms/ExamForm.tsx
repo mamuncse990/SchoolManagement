@@ -47,10 +47,8 @@ const ExamForm = ({
       success: false,
       error: false,
     }
-  );
-
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
+  );  const onSubmit = handleSubmit((data) => {
+    console.log('Form data:', data);
     formAction(data);
   });
 
@@ -70,22 +68,28 @@ const ExamForm = ({
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
       <h1 className="text-xl font-semibold">
         {type === "create" ? "Create a new exam" : "Update the exam"}
-      </h1>
-
-      <div className="flex justify-between flex-wrap gap-4">
+      </h1>      <div className="flex justify-between flex-wrap gap-4">
         <InputField
-          label="Exam name"
-          name="name"
-          defaultValue={data?.name}
+          label="Exam Title"
+          name="title"
+          defaultValue={data?.title}
           register={register}
-          error={errors?.name}
+          error={errors?.title}
         />
         <InputField
-          label="Date"
-          name="date"
-          defaultValue={data?.date}
+          label="Start Time"
+          name="startTime"
+          defaultValue={data?.startTime}
           register={register}
-          error={errors?.date}
+          error={errors?.startTime}
+          type="datetime-local"
+        />
+        <InputField
+          label="End Time"
+          name="endTime"
+          defaultValue={data?.endTime}
+          register={register}
+          error={errors?.endTime}
           type="datetime-local"
         />
         {data && (
@@ -98,16 +102,17 @@ const ExamForm = ({
             hidden
           />
         )}
-        <div className="flex flex-col gap-2 w-full md:w-1/4">
+        <div className="flex flex-col gap-2 w-full">
           <label className="text-xs text-gray-500">Lesson</label>
           <select
             className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
             {...register("lessonId")}
             defaultValue={data?.lessonId}
           >
-            {lessons.map((lesson: { id: string; name: string }) => (
+            <option value="">Select a lesson</option>
+            {Array.isArray(lessons) && lessons.map((lesson) => (
               <option value={lesson.id} key={lesson.id}>
-                {lesson.name}
+                {lesson.subject.name} - {lesson.class.name}
               </option>
             ))}
           </select>

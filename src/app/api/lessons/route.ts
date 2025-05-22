@@ -6,24 +6,27 @@ export async function GET(request: Request) {
   const query = JSON.parse(searchParams.get('query') || '{}')
   
   try {
-    const [data, count] = await prisma.$transaction([
-      prisma.lesson.findMany({
-        where: query,
-        select: {
-          id: true,
-          name: true,
-          class: {
-            select: {
-              name: true,
-            },
+    const lessons = await prisma.lesson.findMany({
+      where: query,
+      include: {
+        subject: {
+          select: {
+            id: true,
+            name: true,
           },
         },
-      }),
-      prisma.lesson.count({ where: query })
-    ])
-    
-    return NextResponse.json({ data, count })
+        class: {
+          select: {
+            id: true,  
+            name: true,
+          },
+        },
+      },
+    });
+
+    return NextResponse.json(lessons);
   } catch (error) {
+    console.error('Error fetching lessons:', error);
     return NextResponse.json({ error: 'Failed to fetch lessons' }, { status: 500 })
   }
-} 
+}
