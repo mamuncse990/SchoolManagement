@@ -8,10 +8,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import FilterWrapper from "@/components/FilterWrapper";
-import AdminOnly from '@/components/AdminOnly';
-import { getAuthUser } from '@/lib/auth';
+import AdminOnly from "@/components/AdminOnly";
+import { getAuthUser } from "@/lib/auth";
 
-type TeacherList = Teacher & { subjects: Subject[] } & { supervisedClass: Class[] };
+type TeacherList = Teacher & { subjects: Subject[] } & {
+  supervisedClass: Class[];
+};
 
 const TeacherListPage = async ({
   searchParams,
@@ -104,9 +106,10 @@ const TeacherListPage = async ({
       </td>
     </tr>
   );
-  const { page, ...queryParams } = searchParams;
+  const { page, pageSize, ...queryParams } = searchParams;
 
   const p = page ? parseInt(page) : 1;
+  const take = pageSize ? parseInt(pageSize) : ITEM_PER_PAGE;
 
   // URL PARAMS CONDITION
 
@@ -150,8 +153,8 @@ const TeacherListPage = async ({
         subjects: true,
         supervisedClass: true,
       },
-      take: ITEM_PER_PAGE,
-      skip: ITEM_PER_PAGE * (p - 1),
+      take: take,
+      skip: take * (p - 1),
     }),
     prisma.teacher.count({ where: query }),
   ]);
@@ -180,7 +183,7 @@ const TeacherListPage = async ({
       {/* LIST */}
       <Table columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
-      <Pagination page={p} count={count} />
+      <Pagination page={p} count={count} pageSize={take} />
     </div>
   );
 };

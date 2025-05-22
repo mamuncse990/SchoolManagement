@@ -8,8 +8,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import FilterWrapper from "@/components/FilterWrapper";
-import AdminOnly from '@/components/AdminOnly';
-import { getAuthUser } from '@/lib/auth';
+import AdminOnly from "@/components/AdminOnly";
+import { getAuthUser } from "@/lib/auth";
 
 type StudentList = Student & { class: Class };
 
@@ -84,7 +84,7 @@ const StudentListPage = async ({
               <Image src="/view.png" alt="" width={16} height={16} />
             </button>
           </Link>
-           {/*{role === "admin" && (
+          {/*{role === "admin" && (
             // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaPurple">
             //   <Image src="/delete.png" alt="" width={16} height={16} />
             // </button>
@@ -96,10 +96,10 @@ const StudentListPage = async ({
     </tr>
   );
 
-  const { page, ...queryParams } = searchParams;
+  const { page, pageSize, ...queryParams } = searchParams;
 
   const p = page ? parseInt(page) : 1;
-
+  const take = pageSize ? parseInt(pageSize) : ITEM_PER_PAGE;
   // URL PARAMS CONDITION
 
   const query: Prisma.StudentWhereInput = {};
@@ -133,8 +133,8 @@ const StudentListPage = async ({
       include: {
         class: true,
       },
-      take: ITEM_PER_PAGE,
-      skip: ITEM_PER_PAGE * (p - 1),
+      take: take,
+      skip: take * (p - 1),
     }),
     prisma.student.count({ where: query }),
   ]);
@@ -166,7 +166,7 @@ const StudentListPage = async ({
       {/* LIST */}
       <Table columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
-      <Pagination page={p} count={count} />
+      <Pagination page={p} count={count} pageSize={take} />
     </div>
   );
 };

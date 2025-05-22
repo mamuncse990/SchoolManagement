@@ -19,6 +19,11 @@ const ParentListPage = async ({
   searchParams: { [key: string]: string | undefined };
 }) => {
   const { role } = await getAuthUser();
+  
+  // Move these declarations to the top
+  const { page, pageSize, ...queryParams } = searchParams;
+  const p = page ? parseInt(page) : 1;
+  const take = pageSize ? parseInt(pageSize) : ITEM_PER_PAGE;
 
   const columns = [
     {
@@ -55,12 +60,17 @@ const ParentListPage = async ({
       : []),
   ];
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/parents`, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-  const { data, count } = await response.json()
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/parents?page=${p}&pageSize=${take}${
+      queryParams.search ? `&search=${queryParams.search}` : ''
+    }`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+  const { data, count } = await response.json();
 
   const renderRow = (item: ParentList) => (
     <tr
@@ -92,12 +102,7 @@ const ParentListPage = async ({
     </tr>
   );
 
-  const { page, ...queryParams } = searchParams;
-
-  const p = page ? parseInt(page) : 1;
-
   // URL PARAMS CONDITION
-
   const query: Prisma.ParentWhereInput = {};
 
   if (queryParams) {
@@ -135,7 +140,7 @@ const ParentListPage = async ({
       {/* LIST */}
       <Table columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
-      <Pagination page={p} count={count} />
+      <Pagination page={p} count={count} pageSize={take}/>
     </div>
   );
 };

@@ -5,7 +5,7 @@ import TableSearch from "@/components/TableSearch";
 import { prisma } from "@/lib/prisma";
 import { User, Prisma } from "@prisma/client";
 import { ITEM_PER_PAGE } from "@/lib/settings";
-import { getAuthUser } from '@/lib/auth';
+import { getAuthUser } from "@/lib/auth";
 import UserForm from "@/components/forms/UserForm";
 import FilterWrapper from "@/components/FilterWrapper";
 import dynamic from "next/dynamic";
@@ -16,7 +16,7 @@ const UserTableRow = dynamic(() => import("@//components/UserTableRow"), {
 
 // Adjust UserList type if your User model has more fields
 // type UserList = User & { ... }
-type UserList = User & { 
+type UserList = User & {
   id: string;
   name: string;
   email: string;
@@ -33,17 +33,20 @@ const UserListPage = async ({
     { header: "Name", accessor: "name" },
     { header: "Email", accessor: "email" },
     { header: "Role", accessor: "role" },
-    ...(role === "admin"
+    ...(role === "super admin"
       ? [
-          { header: "", accessor: "login" },
+          { header: "Access", accessor: "login" },
           { header: "Actions", accessor: "action" },
         ]
       : []),
   ];
-const renderRow = (item: UserList) => <UserTableRow item={item} role={role} />;
+  const renderRow = (item: UserList) => (
+    <UserTableRow item={item} role={role} />
+  );
 
-  const { page, sort, ...queryParams } = searchParams;
+  const { page, pageSize, sort, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;
+  const take = pageSize ? parseInt(pageSize) : ITEM_PER_PAGE;
 
   const query: Prisma.UserWhereInput = {};
   // if (queryParams?.search) {
@@ -57,7 +60,7 @@ const renderRow = (item: UserList) => <UserTableRow item={item} role={role} />;
       if (value !== undefined) {
         switch (key) {
           case "name":
-            query.name = { contains: value, mode: "insensitive" }; 
+            query.name = { contains: value, mode: "insensitive" };
 
           case "email":
             query.email = { contains: value, mode: "insensitive" };
@@ -76,8 +79,6 @@ const renderRow = (item: UserList) => <UserTableRow item={item} role={role} />;
     }
   }
 
-
-
   // Sorting logic
   let orderBy: any = { createdAt: "desc" };
   if (sort === "name-asc") orderBy = { name: "asc" };
@@ -89,8 +90,8 @@ const renderRow = (item: UserList) => <UserTableRow item={item} role={role} />;
     prisma.user.findMany({
       where: query,
       include: { role: true },
-      take: ITEM_PER_PAGE,
-      skip: ITEM_PER_PAGE * (p - 1),
+      take: take,
+      skip: take * (p - 1),
       orderBy,
     }),
     prisma.user.count({ where: query }),
@@ -101,7 +102,7 @@ const renderRow = (item: UserList) => <UserTableRow item={item} role={role} />;
       {/* TOP */}
       <div className="flex items-center justify-between">
         <h1 className="hidden md:block text-lg font-semibold">All Users</h1>
-        
+
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
           <TableSearch />
           <FilterWrapper />
@@ -113,9 +114,9 @@ const renderRow = (item: UserList) => <UserTableRow item={item} role={role} />;
       {/* LIST */}
       <Table columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
-      <Pagination page={p} count={count} />
+      <Pagination page={p} count={count} pageSize={take} />
     </div>
   );
 };
 
-export default UserListPage; 
+export default UserListPage;

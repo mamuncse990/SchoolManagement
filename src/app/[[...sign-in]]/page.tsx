@@ -3,8 +3,46 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
+
+// First, create an interface for the database role
+interface DBRole {
+  id: number;
+  name: string;
+  route: string;
+}
+
+// Define the roles map that will be populated from DB
+const dashboardRoutes: { [key: string]: string } = {};
+
+// Fetch roles from database and set up routes
+const fetchRolesAndSetupRoutes = async () => {
+  try {
+    const response = await fetch('/api/roles', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    const roles: DBRole[] = await response.json();
+    
+    // Populate the dashboardRoutes with roles from DB
+    roles.forEach(role => {
+      dashboardRoutes[role.name] = `/dashboard/${role.name.toLowerCase()=="super admin" ? "list/users" : role.name}`;
+    });
+    
+  } catch (error) {
+    console.error('Error fetching roles:', error);
+    // Fallback routes in case of error
+    // dashboardRoutes['Admin'] = '/dashboard/admin';
+    //dashboardRoutes['super admin'] = '/dashboard/admin';
+    // dashboardRoutes['Teacher'] = '/dashboard/teacher';
+    // dashboardRoutes['Student'] = '/dashboard/student';
+    // dashboardRoutes['Parent'] = '/dashboard/parent';
+  }
+};
 
 export default function SignIn() {
   const router = useRouter();
@@ -18,6 +56,10 @@ export default function SignIn() {
   const [resetEmail, setResetEmail] = useState("");
   const [resetLoading, setResetLoading] = useState(false);
   const [resetMessage, setResetMessage] = useState("");
+
+  useEffect(() => {
+    fetchRolesAndSetupRoutes();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,17 +105,9 @@ export default function SignIn() {
           console.log('- sessionStorage role:', sessionStorage.getItem('role'));
         }, 100);
 
-        // Navigate after successful login
-        type UserRole = 'Admin' | 'teacher' | 'student' | 'parent' |'super admin';
-        const dashboardRoutes: Record<UserRole, string> = {
-          Admin: '/dashboard/admin',
-          'super admin': '/dashboard/super-admin',
-          teacher: '/dashboard/teacher',
-          student: '/dashboard/student',
-          parent: '/dashboard/parent'
-        };
-        
-        router.push(dashboardRoutes[user.role as UserRole] || '/dashboard');
+        // Use the exact role name from database for routing
+        const userRoute = dashboardRoutes[user.role] || '/dashboard';
+        router.push(userRoute);
       } else {
         throw new Error(data.message || 'Login failed');
       }
