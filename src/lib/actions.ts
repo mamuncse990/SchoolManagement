@@ -427,7 +427,7 @@ export async function deleteUser(prevState: any, formData: FormData) {
 
 export async function createParent(prevState: any, formData: FormData) {
   try {
-    const { username, name, surname, email, phone, address } = Object.fromEntries(formData);
+    const { username, name, surname, email, phone, address, img } = Object.fromEntries(formData);
 
     // Create user in Clerk
     const user = await clerk.users.createUser({
@@ -446,6 +446,7 @@ export async function createParent(prevState: any, formData: FormData) {
         email: email as string,
         phone: phone as string,
         address: address as string,
+        //img: img as string,
       },
     });
 
@@ -458,7 +459,7 @@ export async function createParent(prevState: any, formData: FormData) {
 
 export async function updateParent(prevState: any, formData: FormData) {
   try {
-    const { id, username, name, surname, email, phone, address } = Object.fromEntries(formData);
+    const { id, username, name, surname, email, phone, address, img } = Object.fromEntries(formData);
 
     // Update parent in database
     await prisma.parent.update({
@@ -470,6 +471,7 @@ export async function updateParent(prevState: any, formData: FormData) {
         email: email as string,
         phone: phone as string,
         address: address as string,
+        // img property removed because it does not exist in the Parent model
       },
     });
 

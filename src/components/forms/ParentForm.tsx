@@ -8,8 +8,8 @@ import { useFormState } from "react-dom";
 import { createParent, updateParent } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
+import FileUpload from "../FileUpload";
 
 interface ParentFormData {
   id?: string;
@@ -48,14 +48,13 @@ const ParentForm = ({
       error: false,
     }
   );
-
   const onSubmit = handleSubmit((formData) => {
     const formDataObj = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
       formDataObj.append(key, value as string);
     });
-    if (img?.secure_url) {
-      formDataObj.append('img', img.secure_url);
+    if (img) {
+      formDataObj.append('img', img);
     }
     formAction(formDataObj);
   });
@@ -135,26 +134,12 @@ const ParentForm = ({
             error={errors?.id}
             hidden
           />
-        )}
-        <CldUploadWidget
-          uploadPreset="school"
-          onSuccess={(result, { widget }) => {
-            setImg(result.info);
-            widget.close();
+        )}        <FileUpload
+          onUploadComplete={(path) => {
+            setImg(path);
           }}
-        >
-          {({ open }) => {
-            return (
-              <div
-                className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
-                onClick={() => open()}
-              >
-                <Image src="/upload.png" alt="" width={28} height={28} />
-                <span>Upload a photo</span>
-              </div>
-            );
-          }}
-        </CldUploadWidget>
+          previewUrl={data?.img}
+        />
       </div>
       {state.error && (
         <span className="text-red-500">Something went wrong!</span>

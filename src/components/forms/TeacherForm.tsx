@@ -10,7 +10,7 @@ import { useFormState } from "react-dom";
 import { createTeacher, updateTeacher } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { CldUploadWidget } from "next-cloudinary";
+import LocalUploadWidget from "../LocalUploadWidget";
 
 const TeacherForm = ({
   type,
@@ -33,6 +33,7 @@ const TeacherForm = ({
 
   const [img, setImg] = useState<any>();
   const [subjects, setSubjects] = useState<Array<{ id: number; name: string }>>([]);
+  const [showUploadModal, setShowUploadModal] = useState(false);
 
   const [state, formAction] = useFormState(
     type === "create" ? createTeacher : updateTeacher,
@@ -202,25 +203,30 @@ const TeacherForm = ({
             </p>
           )}
         </div>
-        <CldUploadWidget
-          uploadPreset="school"
-          onSuccess={(result, { widget }) => {
-            setImg(result.info);
-            widget.close();
-          }}
-        >
-          {({ open }) => {
-            return (
-              <div
-                className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
-                onClick={() => open()}
-              >
-                <Image src="/upload.png" alt="" width={28} height={28} />
-                <span>Upload a photo</span>
+        <div className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer">
+          <button
+            type="button"
+            className="flex items-center gap-2 text-gray-600 border border-gray-300 px-4 py-2 rounded hover:border-blue-500"
+            onClick={() => setShowUploadModal(true)}
+          >
+            <Image src="/upload.png" alt="Upload" width={28} height={28} />
+            <span>Upload a photo</span>
+          </button>
+          {showUploadModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+              <div className="bg-white rounded-lg shadow-lg">
+                <LocalUploadWidget
+                  folderName="teachers"
+                  onSuccess={(filePath) => {
+                    setImg({ secure_url: filePath });
+                    setShowUploadModal(false);
+                  }}
+                  onClose={() => setShowUploadModal(false)}
+                />
               </div>
-            );
-          }}
-        </CldUploadWidget>
+            </div>
+          )}
+        </div>
       </div>
       {state.error && (
         <span className="text-red-500">Something went wrong!</span>
