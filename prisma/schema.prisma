@@ -253,9 +253,204 @@ enum UserSex {
 }
 
 enum Day {
+  SUNDAY
   MONDAY
   TUESDAY
   WEDNESDAY
   THURSDAY
-  FRIDAY
+}
+
+
+model Branch {
+  id Int       @id @default(autoincrement())
+  name String @db.VarChar(100)
+  description String @db.VarChar(255)
+  isMainBranch Boolean  @default(false)
+  isActive Boolean  @default(true)
+  schoolId Int
+  createdBy Int
+  createdDate DateTime @default(now())
+  updatedBy Int
+  updatedDate DateTime? @updatedAt
+}
+
+model Session {
+  id Int       @id @default(autoincrement())
+  name String @db.VarChar(100)
+  description String @db.VarChar(255)
+  startDate DateTime
+  endDate DateTime
+  isActive Boolean  @default(true)
+  schoolId Int
+  createdBy Int
+  createdDate DateTime @default(now())
+  updatedBy Int
+  updatedDate DateTime? @updatedAt
+}
+
+model Group {
+  id Int       @id @default(autoincrement())
+  name String @db.VarChar(100)
+  description String @db.VarChar(255)
+  isActive Boolean  @default(true)
+  schoolId Int
+  createdBy Int
+  createdDate DateTime @default(now())
+  updatedBy Int
+  updatedDate DateTime? @updatedAt
+}
+
+model Shift {
+  id Int       @id @default(autoincrement())
+  name String @db.VarChar(100)
+  description String @db.VarChar(255)
+  startTime DateTime
+  endTime DateTime
+  isActive Boolean  @default(true)
+  schoolId Int
+  createdBy Int
+  createdDate DateTime @default(now())
+  updatedBy Int
+  updatedDate DateTime? @updatedAt
+}
+model Version {
+  id Int       @id @default(autoincrement())
+  name String @db.VarChar(100)
+  description String @db.VarChar(255)
+  isActive Boolean  @default(true)
+  schoolId Int
+  createdBy Int
+  createdDate DateTime @default(now())
+  updatedBy Int
+  updatedDate DateTime? @updatedAt
+}
+model Gender {
+  id Int       @id @default(autoincrement())
+  name String @db.VarChar(100)
+  description String @db.VarChar(255)
+  isActive Boolean  @default(true)
+  schoolId Int
+  createdBy Int
+  createdDate DateTime @default(now())
+  updatedBy Int
+  updatedDate DateTime? @updatedAt
+}
+model Religion {
+  id Int       @id @default(autoincrement())
+  name String @db.VarChar(100)
+  description String @db.VarChar(255)
+  isActive Boolean  @default(true)
+  schoolId Int
+  createdBy Int
+  createdDate DateTime @default(now())
+  updatedBy Int
+  updatedDate DateTime? @updatedAt
+}
+model Nationality {
+  id Int       @id @default(autoincrement())
+  name String @db.VarChar(100)
+  description String @db.VarChar(255)
+  isActive Boolean  @default(true)
+  schoolId Int
+  createdBy Int
+  createdDate DateTime @default(now())
+  updatedBy Int
+  updatedDate DateTime? @updatedAt
+}
+
+model Occupation {
+  id Int       @id @default(autoincrement())
+  name String @db.VarChar(100)
+  description String @db.VarChar(255)
+  isActive Boolean  @default(true)
+  schoolId Int
+  createdBy Int
+  createdDate DateTime @default(now())
+  updatedBy Int
+  updatedDate DateTime? @updatedAt
+}
+model Designation {
+  id Int       @id @default(autoincrement())
+  name String @db.VarChar(100)
+  description String @db.VarChar(255)
+  isActive Boolean  @default(true)
+  schoolId Int
+  createdBy Int
+  createdDate DateTime @default(now())
+  updatedBy Int
+  updatedDate DateTime? @updatedAt
+}
+model BloodGroup {
+  id Int       @id @default(autoincrement())
+  name String @db.VarChar(100)
+  description String @db.VarChar(255)
+  isActive Boolean  @default(true)
+  schoolId Int
+  createdBy Int
+  createdDate DateTime @default(now())
+  updatedBy Int
+  updatedDate DateTime? @updatedAt
+}
+model ExamType {
+  id Int       @id @default(autoincrement())
+  name String @db.VarChar(100)
+  description String @db.VarChar(255)
+  isActive Boolean  @default(true)
+  schoolId Int
+  createdBy Int
+  createdDate DateTime @default(now())
+  updatedBy Int
+  updatedDate DateTime? @updatedAt
+}
+model ExamGrade {
+  id Int       @id @default(autoincrement())
+  name String @db.VarChar(100)
+  description String @db.VarChar(255)
+  minScore Int
+  maxScore Int
+  isActive Boolean  @default(true)
+  schoolId Int
+  createdBy Int
+  createdDate DateTime @default(now())
+  updatedBy Int
+  updatedDate DateTime? @updatedAt
+}
+model ExamInfo {
+  id Int       @id @default(autoincrement())
+  name String @db.VarChar(100)
+  description String @db.VarChar(255)
+  isActive Boolean  @default(true)
+  schoolId Int
+  createdBy Int
+  createdDate DateTime @default(now())
+  updatedBy Int
+  updatedDate DateTime? @updatedAt
+}
+model SchoolInfo {
+  id                    Int       @id @default(autoincrement())
+  name                  String    @db.VarChar(100)
+  address               String    @db.Text
+  phone                 String    @db.VarChar(20)
+  email                 String    @db.VarChar(100)
+  website               String?   @db.VarChar(100)
+  logo                  String?   @db.VarChar(255)
+  establishedYear       Int?
+  description          String?   @db.Text
+  principalName        String?   @db.VarChar(100)
+  principalEmail       String?   @db.VarChar(100) 
+  principalPhone       String?   @db.VarChar(20)
+  principalAddress     String?   @db.Text
+  principalPhoto       String?   @db.VarChar(255)
+  principalSignature   String?   @db.VarChar(255)
+  schoolType           String?   @db.VarChar(50)
+  schoolCategory       String?   @db.VarChar(50)
+  schoolBoard          String?   @db.VarChar(100)
+  affiliationNumber    String?   @db.VarChar(50)
+  licenseName          String?   @db.VarChar(50)
+  isActive             Boolean   @default(true)
+  schoolId             Int
+  createdBy            Int
+  createdDate          DateTime  @default(now())
+  updatedBy            Int
+  updatedDate          DateTime? @updatedAt
 }

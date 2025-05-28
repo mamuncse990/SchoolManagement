@@ -656,8 +656,19 @@ const LocalUploadWidget = ({ onSuccess, folderName, onClose }: LocalUploadWidget
           <span className="text-gray-400 text-lg">This source is not yet supported.</span>
         </div>
       )}
+      
+      {/* Bottom close button - always visible */}
+      <div className="flex justify-center p-4 bg-gray-50 border-t">
+        <button
+          className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-8 py-2 rounded font-semibold transition-colors"
+          onClick={onClose}
+          type="button"
+        >
+          Close
+        </button>
+      </div>
     </div>
   );
 };
 
-export default LocalUploadWidget; 
+export default LocalUploadWidget;

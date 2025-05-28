@@ -238,14 +238,13 @@ const FormModal = ({
         <Image src={`/${type}.png`} alt="" width={16} height={16} />
       </button>
       {open && (
-        <div className="w-screen h-screen absolute left-0 top-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
-          <div className="bg-white p-4 rounded-md relative w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%]">
-            <Form />
-            <div
-              className="absolute top-4 right-4 cursor-pointer"
-              onClick={() => setOpen(false)}
-            >
+        <div className="w-screen h-screen fixed left-0 top-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-md relative w-[95%] md:w-[80%] lg:w-[70%] xl:w-[60%] 2xl:w-[50%] max-h-[90vh] overflow-hidden flex flex-col">
+            <div className="absolute top-4 right-4 cursor-pointer z-10" onClick={() => setOpen(false)}>
               <Image src="/close.png" alt="" width={14} height={14} />
+            </div>
+            <div className="p-4 overflow-y-auto flex-1">
+              <Form />
             </div>
           </div>
         </div>
